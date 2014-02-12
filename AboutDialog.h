@@ -1,6 +1,6 @@
 #ifndef __ABOUT_DIALOG_HPP__
 #define __ABOUT_DIALOG_HPP__
-#include "dive-agent-forms.h"
+#include "dive_agent_forms.h"
 
 class AboutDilog:public AboutDialogBase
 {

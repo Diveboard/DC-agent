@@ -27,14 +27,20 @@ set (SOURCES
     ${PLATFORM}
     )
 
-set(wxWidgets_ROOT "../wxWidgets-3.0.0/build-release")
+set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3d-party/wxWidgets-3.0.0/build-32")
 set(wxWidgets_CONFIG_EXECUTABLE "${wxWidgets_ROOT}/wx-config")
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
+set(libdivecomputer_ROOT "${CMAKE_SOURCE_DIR}/3d-party/libdivecomputer-0.4.1")
+find_library(LIBDIVECOMPUTER divecomputer ${libdivecomputer_ROOT}/build/src/.libs/ NO_DEFAULT_PATH)
+include_directories("${libdivecomputer_ROOT}/include")
+
 add_executable(${PROJNAME} MACOSX_BUNDLE ${SOURCES})
-message("wx-libs=${wxWidgets_LIBRARIES}")
 
 target_link_libraries(${PROJNAME}
     ${wxWidgets_LIBRARIES}
+#    ${LIBDIVECOMPUTER}
+    ${Boost_LIBRARIES}
+    ${LIBICONV}
     )

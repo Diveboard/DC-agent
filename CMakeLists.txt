@@ -28,8 +28,8 @@ file (GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 
 set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
 
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #find_package( OpenSSL REQUIRED)
 #include_directories(${OpenSSL_INCLUDE_DIR})
@@ -37,9 +37,13 @@ set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
 #find_package( Curl REQUIRED)
 #include_directories(${Curl_INCLUDE_DIR})
 
-#find_package( Boost threads REQUIRED)
-#include_directories(${Boost_INCLUDE_DIR})
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+find_package( Boost COMPONENTS thread system REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+
+find_library(LIBICONV iconv)
+message("${LIBICONV}")
 
 include_platform()
-
-#add_subdirectory(./src/npthreatlabs)
