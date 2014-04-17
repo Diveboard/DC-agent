@@ -5,7 +5,13 @@
 class PreferencesDialog:public PreferencesDialogBase
 {
 public:
-  PreferencesDialog():PreferencesDialogBase(0){}
+  PreferencesDialog();
+  virtual void FBconnectButtonOnButtonClick ( wxCommandEvent& event );
+  virtual void loginButtonOnButtonClick     ( wxCommandEvent& event );
+  virtual void unlinkButtonOnButtonClick    ( wxCommandEvent& event );
+  virtual void unlinkButtonOnUpdateUI       ( wxUpdateUIEvent& event );
+  virtual void loginButtonOnUpdateUI        ( wxUpdateUIEvent& event );
+  virtual void FBconnectButtonOnUpdateUI    ( wxUpdateUIEvent& event );
 };
 
 #endif//__PREFERENCES_DIALOG_HPP__

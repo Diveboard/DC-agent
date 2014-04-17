@@ -9,7 +9,6 @@
 #include <dlfcn.h>
 //#define SO_LIB "/Users/squale/Documents/dev/DB_plugins/libdivecomputer/build/Debug/liblibdivecomputer.dylib"
 //#define SO_LIB "/Library/Internet Plug-Ins/Diveboard.plugin/Contents/MacOS/liblibdivecomputer.dylib"
-#define SO_LIB "/tmp/libdivecomputer.dylib"
 #endif
 
 #ifdef __linux__
@@ -22,6 +21,8 @@
 #define MAX_TEMP 99999
 
 #include <boost/thread/thread.hpp>
+
+#include "DiveAgent.h"
 
 namespace {
   boost::mutex  _m;
@@ -170,7 +171,8 @@ LIBTYPE openDLLLibrary()
 #elif defined(__MACH__) || defined(__linux__)
 
   void *libdc;
-  libdc = dlopen(SO_LIB,RTLD_LAZY);
+  std::string library_name = DiveAgent::exeFolder() + "libdivecomputer.dylib";
+  libdc = dlopen(library_name.c_str(),RTLD_LAZY);
   if (!libdc) DBthrowError("Impossible to load library : %s", dlerror());
 
   return libdc;

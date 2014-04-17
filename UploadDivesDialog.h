@@ -11,9 +11,9 @@ public:
   UploadDivesDialog();
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
 protected:
-  virtual void selectComputerComboOnCombobox( wxCommandEvent& event );
-  virtual void selectPortComboOnCombobox( wxCommandEvent& event );
-  virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event );
+  virtual void selectComputerComboOnCombobox  ( wxCommandEvent& event );
+  virtual void selectPortComboOnCombobox      ( wxCommandEvent& event );
+  virtual void uploadDivesButtonOnButtonClick ( wxCommandEvent& event );
 private:
   UploadDivesProgressDialog* _progress_dialog;
 };

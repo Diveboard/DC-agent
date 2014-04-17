@@ -14,9 +14,18 @@ public:
   int   uploadDivesProgress();
   bool  isUploadDivesRuning();
   std::string getErrors();
+  bool login_email(const std::string& email, const std::string& password);
+  bool login_fb(const std::string& fbid, const std::string& token);
+  std::string getLogedUser() const;
+  void logoff();
+  static std::string exeFolder();
+  static void writeProfile(const std::string& key, const std::string& value);
+  static std::string readProfile(const std::string& key);
 protected:
   DiveAgent();
-  
+  void uploadDivesToServer();
+  static std::string homeFolder();
+  static std::string configFile() { return homeFolder() + ".dive_agent.cfg"; }
   boost::mutex  _m;
   boost::thread _th;
   int           _upload_dives_progress;

@@ -807,7 +807,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -865,7 +865,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxBoxSizer" expanded="0">
+            <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">m_mainSizer</property>
                 <property name="orient">wxVERTICAL</property>
@@ -1059,7 +1059,7 @@
                                 <event name="OnRightUp"></event>
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
-                                <event name="OnUpdateUI"></event>
+                                <event name="OnUpdateUI">unlinkButtonOnUpdateUI</event>
                             </object>
                         </object>
                     </object>
@@ -1427,7 +1427,7 @@
                                         <event name="OnRightUp"></event>
                                         <event name="OnSetFocus"></event>
                                         <event name="OnSize"></event>
-                                        <event name="OnUpdateUI"></event>
+                                        <event name="OnUpdateUI">loginButtonOnUpdateUI</event>
                                     </object>
                                 </object>
                             </object>
@@ -1486,7 +1486,7 @@
                                 <event name="OnRightUp"></event>
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
-                                <event name="OnUpdateUI"></event>
+                                <event name="OnUpdateUI">FBconnectButtonOnUpdateUI</event>
                             </object>
                         </object>
                     </object>

@@ -6,6 +6,5 @@ class AboutDilog:public AboutDialogBase
 {
 public:
   AboutDilog():AboutDialogBase(0){};
-  
 };
 #endif//__ABOUT_DIALOG_HPP__
