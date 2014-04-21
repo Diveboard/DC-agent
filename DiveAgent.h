@@ -21,6 +21,7 @@ public:
   static std::string exeFolder();
   static void writeProfile(const std::string& key, const std::string& value);
   static std::string readProfile(const std::string& key);
+  std::string completionURL();
 protected:
   DiveAgent();
   void uploadDivesToServer();
@@ -31,8 +32,10 @@ protected:
   int           _upload_dives_progress;
   bool          _upload_dives_running;
   Computer*     _dive_computer;
+  std::string   _dive_computer_type_id;
   std::string   _errors;
   std::string   _xml;
+  std::string   _completion_url;
   static void workingThread();
   static DiveAgent _instance;
 };

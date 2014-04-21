@@ -137,6 +137,10 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       {
         wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploding dives: ") + error).c_str()));
       }
+      std::string url = DiveAgent::instance().completionURL();
+      if (!url.empty())
+        wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
+      
       setCurrentDialog(_main_dialog);
       disableMonitoring();
     }

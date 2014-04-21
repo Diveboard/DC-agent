@@ -11,6 +11,7 @@
 
 #include <libconfig.h++>
 #include "ComputerMares.h"
+#include "Logger.h"
 
 namespace {
   
@@ -52,6 +53,7 @@ namespace {
     {
       _token.resize(0);
       _user.resize(0);
+      _user_id.resize(0);
     };
     const std::string user() const { return _user;}
     void login_fb(const std::string fbid, const std::string& fbtoken)
@@ -67,6 +69,10 @@ namespace {
         throw std::string(d["message"].GetString());
       _token  = d["token"].GetString();
       _user   = d["user"]["nickname"].GetString();
+      unsigned id = d["user"]["id"].GetUint();
+      std::stringstream s;
+      s <<  id;
+      _user_id= s.str();
     };
     void login_email( const std::string& email, const std::string& password)
     {
@@ -81,20 +87,31 @@ namespace {
         throw std::string(d["message"].GetString());
       _token = d["token"].GetString();
       _user = d["user"]["nickname"].GetString();
+      unsigned id = d["user"]["id"].GetUint();
+      std::stringstream s;
+      s <<  id;
+      _user_id= s.str();
     }
-    void dive(const std::string& record)
+    std::string computerupload(const std::string& computer,
+                               const std::string& xml,
+                               const std::string& log)
     {
       std::map< std::string, std::string > param;
-      param["arg"] = record;
+      param["user_id"] = _user_id;
       param["auth_token"] = _token;
       param["apikey"] = apiKey();
-      shttp_post(apiBaseURL() + "V2/dive", param);
+      param["xmlFormSend"] = xml;
+      param["logFormSend"] = log;
+      param["verFormSend"] = "DiveboardAgent v1.0.1";
+      param["computer_model"] = computer;
+
+      shttp_post(apiBaseURL() + "computerupload.json", param);
       rapidjson::Document d;
       d.Parse<0>(_resp_body.c_str());
       if (!d["success"].GetBool())
-        throw d["message"].GetString();
+        throw std::string(d["message"].GetString());
+      return d["completion_form_url"].GetString();;
     }
-    
   private:
     std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
     std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
@@ -241,6 +258,7 @@ namespace {
     std::string     _redirect_url;
     std::string     _token;
     std::string     _user;
+    std::string     _user_id;
     long            _follow_location;
     
     static CurlInitializer  curl_initializer;
@@ -302,6 +320,7 @@ void DiveAgent::workingThread()
       boost::lock_guard<boost::mutex> g(instance()._m);
       instance()._errors.resize(0);
       instance()._xml.resize(0);
+      instance()._completion_url.resize(0);
       instance()._upload_dives_running = true;
     }
     std::string xml;
@@ -311,30 +330,14 @@ void DiveAgent::workingThread()
       boost::lock_guard<boost::mutex> g(instance()._m);
       instance()._xml = xml;
     }
-    // todo: parse xml and upload dives
-    /*
-     rapidjson::Document d;
-     d.SetObject();
-     d["user_id"]="";
-     d["duration"]=90;
-     d["maxdepth"]=40;
-     
-     d["time_in"]="2014-03-08T09:40:00Z";
-     d["spot"].SetObject();
-     d["spot"]["name"] = "Hole";
-     d["spot"]["contry_code"] = "EN";
-     d["spot"]["name"] = "Hole";
-     d["spot"]["location"].SetObject();
-     d["spot"]["location"]["name"] = "Gozo";
-     d["spot"]["region"].SetObject();
-     d["spot"]["regin"]["name"] = "Medeterian Sea";
-     
-     rapidjson::GenericStringBuffer<rapidjson::UTF8<> > b;
-     rapidjson::Writer<rapidjson::GenericStringBuffer<rapidjson::UTF8<> > > w(b);
-     d.Accept(w);
-     std::string str = b.GetString();
-     api.dive(str);
-     */
+    // todo: make sure Logger is thread safe
+    std::string log = Logger::toString();
+    
+    std::string completion_url = api.computerupload(instance()._dive_computer_type_id, xml, log);
+    {
+      boost::lock_guard<boost::mutex> g(instance()._m);
+      instance()._completion_url = completion_url;
+    }
     instance()._upload_dives_running = false;
   }
   catch( boost::thread_interrupted& )
@@ -345,6 +348,12 @@ void DiveAgent::workingThread()
   {
     boost::lock_guard<boost::mutex> g(instance()._m);
     instance()._errors += std::string(" ") + e.what();
+    instance()._upload_dives_running = false;
+  }
+  catch (std::string& e)
+  {
+    boost::lock_guard<boost::mutex> g(instance()._m);
+    instance()._errors += e;
     instance()._upload_dives_running = false;
   }
 };
@@ -358,7 +367,9 @@ void  DiveAgent::startUploadDives(const std::string &dive_computer_type_id, cons
     delete _dive_computer;
   ComputerFactory f;
   //_dive_computer = f.createComputer(dive_computer_type_id, port);
+  //_dive_computer_type_id = dive_computer_type_id;
   _dive_computer = new ComputerMares(""); // test
+  //_dive_computer_type_id =
   _th = boost::thread(workingThread);
 };
 
@@ -498,3 +509,15 @@ void DiveAgent::logoff()
 {
   api.logoff();
 };
+
+std::string DiveAgent::completionURL()
+{
+  std::string res;
+  {
+    boost::lock_guard<boost::mutex> g(instance()._m);
+    res = _completion_url;
+  }
+  return res;
+  
+};
+
