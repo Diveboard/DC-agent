@@ -13,5 +13,5 @@ void DiveAgentApp::createDocIcon()
 
 bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
 {
-  return OSXIsStatusItem();
+  return !OSXIsStatusItem();
 };
