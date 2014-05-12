@@ -49,6 +49,8 @@ find_library(LIBCONFIG config++ ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
 include_directories("${3d_paryt_ROOT}/include")
 
 add_executable(${PROJNAME} MACOSX_BUNDLE ${SOURCES})
+CONFIGURE_FILE("${CMAKE_CURRENT_LIST_DIR}/MacOSXBundleInfo.plist.in" "${CMAKE_CURRENT_BINARY_DIR}/${PROJNAME}.plist")
+SET_TARGET_PROPERTIES(${PROJNAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/${PROJNAME}.plist")
 
 target_link_libraries(${PROJNAME}
     ${wxWidgets_LIBRARIES}
