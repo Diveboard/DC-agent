@@ -3,10 +3,12 @@
 #include <wx/webview.h>
 #include "DiveAgent.h"
 #include <wx/msgdlg.h>
+#include <wx/filename.h>
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
+#include <fstream>
 
 namespace
 {
@@ -135,7 +137,7 @@ PreferencesDialog::PreferencesDialog():
   {
     m_emailText->ChangeValue(wxString::FromUTF8(email_value.c_str()));
   }
-  
+  showSetAccount();
 }
 void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 {
@@ -157,7 +159,7 @@ void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
     }
     else
     {
-      m_accountText->ChangeValue(wxString::FromUTF8(DiveAgent::instance().getLogedUser().c_str()));
+      showAccountInfo();
     }
   }
   else
@@ -169,6 +171,38 @@ void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
     
   }
 }
+
+void PreferencesDialog::showAccountInfo()
+{
+  m_accountStatic->SetLabel(wxString::FromUTF8((std::string("Diveboard account: ") + DiveAgent::instance().getLogedUser()).c_str()));
+  if (!DiveAgent::instance().getLogedUserPicture().empty())
+  {
+    // ToDo: implement load directly from std::vector<char*>
+    wxString tmp_file = wxFileName::CreateTempFileName("DiveAgent");
+    std::ofstream ofs(tmp_file.utf8_str().data(), std::ios::out | std::ios::binary);
+    ofs.write(&DiveAgent::instance().getLogedUserPicture()[0], DiveAgent::instance().getLogedUserPicture().size());
+    ofs.close();
+    wxImage img(tmp_file.utf8_str().data());
+    wxSize sz_image  = img.GetSize();
+    wxSize sz_bitmap = m_accountBitmap->GetSize();
+    double scale = std::min((double)sz_bitmap.x / (double) sz_image.x, (double)sz_bitmap.y / (double) sz_image.y);
+    img.Rescale(sz_image.x * scale, sz_image.y * scale);
+    wxBitmap p(img);
+    m_accountBitmap->SetBitmap(p);
+  }
+  m_accauntInfoPanel->Show(true);
+  m_accountSetPanel->Show(false);
+  GetSizer()->Fit(this);
+};
+
+void PreferencesDialog::showSetAccount()
+{
+  m_accountStatic->SetLabel(wxString::FromUTF8("Diveboard account: "));
+  m_accauntInfoPanel->Show(false);
+  m_accountSetPanel->Show(true);
+  GetSizer()->Fit(this);
+};
+
 
 void PreferencesDialog::loginButtonOnButtonClick( wxCommandEvent& event )
 {
@@ -182,15 +216,15 @@ void PreferencesDialog::loginButtonOnButtonClick( wxCommandEvent& event )
   }
   else
   {
-    m_accountText->ChangeValue(wxString::FromUTF8(DiveAgent::instance().getLogedUser().c_str()));
+    showAccountInfo();
     DiveAgent::writeProfile("login_email", m_emailText->GetValue().utf8_str().data());
   }
 }
 
 void PreferencesDialog::unlinkButtonOnButtonClick( wxCommandEvent& event )
 {
-  m_accountText->ChangeValue(wxString::FromUTF8(""));
   DiveAgent::instance().logoff();
+  showSetAccount();
 }
 
 void PreferencesDialog::unlinkButtonOnUpdateUI( wxUpdateUIEvent& e )

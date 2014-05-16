@@ -12,6 +12,7 @@
 #include <libconfig.h++>
 #include "ComputerMares.h"
 #include "Logger.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace {
   
@@ -54,8 +55,15 @@ namespace {
       _token.resize(0);
       _user.resize(0);
       _user_id.resize(0);
+      _user_picture.resize(0);
+      _expiration = boost::posix_time::ptime();
     };
+    bool is_login_expired() const
+    {
+      return !(boost::posix_time::ptime(boost::posix_time::second_clock::universal_time()) < _expiration);
+    }
     const std::string user() const { return _user;}
+    const std::vector<char>& user_picture() const { return _user_picture; }
     void login_fb(const std::string fbid, const std::string& fbtoken)
     {
       std::map< std::string, std::string > param;
@@ -63,16 +71,7 @@ namespace {
       param["fbtoken"]  = fbtoken;
       param["apikey"]   = apiKey();
       shttp_post(apiBaseURL() + "login_fb", param);
-      rapidjson::Document d;
-      d.Parse<0>(_resp_body.c_str());
-      if (!d["success"].GetBool())
-        throw std::string(d["message"].GetString());
-      _token  = d["token"].GetString();
-      _user   = d["user"]["nickname"].GetString();
-      unsigned id = d["user"]["id"].GetUint();
-      std::stringstream s;
-      s <<  id;
-      _user_id= s.str();
+      get_user_info();
     };
     void login_email( const std::string& email, const std::string& password)
     {
@@ -81,16 +80,7 @@ namespace {
       param["password"] = password;
       param["apikey"]   = apiKey();
       shttp_post(apiBaseURL() + "login_email", param);
-      rapidjson::Document d;
-      d.Parse<0>(_resp_body.c_str());
-      if (!d["success"].GetBool())
-        throw std::string(d["message"].GetString());
-      _token = d["token"].GetString();
-      _user = d["user"]["nickname"].GetString();
-      unsigned id = d["user"]["id"].GetUint();
-      std::stringstream s;
-      s <<  id;
-      _user_id= s.str();
+      get_user_info();
     }
     std::string computerupload(const std::string& computer,
                                const std::string& xml,
@@ -113,6 +103,28 @@ namespace {
       return d["completion_form_url"].GetString();;
     }
   private:
+    void get_user_info()
+    {
+      rapidjson::Document d;
+      d.Parse<0>(_resp_body.c_str());
+      if (!d["success"].GetBool())
+        throw std::string(d["message"].GetString());
+      _token = d["token"].GetString();
+      _user = d["user"]["nickname"].GetString();
+      unsigned id = d["user"]["id"].GetUint();
+      std::stringstream s;
+      s <<  id;
+      _user_id= s.str();
+
+      shttp_get(d["user"]["picture"].GetString());
+      _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
+      
+      boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
+      std::string time_str = d["expiration"].GetString();
+      s.str(d["expiration"].GetString());
+      s.imbue(std::locale(std::locale::classic(), tif));
+      s >> _expiration;
+    };
     std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
     std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
     void reinit_curl_handle()
@@ -223,18 +235,24 @@ namespace {
       if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
         throw std::string("Curl error: Unable to get responce code");
       
-      {
-        std::ofstream ofs("/Users/andrew/Documents/tmp/dive_debug.txt");
-        ofs << "redirect_url\n" << _redirect_url.c_str();
-        ofs << "\nheader\n" << _resp_header.c_str();
-      }
-      {
-        std::ofstream ofs("/Users/andrew/Documents/tmp/dive_debug.htm");
-        ofs << _resp_body.c_str();
-      }
       reinit_curl_handle();
       return res;
     }
+    
+    int shttp_get(const std::string& url)
+    {
+      prepare_request(url);
+      // make request
+      if (curl_easy_perform(_curl) != 0)
+        throw std::string("Curl error: Unable to perform post");
+      // get responce code
+      int res = 0;
+      if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
+        throw std::string("Curl error: Unable to get responce code");
+      
+      reinit_curl_handle();
+      return res;
+    };
     size_t writer(void* data, size_t size, size_t nmemb)
     {
       size_t sz = size*nmemb;
@@ -259,6 +277,8 @@ namespace {
     std::string     _token;
     std::string     _user;
     std::string     _user_id;
+    std::vector<char> _user_picture;
+    boost::posix_time::ptime  _expiration;
     long            _follow_location;
     
     static CurlInitializer  curl_initializer;
@@ -519,5 +539,15 @@ std::string DiveAgent::completionURL()
   }
   return res;
   
+};
+
+const std::vector<char>& DiveAgent::getLogedUserPicture()
+{
+  return api.user_picture();
+};
+
+bool  DiveAgent::isLoginExpired() const
+{
+  return api.is_login_expired();
 };
 

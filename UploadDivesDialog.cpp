@@ -2,6 +2,8 @@
 #include "ComputerFactory.h"
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
+#include <wx/msgdlg.h>
+#include "PreferencesDialog.h"
 
 namespace
 {
@@ -88,6 +90,18 @@ void UploadDivesDialog::selectPortComboOnCombobox( wxCommandEvent& event)
 
 void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
 {
+  // check is loged in and not expired
+  if (DiveAgent::instance().getLogedUser().empty() ||
+      (!DiveAgent::instance().getLogedUser().empty() && DiveAgent::instance().isLoginExpired()))
+  {
+    wxString msg = wxString::FromUTF8("User is not logged in or login is expired.\nPlease, try to login.");
+    wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+    dlg->ShowModal();
+    dlg->Destroy();
+    Hide();
+    _preferences_dialog->Show();
+    return;
+  }
   // save selection
   DiveAgent::writeProfile("dive_computer_port", m_selectPortCombo->GetStringSelection().utf8_str().data());
   DiveAgent::writeProfile("dive_computer_name", m_selectComputerCombo->GetStringSelection().utf8_str().data());

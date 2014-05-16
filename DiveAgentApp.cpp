@@ -38,6 +38,7 @@ namespace {
     aboutDilog                = new AboutDilog();
     
     uploadDivesDialog->setProgressDialog(uploadDivesProgressDialog);
+    uploadDivesDialog->setPreferencesDialog(preferencesDialog);
     uploadDivesProgressDialog->setMainDialog(uploadDivesDialog);
     
     currentDialog = uploadDivesDialog;
@@ -158,6 +159,7 @@ DiveAgentApp::~DiveAgentApp()
 
 bool DiveAgentApp::OnInit()
 {
+  wxInitAllImageHandlers();
     if ( !wxApp::OnInit() )
         return false;
 

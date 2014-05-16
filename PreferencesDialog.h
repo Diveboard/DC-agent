@@ -12,6 +12,10 @@ public:
   virtual void unlinkButtonOnUpdateUI       ( wxUpdateUIEvent& event );
   virtual void loginButtonOnUpdateUI        ( wxUpdateUIEvent& event );
   virtual void FBconnectButtonOnUpdateUI    ( wxUpdateUIEvent& event );
+protected:
+  void showAccountInfo();
+  void showSetAccount();
+  
 };
 
 #endif//__PREFERENCES_DIALOG_HPP__

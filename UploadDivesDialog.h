@@ -5,17 +5,20 @@
 #include <wx/timer.h>
 
 class UploadDivesProgressDialog;
+class PreferencesDialog;
 class UploadDivesDialog: public UploadDivesDialogBase
 {
 public:
   UploadDivesDialog();
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
+  void setPreferencesDialog(PreferencesDialog* d) { _preferences_dialog = d; }
 protected:
   virtual void selectComputerComboOnCombobox  ( wxCommandEvent& event );
   virtual void selectPortComboOnCombobox      ( wxCommandEvent& event );
   virtual void uploadDivesButtonOnButtonClick ( wxCommandEvent& event );
 private:
   UploadDivesProgressDialog* _progress_dialog;
+  PreferencesDialog*         _preferences_dialog;
 };
 
 class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
