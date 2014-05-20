@@ -60,6 +60,7 @@ namespace {
 void setCurrentDialog(wxDialog *d)
 {
   currentDialog = d;
+  d->Raise();
   d->Show();
 };
 
@@ -126,10 +127,12 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
+  currentDialog->Raise();
   currentDialog->Show(true);
 };
 void DiveAgentTaskBarIcon::OnMenuPreferences(wxCommandEvent&)
 {
+  preferencesDialog->Raise();
   preferencesDialog->Show(true);
 };
 void DiveAgentTaskBarIcon::OnMenuCheckForUpdates(wxCommandEvent&)
@@ -138,6 +141,7 @@ void DiveAgentTaskBarIcon::OnMenuCheckForUpdates(wxCommandEvent&)
 };
 void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent&)
 {
+  aboutDilog->Raise();
   aboutDilog->Show(true);
 };
 
