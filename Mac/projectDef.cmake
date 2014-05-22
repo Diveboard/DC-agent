@@ -29,7 +29,7 @@ set (SOURCES
     ${PLATFORM}
     )
 
-set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3d-party/wxWidgets-3.0.0/build-32")
+set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3d-party/wxWidgets-3.0-trunk/build-32")
 set(wxWidgets_CONFIG_EXECUTABLE "${wxWidgets_ROOT}/wx-config")
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
