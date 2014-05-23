@@ -14,7 +14,6 @@ public:
   {}
   
   void OnLeftButtonDClick(wxTaskBarIconEvent&);
-  void OnMenuRestore(wxCommandEvent&);
   void OnMenuExit(wxCommandEvent&);
   
   void OnMenuUploadDives(wxCommandEvent&);

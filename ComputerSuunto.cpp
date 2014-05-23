@@ -479,7 +479,8 @@ std::vector<ComputerSupport> *ComputerSuunto::support()
   support_list = new std::vector<ComputerSupport>;
 
   ComputerSupport sup;
-  sup.label = "Suunto Vyper (Diveboard internal driver)";
+  sup.make = "Suunto";
+  sup.model = "Vyper (Diveboard internal driver)";
   sup.key_code = "SUUNTO";
 #ifdef _WIN32
   sup.ports.push_back("Suunto USB Serial Port");
@@ -491,7 +492,8 @@ std::vector<ComputerSupport> *ComputerSuunto::support()
 #endif
 
   ComputerSupport emu;
-  emu.label = "Suunto Emulator";
+  emu.make = "Suunto";
+  emu.model = "Emulator";
   emu.key_code = "SUUNTO EMU";
   emu.ports.push_back(NO_PORT_NEEDED);
 

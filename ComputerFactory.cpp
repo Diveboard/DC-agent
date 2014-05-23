@@ -32,7 +32,7 @@ ComputerFactory::ComputerFactory(void)
 
 	support_list = ComputerLibdc::support();
   for ( it1=support_list->begin() ; it1 < support_list->end(); it1++ ){
-  	supported.push_back(*it1);
+  	supported[it1->make].push_back(*it1);
 	  for ( it2=it1->ports.begin() ; it2 < it1->ports.end(); it2++ ){
 			recognisedPorts[it1->key_code].push_back(*it2);
 		}
@@ -40,7 +40,7 @@ ComputerFactory::ComputerFactory(void)
 
 	support_list = ComputerSuunto::support();
   for ( it1=support_list->begin() ; it1 < support_list->end(); it1++ ){
-  	supported.push_back(*it1);
+  	supported[it1->make].push_back(*it1);
 	  for ( it2=it1->ports.begin() ; it2 < it1->ports.end(); it2++ ){
 			recognisedPorts[it1->key_code].push_back(*it2);
 		}
@@ -48,7 +48,7 @@ ComputerFactory::ComputerFactory(void)
 
 	support_list = ComputerMares::support();
   for ( it1=support_list->begin() ; it1 < support_list->end(); it1++ ){
-  	supported.push_back(*it1);
+  	supported[it1->make].push_back(*it1);
 	  for ( it2=it1->ports.begin() ; it2 < it1->ports.end(); it2++ ){
 			recognisedPorts[it1->key_code].push_back(*it2);
 		}

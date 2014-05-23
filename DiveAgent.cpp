@@ -386,10 +386,8 @@ void  DiveAgent::startUploadDives(const std::string &dive_computer_type_id, cons
   if (_dive_computer)
     delete _dive_computer;
   ComputerFactory f;
-  //_dive_computer = f.createComputer(dive_computer_type_id, port);
-  //_dive_computer_type_id = dive_computer_type_id;
-  _dive_computer = new ComputerMares(""); // test
-  //_dive_computer_type_id =
+  _dive_computer = f.createComputer(dive_computer_type_id, port);
+  _dive_computer_type_id = dive_computer_type_id;
   _th = boost::thread(workingThread);
 };
 

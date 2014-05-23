@@ -1068,15 +1068,14 @@ std::vector<ComputerSupport> *ComputerLibdc::support()
   dc_descriptor_t *l_descriptor = NULL, *current = NULL;
   while ((rc = libdc_p.iterator_next (iterator, &l_descriptor)) == DC_STATUS_SUCCESS) {
     ComputerSupport sup;
-    const char *vendor = libdc_p.descriptor_get_vendor (l_descriptor);
-    const char *product = libdc_p.descriptor_get_product (l_descriptor);
-    dc_family_t family = libdc_p.descriptor_get_type (l_descriptor);
+    const char *make    = libdc_p.descriptor_get_vendor (l_descriptor);
+    const char *model   = libdc_p.descriptor_get_product (l_descriptor);
+    dc_family_t family  = libdc_p.descriptor_get_type (l_descriptor);
 
-    sup.label += vendor;
-    sup.label += " ";
-    sup.label += product;
-    sup.key_code += "LDC ";
-    sup.key_code += sup.label;
+    sup.make      += make;
+    sup.model     += model;
+    sup.key_code  += "LDC ";
+    sup.key_code  += sup.label();
 
 #ifdef _WIN32
     switch(family)

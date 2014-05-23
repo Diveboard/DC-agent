@@ -39,7 +39,9 @@ typedef struct {
 #define NO_PORT_NEEDED "NO PORT NEEDED"
 
 typedef struct {
-  std::string label;
+  std::string make;
+  std::string model;
+  std::string label() const { return make + " " + model; };
   std::string key_code;
   std::vector<std::string> ports;
 } ComputerSupport;

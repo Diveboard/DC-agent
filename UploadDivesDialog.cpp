@@ -9,7 +9,7 @@ namespace
 {
   ComputerFactory f;
   // get custorm item data as string id
-  std::string getItemId(wxComboBox* c, int i)
+  std::string getItemId(wxChoice* c, int i)
   {
     wxClientData* data = c->GetClientObject(i);
     wxStringClientData* string_data = data ? dynamic_cast<wxStringClientData*>(data) : 0;
@@ -17,75 +17,68 @@ namespace
       return string_data->GetData().utf8_str().data();
     return std::string();
   };
-
+  
+  void setSelectionFromProfile(wxChoice* c, const std::string& setting_name)
+  {
+    const int default_index = 0;
+    std::string setting_value = DiveAgent::readProfile(setting_name);
+    if ( !setting_value.empty() )
+    {
+      int index = c->FindString(wxString::FromUTF8(setting_value.c_str()));
+      index = index != wxNOT_FOUND ? index : default_index;
+      c->SetSelection(index);
+    }
+    else
+      c->SetSelection(default_index);
+  }
 };
 
-UploadDivesDialog::UploadDivesDialog(): UploadDivesDialogBase(0)
+UploadDivesDialog::UploadDivesDialog():
+  UploadDivesDialogBase(0),
+  _expect_port_selected_manualy(false)
 {
+  m_selectPortManualCheck->SetValue(DiveAgent::readProfile("select_port_manual") == "1");
+  m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
+  GetSizer()->Fit(this);
   
   std::map <std::string, std::string> ports = f.allPorts();
-  m_selectPortCombo->Clear();
+  m_selectPortChoice->Clear();
   for (auto it=ports.begin(); it!= ports.end(); ++it)
   {
     // it->first device, it->second device name
-    m_selectPortCombo->Append(wxString::FromUTF8(it->second.c_str()),
+    m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                               new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
   }
   
   
-  m_selectComputerCombo->Clear();
+  m_selectMakeChoice->Clear();
   for (auto it=f.supported.begin(); it!=f.supported.end();++it)
   {
-    m_selectComputerCombo->Append(wxString::FromUTF8((it->label + " : " + it->key_code).c_str()),
-                                  new wxStringClientData(wxString::FromUTF8(it->key_code.c_str())));
+    m_selectMakeChoice->Append(wxString::FromUTF8(it->first.c_str()));
   }
   // resotore previos selections
-  std::string port_value = DiveAgent::readProfile("dive_computer_port");
-  if ( !port_value.empty() )
-  {
-    int index = m_selectPortCombo->FindString(wxString::FromUTF8(port_value.c_str()));
-    index = index != wxNOT_FOUND ? index : 0;
-    m_selectPortCombo->SetSelection(index);
-  }
-  else
-    m_selectPortCombo->SetSelection(0);
-  
-  std::string name_value = DiveAgent::readProfile("dive_computer_name");
-  if ( !name_value.empty() )
-  {
-    int index = m_selectComputerCombo->FindString(wxString::FromUTF8(name_value.c_str()));
-    index = index != wxNOT_FOUND ? index : 0;
-    m_selectComputerCombo->SetSelection(index);
-  }
-  else
-    m_selectComputerCombo->SetSelection(0);
+  // set port
+  setSelectionFromProfile(m_selectPortChoice, "dive_computer_port");
+  // set make
+  setSelectionFromProfile(m_selectMakeChoice, "dive_computer_make");
+  // update select Model combo
+  wxCommandEvent e;
+  selectMakeChoiceOnChoice(e);
 }
 
-void UploadDivesDialog::selectComputerComboOnCombobox( wxCommandEvent& )
+void UploadDivesDialog::selectMakeChoiceOnChoice( wxCommandEvent& )
 {
-  int selection = m_selectComputerCombo->GetCurrentSelection();
-  std::string key_code = getItemId(m_selectComputerCombo, selection);
-  // find item
-  for (auto it=f.supported.begin(); it!=f.supported.end();++it)
-    if (it->key_code == key_code)
-      { // try to gess port
-        auto ports = it->ports;
-        for (auto it_ports = ports.begin(); it_ports != ports.end(); ++it_ports)
-          for (int i=0; i < m_selectPortCombo->GetCount(); ++i)
-          { // find port in port combo
-            std::string port = getItemId(m_selectPortCombo, i);
-            if (port == *it_ports)
-            { // select
-              m_selectPortCombo->SetSelection(i);
-              return;
-            }
-          }
-      }
-}
-
-void UploadDivesDialog::selectPortComboOnCombobox( wxCommandEvent& event)
-{
-  event.Skip();
+  m_selectModelChoice->Clear();
+  std::string make = m_selectMakeChoice->GetStringSelection().utf8_str().data();
+  auto& models = f.supported[make];
+  for (auto it=models.begin(); it!=models.end();++it)
+  {
+    m_selectModelChoice->Append(wxString::FromUTF8(it->model.c_str()),
+                              new wxStringClientData(wxString::FromUTF8(it->key_code.c_str())));
+    
+  }
+  // set model
+  setSelectionFromProfile(m_selectModelChoice, "dive_computer_model");
 }
 
 void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
@@ -102,17 +95,63 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
     _preferences_dialog->Show();
     return;
   }
+  // try to gess port
+  if (!m_selectPortManualCheck->GetValue() && !_expect_port_selected_manualy)
+  {
+    std::string key_code = getItemId(m_selectModelChoice, m_selectMakeChoice->GetCurrentSelection());
+    std::string make = m_selectMakeChoice->GetString(m_selectMakeChoice->GetCurrentSelection()).utf8_str().data();
+    auto& models = f.supported[make];
+    bool is_port_autoselected = false;
+    for (auto it=models.begin(); it!=models.end() && !is_port_autoselected;++it)
+    {
+      if (it->key_code == key_code)
+      { // try to gess port
+        auto ports = it->ports;
+        for (auto it_ports = ports.begin(); it_ports != ports.end() && !is_port_autoselected; ++it_ports)
+          for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
+          { // find port in port combo
+            std::string port = getItemId(m_selectPortChoice, i);
+            if (port == *it_ports)
+            { // select
+              m_selectPortChoice->SetSelection(i);
+              is_port_autoselected = true;
+            }
+          }
+      }
+    }
+    if (!is_port_autoselected)
+    {
+      m_selectPortPanel->Show();
+      GetSizer()->Fit(this);
+      _expect_port_selected_manualy = true;
+      wxString msg = wxString::FromUTF8("Unable to detect port autmaticaly.\nPlease, select it manualy and try again.");
+      wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+      dlg->ShowModal();
+      dlg->Destroy();
+      return;
+    }
+    else
+    {
+      m_selectPortPanel->Hide();
+      GetSizer()->Fit(this);
+    }
+  }
+  _expect_port_selected_manualy = false;
+  if (!m_selectPortManualCheck->GetValue())
+  {
+    m_selectPortPanel->Hide();
+    GetSizer()->Fit(this);
+  }
+    
   // save selection
-  DiveAgent::writeProfile("dive_computer_port", m_selectPortCombo->GetStringSelection().utf8_str().data());
-  DiveAgent::writeProfile("dive_computer_name", m_selectComputerCombo->GetStringSelection().utf8_str().data());
+  DiveAgent::writeProfile("dive_computer_port", m_selectPortChoice->GetStringSelection().utf8_str().data());
+  DiveAgent::writeProfile("dive_computer_make", m_selectMakeChoice->GetStringSelection().utf8_str().data());
+  DiveAgent::writeProfile("dive_computer_model", m_selectModelChoice->GetStringSelection().utf8_str().data());
+  std::string select_port_manual = m_selectPortManualCheck->GetValue() ? "1" : "0";
+  DiveAgent::writeProfile("select_port_manual", select_port_manual);
   //  start upload
-  int selection = m_selectComputerCombo->GetCurrentSelection();
-  wxClientData* data = m_selectComputerCombo->GetClientObject(selection);
-  wxStringClientData* string_data = data ? dynamic_cast<wxStringClientData*>(data) : 0;
-  assert(string_data);
-  
-  std::string c = getItemId(m_selectComputerCombo, m_selectComputerCombo->GetCurrentSelection());
-  std::string p = getItemId(m_selectPortCombo, m_selectPortCombo->GetCurrentSelection());
+  std::string c = getItemId(m_selectModelChoice, m_selectMakeChoice->GetCurrentSelection());
+  std::string p = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
   DiveAgent::instance().startUploadDives(c, p);
   assert(_progress_dialog);
   this->Hide();

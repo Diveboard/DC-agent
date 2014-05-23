@@ -340,7 +340,8 @@ std::vector<ComputerSupport> *ComputerMares::support()
 
 	support_list = new std::vector<ComputerSupport>;
 	ComputerSupport sup;
-	sup.label = "Mares M2 (DB internal driver)";
+  sup.make = "Mares";
+	sup.model = "M2 (DB internal driver)";
 	sup.key_code = "MARES";
 #ifdef _WIN32
 	sup.ports.push_back("Silicon Labs CP210x USB to UART Bridge");
@@ -352,7 +353,8 @@ std::vector<ComputerSupport> *ComputerMares::support()
 #endif
 
   ComputerSupport emu;
-  emu.label = "Mares M2 Emulator";
+  emu.make = "Mares";
+  emu.model = "M2 Emulator";
   emu.key_code = "MARES EMU";
   emu.ports.push_back(NO_PORT_NEEDED);
 

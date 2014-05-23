@@ -80,7 +80,6 @@ enum
 };
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
-EVT_MENU(PU_RESTORE, DiveAgentTaskBarIcon::OnMenuRestore)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DCLICK  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 EVT_MENU(PU_UPLOAD_DIVES, DiveAgentTaskBarIcon::OnMenuUploadDives)
@@ -88,11 +87,6 @@ EVT_MENU(PU_PREFERENCES, DiveAgentTaskBarIcon::OnMenuPreferences)
 EVT_MENU(PU_CHECK_FOR_UPDATES, DiveAgentTaskBarIcon::OnMenuCheckForUpdates)
 EVT_MENU(PU_ABOUT, DiveAgentTaskBarIcon::OnMenuAbout)
 END_EVENT_TABLE()
-
-void DiveAgentTaskBarIcon::OnMenuRestore(wxCommandEvent& )
-{
-  currentDialog->Show(true);
-}
 
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
@@ -103,9 +97,6 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 {
   wxMenu *menu = new wxMenu;
-  menu->Append(PU_RESTORE, wxT("&Restore"));
-  menu->AppendSeparator();
-  
   menu->Append(PU_UPLOAD_DIVES, wxT("&Upload Dives"));
   menu->Append(PU_PREFERENCES, wxT("&Preferences"));
   menu->Append(PU_CHECK_FOR_UPDATES, wxT("&Check for updates"));
@@ -122,7 +113,7 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 {
   wxCommandEvent e;
-  OnMenuRestore(e);
+  OnMenuUploadDives(e);
 }
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)

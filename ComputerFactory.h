@@ -17,7 +17,7 @@ public:
 	std::string detectConnectedDevice(const std::string &computerType);
 	bool isComputerPluggedin();
 	std::map <std::string, std::string> allPorts();
-	std::vector<ComputerSupport> supported;
+	std::map<std::string, std::vector<ComputerSupport> > supported;
 protected:
 	void listPorts(std::string &);
 	bool mapDevice(std::string identifier, std::string &found);
