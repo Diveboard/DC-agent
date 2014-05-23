@@ -50,6 +50,28 @@ namespace {
       if (_curl)
         curl_easy_cleanup(_curl);
     }
+    void restore_login()
+    {
+      std::string v = DiveAgent::instance().readSecureProfile("user_info");
+      if (!v.empty())
+      {
+        rapidjson::Document d;
+        d.Parse<0>(v.c_str());
+        _token = d["token"].GetString();
+        _user  = d["user"].GetString();
+        _user_id = d["user_id"].GetString();
+        
+        std::string user_picture_url = d["user_picture_url"].GetString();
+        shttp_get(user_picture_url);
+        _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
+ 
+        boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
+        std::string time_str = d["expiration"].GetString();
+        std::stringstream s(time_str);
+        s.imbue(std::locale(std::locale::classic(), tif));
+        s >> _expiration;
+      }
+    }
     void logoff()
     {
       _token.resize(0);
@@ -115,15 +137,29 @@ namespace {
       std::stringstream s;
       s <<  id;
       _user_id= s.str();
-
-      shttp_get(d["user"]["picture"].GetString());
+      std::string user_picture_url = d["user"]["picture"].GetString();
+      shttp_get(user_picture_url);
       _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
       
       boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
       std::string time_str = d["expiration"].GetString();
-      s.str(d["expiration"].GetString());
+      s.str(time_str);
       s.imbue(std::locale(std::locale::classic(), tif));
       s >> _expiration;
+      // save last login info
+      rapidjson::Document login_info;
+      login_info.SetObject();
+      login_info.AddMember("token",             _token.c_str(), login_info.GetAllocator());
+      login_info.AddMember("user",              _user.c_str(), login_info.GetAllocator());
+      login_info.AddMember("user_id",           _user_id.c_str(), login_info.GetAllocator());
+      login_info.AddMember("user_picture_url",  user_picture_url.c_str(), login_info.GetAllocator());
+      login_info.AddMember("expiration",        time_str.c_str(), login_info.GetAllocator());
+      // write json to string
+      rapidjson::GenericStringBuffer< rapidjson::UTF8<> > buffer;
+      rapidjson::Writer< rapidjson::GenericStringBuffer< rapidjson::UTF8<> > > writer(buffer);
+      login_info.Accept(writer);
+      DiveAgent::instance().writeSecureProfile("user_info", buffer.GetString());
+      
     };
     std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
     std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
@@ -549,3 +585,9 @@ bool  DiveAgent::isLoginExpired() const
   return api.is_login_expired();
 };
 
+bool DiveAgent::restore_login()
+{
+  api.logoff();
+  api.restore_login();
+  return !api.user().empty();
+}

@@ -138,6 +138,10 @@ PreferencesDialog::PreferencesDialog():
     m_emailText->ChangeValue(wxString::FromUTF8(email_value.c_str()));
   }
   showSetAccount();
+  if (DiveAgent::instance().restore_login())
+  {
+    showAccountInfo();
+  }
 }
 void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 {

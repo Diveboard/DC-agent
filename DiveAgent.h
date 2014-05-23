@@ -16,6 +16,7 @@ public:
   std::string getErrors();
   bool login_email(const std::string& email, const std::string& password);
   bool login_fb(const std::string& fbid, const std::string& token);
+  bool restore_login();
   std::string getLogedUser() const;
   bool  isLoginExpired() const;
   const std::vector<char> &getLogedUserPicture();
@@ -23,6 +24,8 @@ public:
   static std::string exeFolder();
   static void writeProfile(const std::string& key, const std::string& value);
   static std::string readProfile(const std::string& key);
+  static void writeSecureProfile(const std::string& key, const std::string& value);
+  static std::string readSecureProfile(const std::string& key);
   std::string completionURL();
 protected:
   DiveAgent();
