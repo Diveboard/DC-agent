@@ -13,6 +13,7 @@ public:
   void  cancelUploadDives();
   int   uploadDivesProgress();
   bool  isUploadDivesRuning();
+  bool  isDivesXmlReady();
   std::string getErrors();
   bool login_email(const std::string& email, const std::string& password);
   bool login_fb(const std::string& fbid, const std::string& token);
@@ -27,6 +28,9 @@ public:
   static void writeSecureProfile(const std::string& key, const std::string& value);
   static std::string readSecureProfile(const std::string& key);
   std::string completionURL();
+  // used to delete dive computer instance on application exit before system call to static objects destructors;
+  // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
+  void deleteDiveComputerInstance();
 protected:
   DiveAgent();
   void uploadDivesToServer();

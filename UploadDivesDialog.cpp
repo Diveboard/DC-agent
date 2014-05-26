@@ -150,7 +150,7 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
   std::string select_port_manual = m_selectPortManualCheck->GetValue() ? "1" : "0";
   DiveAgent::writeProfile("select_port_manual", select_port_manual);
   //  start upload
-  std::string c = getItemId(m_selectModelChoice, m_selectMakeChoice->GetCurrentSelection());
+  std::string c = getItemId(m_selectModelChoice, m_selectModelChoice->GetCurrentSelection());
   std::string p = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
   DiveAgent::instance().startUploadDives(c, p);
   assert(_progress_dialog);
@@ -183,6 +183,17 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
   if (_monitoring)
   {
     m_uploadProgressGauge->SetValue(DiveAgent::instance().uploadDivesProgress());
+    std::stringstream s;
+    s << m_uploadProgressGauge->GetValue() << " %";
+    m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
+
+    if (DiveAgent::instance().isDivesXmlReady() && _wait_dive_xml)
+    {
+      _wait_dive_xml = false;
+      m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives to Divboard ..."));
+      GetSizer()->Fit(this);
+    
+    }
     if (!DiveAgent::instance().isUploadDivesRuning())
     {
       std::string error = DiveAgent::instance().getErrors();
@@ -192,10 +203,51 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       }
       std::string url = DiveAgent::instance().completionURL();
       if (!url.empty())
+      {
         wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
-      
-      setCurrentDialog(_main_dialog);
+      }
       disableMonitoring();
+      if (error.empty())
+      {
+        m_statusStatic->SetLabel(wxString::FromUTF8("The data from your dive computer has been downloded and transfered to Diveboard.\nA browser to Diveboard should open to alow you to finish the upload process.\nIf not or if you would like to open it again click on 'Open in browser' below."));
+        m_openInBrowserButton->Show();
+        m_doneButton->Show();
+        m_actionButton->Hide();
+        GetSizer()->Fit(this);
+      }
+      else
+      {
+        Hide();
+        setCurrentDialog(_main_dialog);
+      }
     }
   }
 };
+
+void UploadDivesProgressDialog::enableMonitoring()
+{
+  _monitoring = true;
+  _wait_dive_xml = true;
+  m_uploadProgressGauge->SetValue(0);
+  m_uploadProgressStatic->SetLabel(wxString::FromUTF8("0 %"));
+  m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives ..."));
+  m_openInBrowserButton->Hide();
+  m_doneButton->Hide();
+  m_actionButton->Show();
+  GetSizer()->Fit(this);
+}
+
+void UploadDivesProgressDialog::openInBrowserButtonOnButtonClick( wxCommandEvent& event )
+{
+  std::string url = DiveAgent::instance().completionURL();
+  if (!url.empty())
+  {
+    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
+  }
+}
+
+void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
+{
+  Hide();
+  setCurrentDialog(_main_dialog);
+}

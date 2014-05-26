@@ -26,7 +26,7 @@ class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
 public:
   UploadDivesProgressDialog();
   void setMainDialog(UploadDivesDialog* d) { _main_dialog = d; }
-  void enableMonitoring() { _monitoring = true; m_uploadProgressGauge->SetValue(0);}
+  void enableMonitoring();
   void disableMonitoring(){ _monitoring = false;}
 protected:
   enum
@@ -34,9 +34,12 @@ protected:
     timer_id = 100
   };
   virtual void actionButtonOnButtonClick( wxCommandEvent& event );
+  virtual void openInBrowserButtonOnButtonClick( wxCommandEvent& event );
+  virtual void doneButtonOnButtonClick( wxCommandEvent& event );
   void onTimer( wxTimerEvent& event);
   UploadDivesDialog* _main_dialog;
   bool              _monitoring;
+  bool              _wait_dive_xml;
   wxTimer*          _timer;
 };
 

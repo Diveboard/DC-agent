@@ -189,6 +189,10 @@ bool DiveAgentApp::OnInit()
 
 int DiveAgentApp::OnExit()
 {
+  // dive computer instance must be deleted befor system call to static objects distructor.
+  // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
+  DiveAgent::instance().deleteDiveComputerInstance();
+  
   if (m_taskBarIcon)
     delete m_taskBarIcon;
   if (m_dockIcon)

@@ -416,7 +416,6 @@ void DiveAgent::workingThread()
 
 void  DiveAgent::startUploadDives(const std::string &dive_computer_type_id, const std::string &port)
 {
-  
   if (isUploadDivesRuning())
     cancelUploadDives();
   if (_dive_computer)
@@ -451,6 +450,15 @@ bool  DiveAgent::isUploadDivesRuning()
   {
     boost::lock_guard<boost::mutex> g(instance()._m);
     res = _upload_dives_running;
+  }
+  return res;
+};
+bool  DiveAgent::isDivesXmlReady()
+{
+  bool res = false;
+  {
+    boost::lock_guard<boost::mutex> g(instance()._m);
+    res = !_xml.empty();
   }
   return res;
 };
@@ -591,3 +599,12 @@ bool DiveAgent::restore_login()
   api.restore_login();
   return !api.user().empty();
 }
+void DiveAgent::deleteDiveComputerInstance()
+{
+  if (_dive_computer)
+  {
+    delete _dive_computer;
+    _dive_computer = 0;
+  }
+}
+

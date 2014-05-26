@@ -15,6 +15,7 @@ ComputerSuunto::ComputerSuunto(std::string filename)
 	status.state = COMPUTER_NOT_STARTED;
 	status.nbDivesRead  = -1;
 	status.nbDivesTotal = -1;
+  status.percent = 0;
 
 	if (filename.size()) device = new DeviceSuunto(filename);
 	else device = new DeviceSuuntoEmu();
