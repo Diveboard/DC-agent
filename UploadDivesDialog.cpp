@@ -95,28 +95,22 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
     _preferences_dialog->Show();
     return;
   }
+  std::string c = getItemId(m_selectModelChoice, m_selectModelChoice->GetCurrentSelection());
   // try to gess port
   if (!m_selectPortManualCheck->GetValue() && !_expect_port_selected_manualy)
   {
-    std::string key_code = getItemId(m_selectModelChoice, m_selectMakeChoice->GetCurrentSelection());
-    std::string make = m_selectMakeChoice->GetString(m_selectMakeChoice->GetCurrentSelection()).utf8_str().data();
-    auto& models = f.supported[make];
     bool is_port_autoselected = false;
-    for (auto it=models.begin(); it!=models.end() && !is_port_autoselected;++it)
+    std::string port_detected = f.detectConnectedDevice(c);
+    if ( !port_detected.empty())
     {
-      if (it->key_code == key_code)
-      { // try to gess port
-        auto ports = it->ports;
-        for (auto it_ports = ports.begin(); it_ports != ports.end() && !is_port_autoselected; ++it_ports)
-          for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
-          { // find port in port combo
-            std::string port = getItemId(m_selectPortChoice, i);
-            if (port == *it_ports)
-            { // select
-              m_selectPortChoice->SetSelection(i);
-              is_port_autoselected = true;
-            }
-          }
+      for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
+      { // find port in port combo
+        std::string port = getItemId(m_selectPortChoice, i);
+        if (port_detected == port)
+        { // select
+          m_selectPortChoice->SetSelection(i);
+          is_port_autoselected = true;
+        }
       }
     }
     if (!is_port_autoselected)
@@ -150,7 +144,6 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
   std::string select_port_manual = m_selectPortManualCheck->GetValue() ? "1" : "0";
   DiveAgent::writeProfile("select_port_manual", select_port_manual);
   //  start upload
-  std::string c = getItemId(m_selectModelChoice, m_selectModelChoice->GetCurrentSelection());
   std::string p = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
   DiveAgent::instance().startUploadDives(c, p);
   assert(_progress_dialog);
