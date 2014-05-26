@@ -190,7 +190,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
     if (DiveAgent::instance().isDivesXmlReady() && _wait_dive_xml)
     {
       _wait_dive_xml = false;
-      m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives to Divboard ..."));
+      m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives to Diveboard ..."));
       GetSizer()->Fit(this);
     
     }
@@ -199,7 +199,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       std::string error = DiveAgent::instance().getErrors();
       if (!error.empty())
       {
-        wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploding dives: ") + error).c_str()));
+        wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploading dives: ") + error).c_str()));
       }
       std::string url = DiveAgent::instance().completionURL();
       if (!url.empty())
@@ -209,7 +209,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       disableMonitoring();
       if (error.empty())
       {
-        m_statusStatic->SetLabel(wxString::FromUTF8("The data from your dive computer has been downloded and transfered to Diveboard.\nA browser to Diveboard should open to alow you to finish the upload process.\nIf not or if you would like to open it again click on 'Open in browser' below."));
+        m_statusStatic->SetLabel(wxString::FromUTF8("The data from your dive computer has been downloaded and transferred to Diveboard.\nA browser to Diveboard should open to allow you to finish the upload process.\nIf not or if you would like to open it again click on 'Open in browser' below."));
         m_openInBrowserButton->Show();
         m_doneButton->Show();
         m_actionButton->Hide();
