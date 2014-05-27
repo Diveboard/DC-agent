@@ -37,6 +37,10 @@ UploadDivesDialog::UploadDivesDialog():
   UploadDivesDialogBase(0),
   _expect_port_selected_manualy(false)
 {
+  _timer = new wxTimer(this, timer_id);
+  Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesDialog::onTimer), NULL, this );
+  _timer->Start(timer_timeout);
+  
   m_selectPortManualCheck->SetValue(DiveAgent::readProfile("select_port_manual") == "1");
   m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
   GetSizer()->Fit(this);
@@ -152,13 +156,44 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
   _progress_dialog->enableMonitoring();
 }
 
+void UploadDivesDialog::onTimer( wxTimerEvent& event)
+{
+  std::string port_selected = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
+  if (++_timer_counter >= timer_mx_count)
+  {
+    _timer_counter = 0;
+    // update port choice control
+    std::map <std::string, std::string> ports = f.allPorts();
+    m_selectPortChoice->Clear();
+    for (auto it=ports.begin(); it!= ports.end(); ++it)
+    {
+      // it->first device, it->second device name
+      m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
+                                 new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
+    }
+    // make some default port selection
+    m_selectPortChoice->SetSelection(0);
+    // try to restore previos port selection
+    for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
+    { // find port in port combo
+      std::string port = getItemId(m_selectPortChoice, i);
+      if (port_selected == port)
+      { // select
+        m_selectPortChoice->SetSelection(i);
+        break;
+      }
+    }
+    
+  }
+}
+
 UploadDivesProgressDialog::UploadDivesProgressDialog():
   UploadDivesProgressDialogBase(0),
   _monitoring(false)
 {
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesProgressDialog::onTimer), NULL, this );
-  _timer->Start(100);
+  _timer->Start(timer_timeout);
   m_uploadProgressGauge->SetRange(100);
 };
 
@@ -244,3 +279,4 @@ void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
   Hide();
   setCurrentDialog(_main_dialog);
 }
+

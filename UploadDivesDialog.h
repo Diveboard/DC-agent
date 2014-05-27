@@ -16,9 +16,18 @@ protected:
   virtual void selectMakeChoiceOnChoice       ( wxCommandEvent& event );
   virtual void uploadDivesButtonOnButtonClick ( wxCommandEvent& event );
 private:
+  enum
+  {
+    timer_id = 200,
+    timer_timeout = 1000,
+    timer_mx_count = 10
+  };
+  void onTimer( wxTimerEvent& event);
   UploadDivesProgressDialog* _progress_dialog;
   PreferencesDialog*         _preferences_dialog;
   bool                       _expect_port_selected_manualy;
+  wxTimer*                   _timer;
+  unsigned                   _timer_counter;
 };
 
 class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
@@ -31,7 +40,8 @@ public:
 protected:
   enum
   {
-    timer_id = 100
+    timer_id = 100,
+    timer_timeout = 100
   };
   virtual void actionButtonOnButtonClick( wxCommandEvent& event );
   virtual void openInBrowserButtonOnButtonClick( wxCommandEvent& event );
