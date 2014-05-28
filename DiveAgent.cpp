@@ -57,6 +57,8 @@ namespace {
       {
         rapidjson::Document d;
         d.Parse<0>(v.c_str());
+        if (d["token"].IsNull())
+          return;
         _token = d["token"].GetString();
         _user  = d["user"].GetString();
         _user_id = d["user_id"].GetString();
@@ -64,7 +66,7 @@ namespace {
         std::string user_picture_url = d["user_picture_url"].GetString();
         shttp_get(user_picture_url);
         _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
- 
+        
         boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
         std::string time_str = d["expiration"].GetString();
         std::stringstream s(time_str);
@@ -570,6 +572,13 @@ std::string DiveAgent::getLogedUser() const
 void DiveAgent::logoff()
 {
   api.logoff();
+  rapidjson::Document d;
+  d.SetObject();
+  // write json to string
+  rapidjson::GenericStringBuffer< rapidjson::UTF8<> > buffer;
+  rapidjson::Writer< rapidjson::GenericStringBuffer< rapidjson::UTF8<> > > writer(buffer);
+  d.Accept(writer);
+  DiveAgent::instance().writeSecureProfile("user_info", buffer.GetString());
 };
 
 std::string DiveAgent::completionURL()
