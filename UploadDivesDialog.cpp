@@ -104,7 +104,14 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
   if (!m_selectPortManualCheck->GetValue() && !_expect_port_selected_manualy)
   {
     bool is_port_autoselected = false;
-    std::string port_detected = f.detectConnectedDevice(c);
+    std::string port_detected;
+    try
+    {
+      port_detected = f.detectConnectedDevice(c);
+    }
+    catch (std::exception&)
+    {  
+    };
     if ( !port_detected.empty())
     {
       for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
