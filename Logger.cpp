@@ -1,11 +1,16 @@
 #include "Logger.h"
 #include <boost/format.hpp>
+#include <boost/thread/thread.hpp>
 
 #include <cstdio>
 
 #ifdef __linux__
 #include <stdarg.h>
 #endif
+
+namespace {
+  boost::mutex  _m;
+};
 
 using boost::format;
 
@@ -60,6 +65,7 @@ Logger::~Logger(void)
 
 void Logger::append(const std::string &line)
 {
+  boost::lock_guard<boost::mutex> g(_m);
 	logs.push_back(line);
         
     unsigned long logUsed = 0;
