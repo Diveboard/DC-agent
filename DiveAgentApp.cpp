@@ -13,7 +13,7 @@
 
 // the application icon (under Windows and OS/2 it is in resources)
 #ifndef wxHAS_IMAGES_IN_RESOURCES
-    #include "sample.xpm"
+  #include "icon_bw.xpm"
 #endif
 
 #include "DiveAgent.h"
@@ -155,29 +155,24 @@ DiveAgentApp::~DiveAgentApp()
 bool DiveAgentApp::OnInit()
 {
   wxInitAllImageHandlers();
-    if ( !wxApp::OnInit() )
-        return false;
-
-    if ( !wxTaskBarIcon::IsAvailable() )
-    {
-        wxMessageBox
-        (
+  if ( !wxApp::OnInit() )
+    return false;
+  if ( !wxTaskBarIcon::IsAvailable() )
+  {
+    wxMessageBox(
             "There appears to be no system tray support in your current environment. This sample may not behave as expected.",
             "Warning",
             wxOK | wxICON_EXCLAMATION
         );
-    }
-
+  }
 
   m_taskBarIcon = new DiveAgentTaskBarIcon();
   
-  // we should be able to show up to 128 characters on recent Windows versions
-  // (and 64 on Win9x)
-  if ( !m_taskBarIcon->SetIcon(wxICON(sample),
-                               "wxTaskBarIcon Sample\n"
-                               "With a very, very, very, very\n"
-                               "long tooltip whose length is\n"
-                               "greater than 64 characters.") )
+  wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_bw);
+  wxIcon icon;
+  icon.CopyFromBitmap(icon_bitmap);
+  if ( !m_taskBarIcon->SetIcon(icon,
+                               "DiveAgent") )
   {
     wxLogError(wxT("Could not set icon."));
   }
