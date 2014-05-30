@@ -13,6 +13,7 @@
 #include "ComputerMares.h"
 #include "Logger.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "DBException.h"
 
 namespace {
   
@@ -57,8 +58,14 @@ namespace {
       {
         rapidjson::Document d;
         d.Parse<0>(v.c_str());
-        if (d["token"].IsNull())
+        // check if loaded settings have all fields
+        if (!d["token"].IsString() ||
+            !d["user"].IsString() ||
+            !d["user_id"].IsString() ||
+            !d["user_picture_url"].IsString() ||
+            !d["expiration"].IsString())
           return;
+        // get values
         _token = d["token"].GetString();
         _user  = d["user"].GetString();
         _user_id = d["user_id"].GetString();
@@ -72,6 +79,8 @@ namespace {
         std::stringstream s(time_str);
         s.imbue(std::locale(std::locale::classic(), tif));
         s >> _expiration;
+        if (!s)
+          throw DBException("reading saved login info: unable to parese expiration date");
       }
     }
     void logoff()
@@ -122,8 +131,16 @@ namespace {
       shttp_post(apiBaseURL() + "computerupload.json", param);
       rapidjson::Document d;
       d.Parse<0>(_resp_body.c_str());
+      if (!d["success"].IsBool())
+        throw DBException("computerupload responce: field 'success' of type Bool is expected");
       if (!d["success"].GetBool())
-        throw std::string(d["message"].GetString());
+      {
+        if (!d["message"].IsString())
+          throw DBException("computerupload responce: field 'message' of type String is expected");
+        throw DBException(d["message"].GetString());
+      }
+      if (!d["completion_form_url"].IsString())
+        throw DBException("computerupload responce: field 'completion_form_url' of type String is expected");
       return d["completion_form_url"].GetString();;
     }
   private:
@@ -131,8 +148,28 @@ namespace {
     {
       rapidjson::Document d;
       d.Parse<0>(_resp_body.c_str());
+      if (!d["success"].IsBool())
+        throw DBException("login responce: field 'success' of type Bool is expected");
       if (!d["success"].GetBool())
-        throw std::string(d["message"].GetString());
+      {
+        if (!d["message"].IsString())
+          throw DBException("login responce: field 'message' of type String  is expected");
+        throw DBException(d["message"].GetString());
+      }
+      // validate responce format
+      if (!d["token"].IsString())
+        throw DBException("login responce: field 'token' of type String  is expected");
+      if (!d["expiration"].IsString())
+        throw DBException("login responce: field 'expiration' of type String  is expected");
+      if (!d["user"].IsObject())
+        throw DBException("login responce: object 'user' is expected");
+      if (!d["user"]["nickname"].IsString())
+        throw DBException("login responce: field 'user.nickname' of type String is expected");
+      if (!d["user"]["id"].IsUint())
+        throw DBException("login responce: field 'user.id' of type String is expected");
+      if (!d["user"]["picture"].IsString())
+        throw DBException("login responce: field 'user.picture' of type String is expected");
+      // get data
       _token = d["token"].GetString();
       _user = d["user"]["nickname"].GetString();
       unsigned id = d["user"]["id"].GetUint();
@@ -148,6 +185,8 @@ namespace {
       s.str(time_str);
       s.imbue(std::locale(std::locale::classic(), tif));
       s >> _expiration;
+      if (!s)
+        throw DBException("login responce:: unable to parese expiration date '" + time_str +"'");
       // save last login info
       rapidjson::Document login_info;
       login_info.SetObject();
@@ -206,38 +245,38 @@ namespace {
       // set url
       _url = url;
       if (curl_easy_setopt(_curl, CURLOPT_URL, _url.c_str()) != 0)
-          throw std::string("Curl error: Unable to set url");
+          throw DBException("Curl error: Unable to set url");
       // set responce callback
       if (curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, common_writer) != 0)
-        throw std::string("Curl error: Unable to set writer callback");
+        throw DBException("Curl error: Unable to set writer callback");
       // set param
       if (curl_easy_setopt(_curl, CURLOPT_WRITEDATA, this) != 0)
-        throw std::string("Curl error: Unable to set writer param");
+        throw DBException("Curl error: Unable to set writer param");
       // set header callback
       if (curl_easy_setopt(_curl, CURLOPT_HEADERFUNCTION, common_header_writer) != 0)
-        throw std::string("Curl error: Unable to set header writer callback");
+        throw DBException("Curl error: Unable to set header writer callback");
       // set header callback param
       if (curl_easy_setopt(_curl, CURLOPT_WRITEHEADER, this) != 0)
-        throw std::string("Curl error: Unable to set header writer param");
+        throw DBException("Curl error: Unable to set header writer param");
       // clear responce
       _resp_body.resize(0);
       _resp_header.resize(0);
       // set agent
       if (curl_easy_setopt(_curl, CURLOPT_USERAGENT, agent) != 0)
-        throw std::string("Curl error: Unable to set agent");
+        throw DBException("Curl error: Unable to set agent");
       // set https options
       if (curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYPEER, 0L) != 0)
-        throw std::string("Curl error: Unable to set ssl option peer");
+        throw DBException("Curl error: Unable to set ssl option peer");
       if (curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYHOST, 0L) != 0)
-        throw std::string("Curl error: Unable to set ssl option host");
+        throw DBException("Curl error: Unable to set ssl option host");
       // set not follow redirect
       if (curl_easy_setopt(_curl, CURLOPT_FOLLOWLOCATION, _follow_location) != 0)
-        throw std::string("Curl error: Unable to set folow redirect option");
+        throw DBException("Curl error: Unable to set folow redirect option");
       // set cookie
       if (curl_easy_setopt(_curl, CURLOPT_COOKIEJAR, "/tmp/culr_cookie.txt") != 0)
-        throw std::string("Curl error: Unable to set cookie option");
+        throw DBException("Curl error: Unable to set cookie option");
       if (curl_easy_setopt(_curl, CURLOPT_COOKIEFILE, "/tmp/culr_cookie.txt") != 0)
-        throw std::string("Curl error: Unable to set cookie option");
+        throw DBException("Curl error: Unable to set cookie option");
       
     }
     int shttp_post(const std::string url, const std::map<std::string, std::string>& params)
@@ -248,30 +287,30 @@ namespace {
       add_header_param("Expect", "");
       // set param
       if (curl_easy_setopt(_curl, CURLOPT_HTTPHEADER, _req_header) != 0)
-        throw std::string("Curl error: Unable to set http header for post");
+        throw DBException("Curl error: Unable to set http header for post");
       // prepare post
       if (curl_easy_setopt(_curl, CURLOPT_POST, 1L) != 0)
-        throw std::string("Curl error: Unable to set post option");
+        throw DBException("Curl error: Unable to set post option");
       // prepare form data
       reset_req_form();
       for ( auto it = params.begin(); it!=params.end(); ++it)
         add_form_param(it->first, it->second);
       if (curl_easy_setopt(_curl, CURLOPT_HTTPPOST, _req_form) != 0)
-        throw std::string("Curl error: Unable to set form data");
+        throw DBException("Curl error: Unable to set form data");
       // make request
       if (curl_easy_perform(_curl) != 0)
-        throw std::string("Curl error: Unable to perform post");
+        throw DBException("Curl error: Unable to perform post");
       // get redirect
       _redirect_url.resize(0);
       char *redirect_url_ptr=0;
       if (curl_easy_getinfo(_curl, CURLINFO_REDIRECT_URL, &redirect_url_ptr) !=0)
-        throw std::string("Unable to get redirect url");
+        throw DBException("Unable to get redirect url");
       if (redirect_url_ptr)
         _redirect_url = redirect_url_ptr;
       // get responce code
       int res = 0;
       if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
-        throw std::string("Curl error: Unable to get responce code");
+        throw DBException("Curl error: Unable to get responce code");
       
       reinit_curl_handle();
       return res;
@@ -282,11 +321,11 @@ namespace {
       prepare_request(url);
       // make request
       if (curl_easy_perform(_curl) != 0)
-        throw std::string("Curl error: Unable to perform post");
+        throw DBException("Curl error: Unable to perform post");
       // get responce code
       int res = 0;
       if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
-        throw std::string("Curl error: Unable to get responce code");
+        throw DBException("Curl error: Unable to get responce code");
       
       reinit_curl_handle();
       return res;
@@ -406,12 +445,6 @@ void DiveAgent::workingThread()
   {
     boost::lock_guard<boost::mutex> g(instance()._m);
     instance()._errors += std::string(" ") + e.what();
-    instance()._upload_dives_running = false;
-  }
-  catch (std::string& e)
-  {
-    boost::lock_guard<boost::mutex> g(instance()._m);
-    instance()._errors += e;
     instance()._upload_dives_running = false;
   }
 };

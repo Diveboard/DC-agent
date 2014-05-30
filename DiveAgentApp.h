@@ -43,5 +43,6 @@ protected:
 };
 class wxDialog;
 void setCurrentDialog(wxDialog *d);
+void reportError(const std::string&);
 
 #endif//_DIVE_AGENT_APP_HPP

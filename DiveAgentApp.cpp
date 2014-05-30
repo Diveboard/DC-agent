@@ -64,7 +64,13 @@ void setCurrentDialog(wxDialog *d)
   d->Show();
 };
 
-
+void reportError(const std::string& error)
+{
+    wxString msg = wxString::FromUTF8((std::string("Unexpected error:\n") + error).c_str());
+    wxMessageDialog* dlg = new wxMessageDialog(NULL, msg, wxString::FromUTF8("Dive agent"));
+    dlg->ShowModal();
+    dlg->Destroy();
+}
 // ----------------------------------------------------------------------------
 // DiveAgentTaskBarIcon implementation
 // ----------------------------------------------------------------------------

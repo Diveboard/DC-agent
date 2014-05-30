@@ -9,6 +9,7 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 #include <fstream>
+#include "DiveAgentApp.h"
 
 namespace
 {
@@ -127,7 +128,6 @@ namespace
   FacbookAuthDialog::~FacbookAuthDialog()
   {
   }
-  
 }
 PreferencesDialog::PreferencesDialog():
   PreferencesDialogBase(0)
@@ -138,10 +138,20 @@ PreferencesDialog::PreferencesDialog():
     m_emailText->ChangeValue(wxString::FromUTF8(email_value.c_str()));
   }
   showSetAccount();
-  if (DiveAgent::instance().restore_login())
+  try
   {
-    showAccountInfo();
+    if (DiveAgent::instance().restore_login())
+    {
+      showAccountInfo();
+    }
   }
+  catch (std::exception& e)
+  {
+    wxString msg = wxString::FromUTF8((std::string("Unexpected error:\n") + e.what()).c_str());
+    wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+    dlg->ShowModal();
+    dlg->Destroy();
+  };
 }
 void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 {
@@ -154,21 +164,28 @@ void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
   dlg->Destroy();
   if ( !token.empty() && ! id.empty())
   {
-    if ( !DiveAgent::instance().login_fb(id, token) )
+    try
     {
-      wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
-      wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
-      dlg->ShowModal();
-      dlg->Destroy();
+      if ( !DiveAgent::instance().login_fb(id, token) )
+      {
+        wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
+        wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+        dlg->ShowModal();
+        dlg->Destroy();
+      }
+      else
+      {
+        showAccountInfo();
+      }
     }
-    else
+    catch (std::exception& e)
     {
-      showAccountInfo();
-    }
+      reportError(e.what());
+    };
   }
   else
   {
-    wxString msg = wxString::FromUTF8("");
+    wxString msg = wxString::FromUTF8("Login have not been completed.");
     wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
     dlg->ShowModal();
     dlg->Destroy();
@@ -187,12 +204,19 @@ void PreferencesDialog::showAccountInfo()
     ofs.write(&DiveAgent::instance().getLogedUserPicture()[0], DiveAgent::instance().getLogedUserPicture().size());
     ofs.close();
     wxImage img(tmp_file.utf8_str().data());
-    wxSize sz_image  = img.GetSize();
-    wxSize sz_bitmap = m_accountBitmap->GetSize();
-    double scale = std::min((double)sz_bitmap.x / (double) sz_image.x, (double)sz_bitmap.y / (double) sz_image.y);
-    img.Rescale(sz_image.x * scale, sz_image.y * scale);
-    wxBitmap p(img);
-    m_accountBitmap->SetBitmap(p);
+    if (!img.IsOk())
+    {
+      reportError("unable to display user picture");
+    }
+    else
+    {
+      wxSize sz_image  = img.GetSize();
+      wxSize sz_bitmap = m_accountBitmap->GetSize();
+      double scale = std::min((double)sz_bitmap.x / (double) sz_image.x, (double)sz_bitmap.y / (double) sz_image.y);
+      img.Rescale(sz_image.x * scale, sz_image.y * scale);
+      wxBitmap p(img);
+      m_accountBitmap->SetBitmap(p);
+    }
   }
   m_accauntInfoPanel->Show(true);
   m_accountSetPanel->Show(false);
@@ -210,19 +234,26 @@ void PreferencesDialog::showSetAccount()
 
 void PreferencesDialog::loginButtonOnButtonClick( wxCommandEvent& event )
 {
-  if ( !DiveAgent::instance().login_email(m_emailText->GetValue().utf8_str().data(),
-                                           m_passwordText->GetValue().utf8_str().data()) )
+  try
   {
-    wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
-    wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
-    dlg->ShowModal();
-    dlg->Destroy();
+    if ( !DiveAgent::instance().login_email(m_emailText->GetValue().utf8_str().data(),
+                                            m_passwordText->GetValue().utf8_str().data()) )
+    {
+      wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
+      wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+      dlg->ShowModal();
+      dlg->Destroy();
+    }
+    else
+    {
+      showAccountInfo();
+      DiveAgent::writeProfile("login_email", m_emailText->GetValue().utf8_str().data());
+    }
   }
-  else
+  catch (std::exception& e)
   {
-    showAccountInfo();
-    DiveAgent::writeProfile("login_email", m_emailText->GetValue().utf8_str().data());
-  }
+    reportError(e.what());
+  };
 }
 
 void PreferencesDialog::unlinkButtonOnButtonClick( wxCommandEvent& event )
