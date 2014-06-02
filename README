@@ -1,0 +1,35 @@
+HOW TO COMPILE THE AGENT
+========================
+
+1/ Fetch and compile third party libraries
+------------------------------------------
+Boost and wxwidgets take quite a lot of time.
+
+  cd ..../diveboard-agent
+  cd 3d-party
+  ./mac-build-divecomputer.sh
+  ./mac-build-libconfig.sh
+  ./mac-build-rapidjson.sh
+  ./mac-build-boost.sh
+  ./mac-build-wxwidgets.sh
+
+
+2/ Create build directory and build using Makefile
+-------------------------------------------------
+Tested so far on Mac only
+
+  cd ..../diveboard-agent
+  mkdir build
+  cd build
+  cmake ..
+  make
+
+
+3/ Check the built binaries
+---------------------------
+Mac : The binaries are in build/bin
+
+
+4/ Package the result
+---------------------
+TODO
