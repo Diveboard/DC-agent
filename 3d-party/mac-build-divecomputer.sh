@@ -12,6 +12,8 @@ tar zxf ${LIBDIVECOMPUTER}.tar.gz
 cd "${CURRENTPATH}/irda_mac"
 make
 cp "${CURRENTPATH}/irda_mac/libirda.dylib" "${CURRENTPATH}/lib-32/lib"
+install_name_tool -id  @executable_path/libirda.dylib ${CURRENTPATH}/lib-32/lib/libirda.dylib
+
 
 #Patching libdivecomputer for IRDA support
 cd "${CURRENTPATH}/${LIBDIVECOMPUTER}"
@@ -27,6 +29,7 @@ make
 make install
 cd ${CURRENTPATH}
 install_name_tool -id  @executable_path/libdivecomputer.dylib ${CURRENTPATH}/lib-32/lib/libdivecomputer.dylib
+install_name_tool -change libirda.dylib  @executable_path/libirda.dylib ${CURRENTPATH}/lib-32/lib/libdivecomputer.dylib
 echo "Done"
 
 
