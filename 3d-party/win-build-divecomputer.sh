@@ -2,7 +2,7 @@
 CURRENTPATH=`pwd`
 arch_flags=""
 set -e
-LIBDIVECOMPUTER="libdivecomputer-0.4.1"
+LIBDIVECOMPUTER="libdivecomputer-0.4.2"
 if [ -e "${CURRENTPATH}/${LIBDIVECOMPUTER}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBDIVECOMPUTER}"
 fi

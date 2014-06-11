@@ -1,6 +1,6 @@
 build
 3d-party/wxWidgets-3.0-trunk
-3d-party/libdivecomputer-0.4.1
+3d-party/libdivecomputer-0.4.2
 3d-party/lib-32
 3d-party/boost_1_55_0
 3d-party/curl-7.20.0
