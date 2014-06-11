@@ -29,21 +29,21 @@ namespace {
   PreferencesDialog*          preferencesDialog=0;
   AboutDilog*                 aboutDilog=0;
   wxDialog*                   currentDialog=0;
-  
+
   void createDialogs()
   {
     uploadDivesDialog         = new UploadDivesDialog();
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     preferencesDialog         = new PreferencesDialog();
     aboutDilog                = new AboutDilog();
-    
+
     uploadDivesDialog->setProgressDialog(uploadDivesProgressDialog);
     uploadDivesDialog->setPreferencesDialog(preferencesDialog);
     uploadDivesProgressDialog->setMainDialog(uploadDivesDialog);
-    
+
     currentDialog = uploadDivesDialog;
   };
-  
+
   void destroyDalogs()
   {
     if (uploadDivesDialog)
@@ -107,7 +107,7 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
   menu->Append(PU_PREFERENCES, wxT("&Preferences"));
   menu->Append(PU_CHECK_FOR_UPDATES, wxT("&Check for updates"));
   menu->Append(PU_ABOUT, wxT("&About"));
-  
+
   if ( !haveQuitMenuFromSystem() )
   {
     menu->AppendSeparator();
@@ -134,7 +134,7 @@ void DiveAgentTaskBarIcon::OnMenuPreferences(wxCommandEvent&)
 };
 void DiveAgentTaskBarIcon::OnMenuCheckForUpdates(wxCommandEvent&)
 {
-  
+
 };
 void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent&)
 {
@@ -173,7 +173,7 @@ bool DiveAgentApp::OnInit()
   }
 
   m_taskBarIcon = new DiveAgentTaskBarIcon();
-  
+
   wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_bw);
   wxIcon icon;
   icon.CopyFromBitmap(icon_bitmap);
@@ -182,7 +182,7 @@ bool DiveAgentApp::OnInit()
   {
     wxLogError(wxT("Could not set icon."));
   }
-  
+
   createDocIcon();
   createDialogs();
   return true;
@@ -193,7 +193,7 @@ int DiveAgentApp::OnExit()
   // dive computer instance must be deleted befor system call to static objects distructor.
   // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
   DiveAgent::instance().deleteDiveComputerInstance();
-  
+
   if (m_taskBarIcon)
     delete m_taskBarIcon;
   if (m_dockIcon)

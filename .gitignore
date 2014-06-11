@@ -1,3 +1,9 @@
 build
-3d-party/wxWidgets-3.0.0
+3d-party/wxWidgets-3.0-trunk
 3d-party/libdivecomputer-0.4.1
+3d-party/lib-32
+3d-party/boost_1_55_0
+3d-party/curl-7.20.0
+3d-party/libiconv-1.14
+3d-party/rapidjson
+3d-party/libconfig-1.4.9

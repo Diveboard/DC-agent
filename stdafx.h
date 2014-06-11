@@ -1,12 +1,11 @@
 //#define _WIN32_WINNT 0x601
 
-#ifdef WIN32
+#if defined(WIN32) || defined(__MINGW32__)
+#define WINVER 0x0502
 #include <windows.h>
-//#include <windowsx.h>
 #endif
 
 #include <stdio.h>
-//#include <atlstr.h>
 
 
 #include <string>

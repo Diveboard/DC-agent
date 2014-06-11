@@ -5,10 +5,6 @@
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/buffer.h>
 
-//#include "d:\DATA\My Documents\Personnel\DB_plugins\libdivecomputer\src\buffer.h"
-//#include "d:\DATA\My Documents\Personnel\DB_plugins\libdivecomputer\src\deviceL.h"
-//#include "d:\DATA\My Documents\Personnel\DB_plugins\libdivecomputer\src\parser.h"
-
 #ifdef WIN32
 #define typeof decltype
 #endif
@@ -29,7 +25,6 @@ typedef struct device_data_t {
 	dc_event_devinfo_t devinfo;
 	dc_event_clock_t clock;
 } device_data_t;
-
 
 typedef struct libdivecomputer_t{
 	typeof(&dc_buffer_append) buffer_append;

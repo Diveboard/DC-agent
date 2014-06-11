@@ -29,6 +29,12 @@ set (SOURCES
     ${PLATFORM}
     )
 
+find_package( Curl REQUIRED)
+include_directories(${Curl_INCLUDE_DIR})
+link_directories(${Curl_LIBRARY_DIRS})
+
+find_library(LIBICONV iconv)
+
 set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3d-party/wxWidgets-3.0-trunk/build-32")
 set(wxWidgets_CONFIG_EXECUTABLE "${wxWidgets_ROOT}/wx-config")
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)

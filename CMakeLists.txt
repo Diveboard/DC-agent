@@ -31,15 +31,5 @@ set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-#find_package( OpenSSL REQUIRED)
-#include_directories(${OpenSSL_INCLUDE_DIR})
-
-find_package( Curl REQUIRED)
-include_directories(${Curl_INCLUDE_DIR})
-link_directories(${Curl_LIBRARY_DIRS})
-
-
-find_library(LIBICONV iconv)
-message("${LIBICONV}")
 
 include_platform()

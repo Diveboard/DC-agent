@@ -3,7 +3,9 @@
 
 #ifdef _WIN32
 #include <tchar.h>
+#include <initguid.h>
 #include <setupapi.h>
+#include <ddk/ntddser.h>
 #endif
 
 #include "Logger.h"
@@ -100,11 +102,11 @@ typedef BOOL (__stdcall SETUPDIGETDEVICEREGISTRYPROPERTY)(HDEVINFO, PSP_DEVINFO_
 //
 //Copyright / Usage Details:
 //
-//You are allowed to include the source code in any product (commercial, shareware, freeware or otherwise) 
-//when your product is released in binary form. You are allowed to modify the source code in any way you want 
-//except you cannot modify the copyright details at the top of each module. If you want to distribute source 
-//code with your application, then you are only allowed to distribute versions released by the author. This is 
-//to maintain a single distribution point for the source code. 
+//You are allowed to include the source code in any product (commercial, shareware, freeware or otherwise)
+//when your product is released in binary form. You are allowed to modify the source code in any way you want
+//except you cannot modify the copyright details at the top of each module. If you want to distribute source
+//code with your application, then you are only allowed to distribute versions released by the author. This is
+//to maintain a single distribution point for the source code.
 //
 void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& friendlyNames)
 {
@@ -141,7 +143,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
 
 	throw DBException("Error getting pointers from SetupAPI");
   }
-  
+
   //Now create a "device information set" which is required to enumerate all the ports
   GUID guid = GUID_DEVINTERFACE_COMPORT;
   HDEVINFO hDevInfoSet = lpfnSETUPDIGETCLASSDEVS(NULL, NULL, NULL, DIGCF_ALLCLASSES|DIGCF_PRESENT); //&guid, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
@@ -181,7 +183,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
       if (hDeviceKey)
       {
         //Read in the name of the port
-        WCHAR szPortName[256];
+        CHAR szPortName[256];
         szPortName[0] = _T('\0');
         DWORD dwSize = sizeof(szPortName);
         DWORD dwType = 0;
@@ -195,11 +197,11 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
 
 		  char tmp_port[2600];
           char DefChar = ' ';
-          WideCharToMultiByte(CP_ACP,0,szPortName,-1, tmp_port,260,&DefChar, NULL);
-          LOGDEBUG("Port is named : '%s'", std::string(tmp_port).c_str());
+          LOGDEBUG("Port is named : '%s'",szPortName);
           if (nLen > 3)
           {
-            if ((_tcsnicmp(szPortName, _T("COM"), 3) == 0) && IsNumeric(&(szPortName[3]), false))
+            if (std::string(szPortName).substr(0, 3) == std::string("COM") &&
+                 isdigit(szPortName[3]))
             {
               //Work out the port number
               int nPort = _ttoi(&(szPortName[3]));
@@ -273,7 +275,7 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 
 	friendlyNames.empty();
 	files.empty();
-	
+
 	if((dp = opendir("/dev")) == NULL)
 		throw DBException(str(boost::format("Error (%1%) while opening /dev") % errno));
 
@@ -318,11 +320,11 @@ std::string ComputerFactory::detectConnectedDevice(const std::string &computerTy
 #else
 #error "Platform not supported"
 #endif
-	
+
 	//2 filter interesting ones
 	for (i=0; i< fileNames.size();i++) {
 		LOGINFO("Checking port %s - %s", fileNames[i].c_str(), friendlyNames[i].c_str());
-		
+
 		for (unsigned int j=0; j<recognisedPorts[computerType].size(); j++)
 		{
 			LOGDEBUG("Comparing '%s' with '%s' : %d", friendlyNames[i].c_str(), recognisedPorts[computerType][j].c_str(),recognisedPorts[computerType][j].compare(friendlyNames[i]));
@@ -343,7 +345,7 @@ std::string ComputerFactory::detectConnectedDevice(const std::string &computerTy
 				return(NO_PORT_NEEDED);
 	}
 
-	
+
 	LOGINFO("No interesting port found !");
 	DBthrowError("Not found");
 	return("");
@@ -387,11 +389,11 @@ bool ComputerFactory::isComputerPluggedin()
 #else
 #error "Platform not supported"
 #endif
-	
+
 	//2 filter interesting ones
 	for (unsigned int i=0; i< fileNames.size();i++) {
 		//LOGINFO("Checking port %s - %s", fileNames[i].c_str(), friendlyNames[i].c_str());
-		
+
 		std::map <std::string, std::vector<std::string> >::const_iterator end = recognisedPorts.end();
 
 		for (std::map <std::string, std::vector<std::string> >::const_iterator it = recognisedPorts.begin(); it != end; ++it)
@@ -408,7 +410,7 @@ bool ComputerFactory::isComputerPluggedin()
 				}
 			}
 	}
-	
+
 	LOGINFO("Autodetect : No interesting port found !");
 	return(false);
 
