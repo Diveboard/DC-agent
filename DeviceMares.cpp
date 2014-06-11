@@ -52,7 +52,7 @@ int DeviceMares::open()
 	LOGINFO("Opening %s", filename.c_str());
 
 	//todo fix unicode
-	hCom = CreateFile(filename.c_str(),
+	hCom = CreateFile(s2ws(filename).c_str(),
 					  GENERIC_READ | GENERIC_WRITE,
 					  0,
 					  NULL,

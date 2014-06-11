@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UploadDivesDialog.h"
 #include "ComputerFactory.h"
 #include "DiveAgent.h"
@@ -17,7 +18,7 @@ namespace
       return string_data->GetData().utf8_str().data();
     return std::string();
   };
-  
+
   void setSelectionFromProfile(wxChoice* c, const std::string& setting_name)
   {
     const int default_index = 0;
@@ -40,11 +41,11 @@ UploadDivesDialog::UploadDivesDialog():
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesDialog::onTimer), NULL, this );
   _timer->Start(timer_timeout);
-  
+
   m_selectPortManualCheck->SetValue(DiveAgent::readProfile("select_port_manual") == "1");
   m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
   GetSizer()->Fit(this);
-  
+
   std::map <std::string, std::string> ports = f.allPorts();
   m_selectPortChoice->Clear();
   for (auto it=ports.begin(); it!= ports.end(); ++it)
@@ -53,8 +54,8 @@ UploadDivesDialog::UploadDivesDialog():
     m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                               new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
   }
-  
-  
+
+
   m_selectMakeChoice->Clear();
   for (auto it=f.supported.begin(); it!=f.supported.end();++it)
   {
@@ -79,7 +80,7 @@ void UploadDivesDialog::selectMakeChoiceOnChoice( wxCommandEvent& )
   {
     m_selectModelChoice->Append(wxString::FromUTF8(it->model.c_str()),
                               new wxStringClientData(wxString::FromUTF8(it->key_code.c_str())));
-    
+
   }
   // set model
   setSelectionFromProfile(m_selectModelChoice, "dive_computer_model");
@@ -110,7 +111,7 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
       port_detected = f.detectConnectedDevice(c);
     }
     catch (std::exception&)
-    {  
+    {
     };
     if ( !port_detected.empty())
     {
@@ -147,7 +148,7 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
     m_selectPortPanel->Hide();
     GetSizer()->Fit(this);
   }
-    
+
   // save selection
   DiveAgent::writeProfile("dive_computer_port", m_selectPortChoice->GetStringSelection().utf8_str().data());
   DiveAgent::writeProfile("dive_computer_make", m_selectMakeChoice->GetStringSelection().utf8_str().data());
@@ -190,7 +191,7 @@ void UploadDivesDialog::onTimer( wxTimerEvent& event)
         break;
       }
     }
-    
+
   }
 }
 
@@ -227,7 +228,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       _wait_dive_xml = false;
       m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives to Diveboard ..."));
       GetSizer()->Fit(this);
-    
+
     }
     if (!DiveAgent::instance().isUploadDivesRuning())
     {

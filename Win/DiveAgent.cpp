@@ -9,7 +9,7 @@ namespace
 std::string DiveAgent::homeFolder()
 {
   // stub implemetation
-  return "C:\Users\andrew";
+  return "C:\\Users\\andrew";
 };
 
 std::string DiveAgent::exeFolder()

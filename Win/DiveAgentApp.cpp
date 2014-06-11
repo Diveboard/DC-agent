@@ -1,4 +1,5 @@
 #include "../DiveAgentApp.h"
+#include <wx/bitmap.h>
 #include "../icon_bw.xpm"
 #include <wx/icon.h>
 

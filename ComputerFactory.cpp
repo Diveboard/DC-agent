@@ -183,7 +183,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
       if (hDeviceKey)
       {
         //Read in the name of the port
-        CHAR szPortName[256];
+        TCHAR szPortName[256];
         szPortName[0] = _T('\0');
         DWORD dwSize = sizeof(szPortName);
         DWORD dwType = 0;
@@ -194,13 +194,10 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
           //add it to the array which will be returned
           size_t nLen = _tcslen(szPortName);
 
-
-		  char tmp_port[2600];
-          char DefChar = ' ';
-          LOGDEBUG("Port is named : '%s'",szPortName);
+          LOGDEBUG("Port is named : '%s'",ws2s(szPortName).c_str());
           if (nLen > 3)
           {
-            if (std::string(szPortName).substr(0, 3) == std::string("COM") &&
+            if (std::wstring(szPortName).substr(0, 3) == std::wstring(L"COM") &&
                  isdigit(szPortName[3]))
             {
               //Work out the port number

@@ -12,9 +12,7 @@
 #endif
 
 // the application icon (under Windows and OS/2 it is in resources)
-#ifndef wxHAS_IMAGES_IN_RESOURCES
-  #include "icon_bw.xpm"
-#endif
+#include "icon_bw.xpm"
 
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"

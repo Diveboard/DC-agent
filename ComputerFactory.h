@@ -1,6 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
 #include "Computer.h"
 #include <string>
 #include <map>

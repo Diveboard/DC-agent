@@ -32,8 +32,8 @@ namespace {
 
 
 #ifdef WIN32
-#define DLL_PATH ("\\DiveBoard\\libdivecomputer.dll")
-#define DLL_NAME ("\\libdivecomputer.dll")
+#define DLL_PATH (L"\\DiveBoard\\libdivecomputer.dll")
+#define DLL_NAME (L"\\libdivecomputer.dll")
 //return reinterpret_cast<HINSTANCE>(&__ImageBase);
 //#define DLL_PATH _T("libdivecomputer.dll")
 
@@ -99,13 +99,13 @@ LIBTYPE openDLLLibrary()
 {
 #ifdef WIN32
   //Load the LibDiveComputer library
-  char path[1024];
-  DWORD l = GetEnvironmentVariable("CommonProgramFiles", path, sizeof(path));
+  wchar_t path[1024];
+  DWORD l = GetEnvironmentVariable(L"CommonProgramFiles", path, sizeof(path));
   if (l>sizeof(path))
     DBthrowError("path buffer is too small !!!");
-  std::string dll = path;
+  std::wstring dll = path;
   dll += DLL_PATH;
-  std::string dll_path;
+  std::wstring dll_path;
 
   try
   {
@@ -115,7 +115,7 @@ LIBTYPE openDLLLibrary()
     DWORD dwVal;
     HRESULT hr;
 
-    lResult = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\DiveBoard", 0, KEY_QUERY_VALUE, &hkey);
+    lResult = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\DiveBoard", 0, KEY_QUERY_VALUE, &hkey);
 
     if (lResult != ERROR_SUCCESS)
       throw std::exception();
@@ -125,7 +125,7 @@ LIBTYPE openDLLLibrary()
       if (FAILED(hr)) throw std::exception();
 
       std::string s;
-      std::string ws;
+      std::wstring ws;
       ws = szVal;
       s.assign(ws.begin(), ws.end());
 

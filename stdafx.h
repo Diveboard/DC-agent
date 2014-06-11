@@ -1,7 +1,10 @@
-//#define _WIN32_WINNT 0x601
+#ifndef __STDAFX_H__
+#define __STDAFX_H__
 
 #if defined(WIN32) || defined(__MINGW32__)
 #define WINVER 0x0502
+#define _UNICODE
+#define UNICODE
 #include <windows.h>
 #endif
 
@@ -34,3 +37,5 @@ typedef int HANDLE;
 
 
 #define TRACE __noop
+
+#endif //__STDAFX_H__
