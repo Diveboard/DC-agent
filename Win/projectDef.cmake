@@ -38,6 +38,7 @@ find_library(LIBICONV iconv)
 
 
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
+message("wx_include_test: ${wxWidgets_USE_FILE}")
 include("${wxWidgets_USE_FILE}")
 
 set(BOOST_ROOT ${3d_paryt_ROOT})
@@ -53,10 +54,19 @@ find_library(LIBDIVECOMPUTER divecomputer ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
 find_library(LIBCONFIG config++ ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
 include_directories("${3d_paryt_ROOT}/include")
 
-message("debuging include directoryies")
+message("fixing include directoryies")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
-  message(STATUS "dir='${dir}'")
+# make replace twice becouse of cmake bug
+# CMAKE_MATCH_1 is set after replace and not set at execution of replace
+  string(REGEX REPLACE "^/(.)/" "${CMAKE_MATCH_1}:/" dir_native ${dir})
+  string(REGEX REPLACE "^/(.)/" "${CMAKE_MATCH_1}:/" dir_native ${dir})
+  if(dir STREQUAL dir_native)
+    message("")
+  else()
+    message("add ${dir_native} for ${dir}")
+    include_directories("${dir_native}")
+  endif()
 endforeach()
 
 
