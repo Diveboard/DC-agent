@@ -39,7 +39,6 @@ namespace {
       _follow_location(1),
       _curl_error_description(CURL_ERROR_SIZE + 1)
     {
-      _curl_error_description[_curl_error_description.size() - 1] = 0;
     };
     ~ServerAPI()
     {
@@ -245,6 +244,7 @@ namespace {
       // debug mode
       curl_easy_setopt(_curl, CURLOPT_VERBOSE, 1);
       // set buffer for error description
+      _curl_error_description[0] = 0;
       curl_easy_setopt(_curl, CURLOPT_ERRORBUFFER, &_curl_error_description[0] );
       // set url
       _url = url;
