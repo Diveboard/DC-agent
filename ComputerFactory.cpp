@@ -180,7 +180,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
 
       //Get the registry key which stores the ports settings
       HKEY hDeviceKey = lpfnLPSETUPDIOPENDEVREGKEY(hDevInfoSet, &devInfo, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_QUERY_VALUE);
-      if (hDeviceKey)
+      if (hDeviceKey != INVALID_HANDLE_VALUE)
       {
         //Read in the name of the port
         TCHAR szPortName[256];

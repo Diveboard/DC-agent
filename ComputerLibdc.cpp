@@ -32,10 +32,6 @@ namespace {
 
 
 #ifdef WIN32
-#define DLL_PATH (L"\\DiveBoard\\libdivecomputer.dll")
-#define DLL_NAME (L"\\libdivecomputer.dll")
-//return reinterpret_cast<HINSTANCE>(&__ImageBase);
-//#define DLL_PATH _T("libdivecomputer.dll")
 
 HRESULT RegGetString(HKEY hKey, LPCTSTR szValueName, LPTSTR * lpszResult) {
 
@@ -98,54 +94,12 @@ static void logger_proxy(dc_context_t *context, dc_loglevel_t loglevel, const ch
 LIBTYPE openDLLLibrary()
 {
 #ifdef WIN32
-  //Load the LibDiveComputer library
-  wchar_t path[1024];
-  DWORD l = GetEnvironmentVariable(L"CommonProgramFiles", path, sizeof(path));
-  if (l>sizeof(path))
-    DBthrowError("path buffer is too small !!!");
-  std::wstring dll = path;
-  dll += DLL_PATH;
-  std::wstring dll_path;
-
-  try
-  {
-    HKEY hkey = NULL;
-    LONG lResult;
-    LPTSTR szVal;
-    DWORD dwVal;
-    HRESULT hr;
-
-    lResult = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\DiveBoard", 0, KEY_QUERY_VALUE, &hkey);
-
-    if (lResult != ERROR_SUCCESS)
-      throw std::exception();
-    else
-    {
-      hr = RegGetString(hkey, TEXT("InstallLocation"), &szVal);
-      if (FAILED(hr)) throw std::exception();
-
-      std::string s;
-      std::wstring ws;
-      ws = szVal;
-      s.assign(ws.begin(), ws.end());
-
-      LOGINFO("Registry found : %s", s.c_str());
-
-      dll_path = szVal;
-      dll = szVal;
-      dll += DLL_NAME;
-    }
-  } catch (std::exception e) {
-  }
-
-  //Transform the string to log
-  std::string dll_s;
-  dll_s.assign(dll.begin(), dll.end());
-  LOGINFO("Searching DLL at %s", dll_s.c_str());
+  std::wstring dll_path = s2ws(DiveAgent::exeFolder());
+  LOGINFO("Searching DLL at %s", ws2s(dll_path).c_str());
 
   SetDllDirectory(dll_path.c_str());
 
-  HINSTANCE libdc = LoadLibrary(dll.c_str());
+  HINSTANCE libdc = LoadLibrary(L"libdivecomputer-0.dll");
   if (!libdc)
   {
     LPVOID lpMsgBuf;
@@ -162,7 +116,7 @@ LIBTYPE openDLLLibrary()
         (LPTSTR) &lpMsgBuf,
         0, NULL );
 
-    std::string msg = str(boost::format("Error loading DLL at %s : %d - %s") % dll_s % dw % (char*)lpMsgBuf);
+    std::string msg = str(boost::format("Error loading DLL at %s : %d - %s") % ws2s(dll_path).c_str() % dw % (char*)lpMsgBuf);
 
     LocalFree(lpMsgBuf);
 

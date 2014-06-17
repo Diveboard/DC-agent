@@ -6,10 +6,12 @@
 
 class UploadDivesProgressDialog;
 class PreferencesDialog;
+class ComputerFactory;
 class UploadDivesDialog: public UploadDivesDialogBase
 {
 public:
   UploadDivesDialog();
+  virtual ~UploadDivesDialog();
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
   void setPreferencesDialog(PreferencesDialog* d) { _preferences_dialog = d; }
 protected:
@@ -28,6 +30,7 @@ private:
   bool                       _expect_port_selected_manualy;
   wxTimer*                   _timer;
   unsigned                   _timer_counter;
+  ComputerFactory&           _f;
 };
 
 class UploadDivesProgressDialog: public UploadDivesProgressDialogBase

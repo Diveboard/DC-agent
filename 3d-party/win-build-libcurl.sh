@@ -8,7 +8,7 @@ if [ -e "${CURRENTPATH}/${LIBCURL}" ]; then
 fi
 tar zxf ${LIBCURL}.tar.gz
 cd "${CURRENTPATH}/${LIBCURL}"
-./configure --prefix="${CURRENTPATH}/lib-32" CFLAGS="$arch_flags" CXXFLAGS="$arch_flags" CPPFLAGS="$arch_flags" LDFLAGS="$arch_flags" OBJCFLAGS="$arch_flags" --enable-shared=yes --enable-static=no
+./configure --prefix="${CURRENTPATH}/lib-32" --disable-static --with-ssl="${CURRENTPATH}/lib-32"
 make
 make install
 cd ${CURRENTPATH}

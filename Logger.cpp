@@ -27,7 +27,7 @@ std::wstring s2ws(const std::string& s)
  std::wstring r(buf);
  delete[] buf;
  return r;
-#else 
+#else
 
 	std::wstring ws(s.length(), L' ');
 	std::copy(s.begin(),s.end(), ws.begin());
@@ -46,7 +46,7 @@ std::string ws2s(const std::wstring& s)
  std::string r(buf);
  delete[] buf;
  return r;
-#else 
+#else
 
 	std::string r(s.length(), L' ');
 	std::copy(s.begin(),s.end(), r.begin());
@@ -67,7 +67,7 @@ void Logger::append(const std::string &line)
 {
   boost::lock_guard<boost::mutex> g(_m);
 	logs.push_back(line);
-        
+
     unsigned long logUsed = 0;
     int i;
     for (i = logs.size()-1 ; i>0 && logUsed < logSize ; i--) {
@@ -81,12 +81,6 @@ void Logger::append(const std::string &line)
 
 void Logger::append(const char *pstrFormat, ...)
 {
-   //CTime timeWrite;
-   //timeWrite = CTime::GetCurrentTime();
-
-   // write the time out
-   //CString str = timeWrite.Format("%d %b %y %H:%M:%S - ");
-   //refFile.Write(str, str.GetLength());
 
     std::string str;
 
@@ -96,11 +90,11 @@ void Logger::append(const char *pstrFormat, ...)
 
 	char buff[2048];
 	vsprintf(buff, pstrFormat, args);
-	
+
 	va_end(args);
 
 	str = buff;
-	
+
     append(str);
     return;
 }
@@ -120,7 +114,7 @@ void Logger::appendL(int line, const char*file, const char *level, const char *p
 	tm * ptm;
 
 	if (!checkLevel(level)) return;
-	
+
 	time(&t);
 	ptm = gmtime(&t);
 
@@ -134,7 +128,7 @@ void Logger::appendL(int line, const char*file, const char *level, const char *p
 	va_end(args);
 
 	str += buff;
-	
+
     append(str);
 }
 
@@ -146,9 +140,9 @@ void Logger::appendF(int line, const char*file, const char * level, std::string 
     while(std::fgets(buff, sizeof(buff), fp)) {
         // strip trailing '\n' if it exists
         int len = strlen(buff)-1;
-        if(buff[len] == '\n' || buff[len] == '\r') 
+        if(buff[len] == '\n' || buff[len] == '\r')
             buff[len] = 0;
-        if(buff[len-1] == '\n' || buff[len-1] == '\r') 
+        if(buff[len-1] == '\n' || buff[len-1] == '\r')
             buff[len-1] = 0;
         Logger::appendL(line, file, level, "|LDC| %s", buff);
     }
@@ -182,7 +176,7 @@ void Logger::addnthrow(int line, const char*file, const char *level, const char 
 	std::string str;
 	time_t t;
 	tm * ptm;
-	
+
 	time(&t);
 	ptm = gmtime(&t);
 
@@ -196,7 +190,7 @@ void Logger::addnthrow(int line, const char*file, const char *level, const char 
 	va_end(args);
 
 	str += buff;
-	
+
     append(str);
 	throw DBException(buff);
 }
@@ -258,7 +252,7 @@ bool Logger::checkLevel(const std::string &req)
 			return true;
 		}
 
-		if (logLevel.compare("DEBUG") == 0) 
+		if (logLevel.compare("DEBUG") == 0)
 			return true;
 
 		if (logLevel.compare("INFO") == 0)
@@ -269,16 +263,16 @@ bool Logger::checkLevel(const std::string &req)
 
 		if (logLevel.compare("ERROR") == 0)
 			return (!req.compare("ERROR") || !req.compare("CRITICAL"));
-		
+
 		if (logLevel.compare("CRITICAL") == 0)
 			return (!req.compare("CRITICAL"));
 
 	} catch(...) {}
-	
+
 	return(true);
 }
 
 void Logger::clear()
 {
-	logs.clear();        
+	logs.clear();
 }

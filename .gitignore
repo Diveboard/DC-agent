@@ -7,3 +7,4 @@ build
 3d-party/libiconv-1.14
 3d-party/rapidjson
 3d-party/libconfig-1.4.9
+3d-party/openssl-1.0.1h

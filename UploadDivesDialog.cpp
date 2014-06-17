@@ -8,7 +8,6 @@
 
 namespace
 {
-  ComputerFactory f;
   // get custorm item data as string id
   std::string getItemId(wxChoice* c, int i)
   {
@@ -36,7 +35,8 @@ namespace
 
 UploadDivesDialog::UploadDivesDialog():
   UploadDivesDialogBase(0),
-  _expect_port_selected_manualy(false)
+  _expect_port_selected_manualy(false),
+  _f( * new ComputerFactory())
 {
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesDialog::onTimer), NULL, this );
@@ -46,7 +46,7 @@ UploadDivesDialog::UploadDivesDialog():
   m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
   GetSizer()->Fit(this);
 
-  std::map <std::string, std::string> ports = f.allPorts();
+  std::map <std::string, std::string> ports = _f.allPorts();
   m_selectPortChoice->Clear();
   for (auto it=ports.begin(); it!= ports.end(); ++it)
   {
@@ -55,9 +55,8 @@ UploadDivesDialog::UploadDivesDialog():
                               new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
   }
 
-
   m_selectMakeChoice->Clear();
-  for (auto it=f.supported.begin(); it!=f.supported.end();++it)
+  for (auto it=_f.supported.begin(); it!=_f.supported.end();++it)
   {
     m_selectMakeChoice->Append(wxString::FromUTF8(it->first.c_str()));
   }
@@ -71,11 +70,15 @@ UploadDivesDialog::UploadDivesDialog():
   selectMakeChoiceOnChoice(e);
 }
 
+UploadDivesDialog::~UploadDivesDialog()
+{
+  delete &_f;
+}
 void UploadDivesDialog::selectMakeChoiceOnChoice( wxCommandEvent& )
 {
   m_selectModelChoice->Clear();
   std::string make = m_selectMakeChoice->GetStringSelection().utf8_str().data();
-  auto& models = f.supported[make];
+  auto& models = _f.supported[make];
   for (auto it=models.begin(); it!=models.end();++it)
   {
     m_selectModelChoice->Append(wxString::FromUTF8(it->model.c_str()),
@@ -108,7 +111,7 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
     std::string port_detected;
     try
     {
-      port_detected = f.detectConnectedDevice(c);
+      port_detected = _f.detectConnectedDevice(c);
     }
     catch (std::exception&)
     {
@@ -171,7 +174,7 @@ void UploadDivesDialog::onTimer( wxTimerEvent& event)
   {
     _timer_counter = 0;
     // update port choice control
-    std::map <std::string, std::string> ports = f.allPorts();
+    std::map <std::string, std::string> ports = _f.allPorts();
     m_selectPortChoice->Clear();
     for (auto it=ports.begin(); it!= ports.end(); ++it)
     {

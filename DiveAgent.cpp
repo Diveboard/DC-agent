@@ -16,7 +16,7 @@
 #include "DBException.h"
 
 namespace {
-  
+
   class ServerAPI
   {
     struct CurlInitializer
@@ -36,8 +36,10 @@ namespace {
       _curl(0),
       _req_header(0),
       _req_form(0),
-      _follow_location(1)
+      _follow_location(1),
+      _curl_error_description(CURL_ERROR_SIZE + 1)
     {
+      _curl_error_description[_curl_error_description.size() - 1] = 0;
     };
     ~ServerAPI()
     {
@@ -69,11 +71,11 @@ namespace {
         _token = d["token"].GetString();
         _user  = d["user"].GetString();
         _user_id = d["user_id"].GetString();
-        
+
         std::string user_picture_url = d["user_picture_url"].GetString();
         shttp_get(user_picture_url);
         _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
-        
+
         boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
         std::string time_str = d["expiration"].GetString();
         std::stringstream s(time_str);
@@ -179,7 +181,7 @@ namespace {
       std::string user_picture_url = d["user"]["picture"].GetString();
       shttp_get(user_picture_url);
       _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
-      
+
       boost::posix_time::time_input_facet* tif = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%SZ");
       std::string time_str = d["expiration"].GetString();
       s.str(time_str);
@@ -200,7 +202,7 @@ namespace {
       rapidjson::Writer< rapidjson::GenericStringBuffer< rapidjson::UTF8<> > > writer(buffer);
       login_info.Accept(writer);
       DiveAgent::instance().writeSecureProfile("user_info", buffer.GetString());
-      
+
     };
     std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
     std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
@@ -242,6 +244,8 @@ namespace {
       reinit_curl_handle();
       // debug mode
       curl_easy_setopt(_curl, CURLOPT_VERBOSE, 1);
+      // set buffer for error description
+      curl_easy_setopt(_curl, CURLOPT_ERRORBUFFER, &_curl_error_description[0] );
       // set url
       _url = url;
       if (curl_easy_setopt(_curl, CURLOPT_URL, _url.c_str()) != 0)
@@ -277,7 +281,7 @@ namespace {
         throw DBException("Curl error: Unable to set cookie option");
       if (curl_easy_setopt(_curl, CURLOPT_COOKIEFILE, "/tmp/culr_cookie.txt") != 0)
         throw DBException("Curl error: Unable to set cookie option");
-      
+
     }
     int shttp_post(const std::string url, const std::map<std::string, std::string>& params)
     {
@@ -299,7 +303,7 @@ namespace {
         throw DBException("Curl error: Unable to set form data");
       // make request
       if (curl_easy_perform(_curl) != 0)
-        throw DBException("Curl error: Unable to perform post");
+        throw DBException(std::string("Curl error: Unable to perform post: ") + &_curl_error_description[0]);
       // get redirect
       _redirect_url.resize(0);
       char *redirect_url_ptr=0;
@@ -311,22 +315,22 @@ namespace {
       int res = 0;
       if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
         throw DBException("Curl error: Unable to get responce code");
-      
+
       reinit_curl_handle();
       return res;
     }
-    
+
     int shttp_get(const std::string& url)
     {
       prepare_request(url);
       // make request
       if (curl_easy_perform(_curl) != 0)
-        throw DBException("Curl error: Unable to perform post");
+        throw DBException(std::string("Curl error: Unable to perform get: ") + &_curl_error_description[0]);
       // get responce code
       int res = 0;
       if (curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &res) != 0)
         throw DBException("Curl error: Unable to get responce code");
-      
+
       reinit_curl_handle();
       return res;
     };
@@ -342,7 +346,7 @@ namespace {
       _resp_header += std::string((char*)data, sz);
       return sz;
     };
-    
+
     CURL*           _curl;
     curl_slist*     _req_header;
     curl_httppost*  _req_form;
@@ -357,16 +361,17 @@ namespace {
     std::vector<char> _user_picture;
     boost::posix_time::ptime  _expiration;
     long            _follow_location;
-    
+    std::vector<char> _curl_error_description;
+
     static CurlInitializer  curl_initializer;
     static const char*      agent;
     static size_t common_writer(void* data, size_t size, size_t nmemb, void* instance);
     static size_t common_header_writer(void* data, size_t size, size_t nmemb, void* instance);
   };
-  
+
   ServerAPI::CurlInitializer  ServerAPI::curl_initializer;
   const char* ServerAPI::agent = "DiveAgent";
-  
+
   size_t ServerAPI::common_writer(void* data, size_t size, size_t nmemb, void* instance)
   {
     ServerAPI* api = reinterpret_cast<ServerAPI*>(instance);
@@ -429,7 +434,7 @@ void DiveAgent::workingThread()
     }
     // todo: make sure Logger is thread safe
     std::string log = Logger::toString();
-    
+
     std::string completion_url = api.computerupload(instance()._dive_computer_type_id, xml, log);
     {
       boost::lock_guard<boost::mutex> g(instance()._m);
@@ -510,7 +515,7 @@ std::string DiveAgent::getErrors()
 
 void DiveAgent::uploadDivesToServer()
 {
-  
+
 };
 
 void DiveAgent::writeProfile(const std::string& key, const std::string& value)
@@ -539,7 +544,7 @@ void DiveAgent::writeProfile(const std::string& key, const std::string& value)
   catch (libconfig::ParseException& e)
   {
   }
-  
+
 };
 
 std::string DiveAgent::readProfile(const std::string& key)
@@ -551,7 +556,7 @@ std::string DiveAgent::readProfile(const std::string& key)
   }
   catch (libconfig::FileIOException&)
   {
-    
+
   }
   return res;
 };
@@ -563,7 +568,7 @@ bool DiveAgent::login_email(const std::string& email, const std::string& passwor
     _errors += std::string(" The command is disabled while uploading dives is in progress");
     return false;
   }
-  
+
   try
   {
     _errors.resize(0);
@@ -622,7 +627,7 @@ std::string DiveAgent::completionURL()
     res = _completion_url;
   }
   return res;
-  
+
 };
 
 const std::vector<char>& DiveAgent::getLogedUserPicture()
@@ -634,7 +639,6 @@ bool  DiveAgent::isLoginExpired() const
 {
   return api.is_login_expired();
 };
-
 bool DiveAgent::restore_login()
 {
   api.logoff();

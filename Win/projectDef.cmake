@@ -21,7 +21,7 @@ set (SOURCES
     ${PLATFORM}
     )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=gnu++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -g -O0")
 
 set(3d_paryt_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
 set(wxWidgets_CONFIG_EXECUTABLE "${3d_paryt_ROOT}/wxWidgets-3.0/bin/wx-config")
@@ -38,7 +38,6 @@ find_library(LIBICONV iconv)
 
 
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
-message("wx_include_test: ${wxWidgets_USE_FILE}")
 include("${wxWidgets_USE_FILE}")
 
 set(BOOST_ROOT ${3d_paryt_ROOT})
@@ -79,6 +78,8 @@ target_link_libraries(${PROJNAME}
     ${LIBICONV}
     ${LIBCONFIG}
     curl
+    userenv.lib
+    crypt32.lib
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
