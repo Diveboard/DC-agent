@@ -25,6 +25,7 @@ public:
   
   DECLARE_EVENT_TABLE()
 protected:
+  void SureProcessToForeground();
   bool haveQuitMenuFromSystem();
 };
 

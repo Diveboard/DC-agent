@@ -118,17 +118,20 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 {
   wxCommandEvent e;
   OnMenuUploadDives(e);
+  SureProcessToForeground();
 }
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
   currentDialog->Raise();
   currentDialog->Show(true);
+  SureProcessToForeground();
 };
 void DiveAgentTaskBarIcon::OnMenuPreferences(wxCommandEvent&)
 {
   preferencesDialog->Raise();
   preferencesDialog->Show(true);
+  SureProcessToForeground();
 };
 void DiveAgentTaskBarIcon::OnMenuCheckForUpdates(wxCommandEvent&)
 {
@@ -138,6 +141,7 @@ void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent&)
 {
   aboutDilog->Raise();
   aboutDilog->Show(true);
+  SureProcessToForeground();
 };
 
 // ----------------------------------------------------------------------------
