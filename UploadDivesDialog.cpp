@@ -78,11 +78,16 @@ void UploadDivesDialog::selectMakeChoiceOnChoice( wxCommandEvent& )
 {
   m_selectModelChoice->Clear();
   std::string make = m_selectMakeChoice->GetStringSelection().utf8_str().data();
-  auto& models = _f.supported[make];
+  // create sorted models storage
+  std::map< std::string, std::string> models;
+  auto& models_unsorted = _f.supported[make];
+  for (auto it=models_unsorted.begin(); it!=models_unsorted.end();++it)
+    models[it->model] = it->key_code;
+  // update model choice UI
   for (auto it=models.begin(); it!=models.end();++it)
   {
-    m_selectModelChoice->Append(wxString::FromUTF8(it->model.c_str()),
-                              new wxStringClientData(wxString::FromUTF8(it->key_code.c_str())));
+    m_selectModelChoice->Append(wxString::FromUTF8(it->first.c_str()),
+                              new wxStringClientData(wxString::FromUTF8(it->second.c_str())));
 
   }
   // set model
