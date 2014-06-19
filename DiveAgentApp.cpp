@@ -70,7 +70,7 @@ void setCurrentDialog(wxDialog *d, bool show)
 void reportError(const std::string& error)
 {
     wxString msg = wxString::FromUTF8((std::string("Unexpected error:\n") + error).c_str());
-    wxMessageDialog* dlg = new wxMessageDialog(NULL, msg, wxString::FromUTF8("Dive agent"));
+    wxMessageDialog* dlg = new wxMessageDialog(NULL, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
     dlg->ShowModal();
     dlg->Destroy();
 }

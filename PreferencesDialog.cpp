@@ -169,7 +169,7 @@ void PreferencesDialog::FBconnectButtonOnButtonClick( wxCommandEvent& event )
       if ( !DiveAgent::instance().login_fb(id, token) )
       {
         wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
-        wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+        wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
         dlg->ShowModal();
         dlg->Destroy();
       }
@@ -199,7 +199,7 @@ void PreferencesDialog::showAccountInfo()
   if (!DiveAgent::instance().getLogedUserPicture().empty())
   {
     // ToDo: implement load directly from std::vector<char*>
-    wxString tmp_file = wxFileName::CreateTempFileName("DiveAgent");
+    wxString tmp_file = wxFileName::CreateTempFileName("DiveboardAgent");
     std::ofstream ofs(tmp_file.utf8_str().data(), std::ios::out | std::ios::binary);
     ofs.write(&DiveAgent::instance().getLogedUserPicture()[0], DiveAgent::instance().getLogedUserPicture().size());
     ofs.close();

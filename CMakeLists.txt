@@ -17,7 +17,7 @@ macro (include_platform)
     endif()
 
 endmacro(include_platform)
-set(PROJNAME dive-agent)
+set(PROJNAME DiveboardAgent)
 project(${PROJNAME})
 
 file (GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}

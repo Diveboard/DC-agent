@@ -96,7 +96,7 @@ void UploadDivesDialog::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
       (!DiveAgent::instance().getLogedUser().empty() && DiveAgent::instance().isLoginExpired()))
   {
     wxString msg = wxString::FromUTF8("User is not logged in or login is expired.\nPlease, try to login.");
-    wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
+    wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
     dlg->ShowModal();
     dlg->Destroy();
     Hide();

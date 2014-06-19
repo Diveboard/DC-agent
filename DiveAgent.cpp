@@ -126,7 +126,7 @@ namespace {
       param["apikey"] = apiKey();
       param["xmlFormSend"] = xml;
       param["logFormSend"] = log;
-      param["verFormSend"] = "DiveboardAgent v1.0.1";
+      param["verFormSend"] = DiveAgent::AppName() + " v1.0.1";
       param["computer_model"] = computer;
 
       shttp_post(apiBaseURL() + "computerupload.json", param);
@@ -370,7 +370,7 @@ namespace {
   };
 
   ServerAPI::CurlInitializer  ServerAPI::curl_initializer;
-  const char* ServerAPI::agent = "DiveAgent";
+  const char* ServerAPI::agent = "DiveboardAgent";
 
   size_t ServerAPI::common_writer(void* data, size_t size, size_t nmemb, void* instance)
   {

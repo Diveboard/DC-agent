@@ -3,10 +3,6 @@
 #include <string>
 #include "../DiveAgent.h"
 #include <vector>
-namespace
-{
-  std::string service("DiveAgent");
-}
 
 std::string DiveAgent::homeFolder()
 {
@@ -24,6 +20,7 @@ std::string DiveAgent::exeFolder()
 
 void DiveAgent::writeSecureProfile(const std::string& key, const std::string& value)
 {
+  std::string service = DiveAgent::AppName();
   OSStatus s = SecKeychainAddGenericPassword(NULL,
                                              service.size(),
                                              service.c_str(),
@@ -56,6 +53,7 @@ void DiveAgent::writeSecureProfile(const std::string& key, const std::string& va
 
 std::string DiveAgent::readSecureProfile(const std::string& key)
 {
+  std::string service = DiveAgent::AppName();
   UInt32 l = 0;
   void*  p = 0;
   OSStatus s = SecKeychainFindGenericPassword(NULL,

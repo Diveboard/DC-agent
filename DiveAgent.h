@@ -31,11 +31,12 @@ public:
   // used to delete dive computer instance on application exit before system call to static objects destructors;
   // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
   void deleteDiveComputerInstance();
+  static std::string AppName() { return "DiveboardAgent"; };
 protected:
   DiveAgent();
   void uploadDivesToServer();
   static std::string homeFolder();
-  static std::string configFile() { return homeFolder() + ".dive_agent.cfg"; }
+  static std::string configFile() { return homeFolder() + "." + AppName() + ".cfg"; }
   boost::mutex  _m;
   boost::thread _th;
   int           _upload_dives_progress;
