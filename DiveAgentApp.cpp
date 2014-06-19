@@ -55,11 +55,16 @@ namespace {
   };
 }
 
-void setCurrentDialog(wxDialog *d)
+void setCurrentDialog(wxDialog *d, bool show)
 {
   currentDialog = d;
-  d->Raise();
-  d->Show();
+  if (show)
+  {
+    d->Raise();
+    d->Show();
+  }
+  else
+    d->Hide();
 };
 
 void reportError(const std::string& error)

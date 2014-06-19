@@ -43,7 +43,7 @@ protected:
   DiveAgentTaskBarIcon   *m_dockIcon;
 };
 class wxDialog;
-void setCurrentDialog(wxDialog *d);
+void setCurrentDialog(wxDialog *d, bool show=true);
 void reportError(const std::string&);
 
 #endif//_DIVE_AGENT_APP_HPP

@@ -50,6 +50,8 @@ protected:
   virtual void openInBrowserButtonOnButtonClick( wxCommandEvent& event );
   virtual void doneButtonOnButtonClick( wxCommandEvent& event );
   void onTimer( wxTimerEvent& event);
+  void hideProgressGauge();
+  void showProgressGauge();
   UploadDivesDialog* _main_dialog;
   bool              _monitoring;
   bool              _wait_dive_xml;

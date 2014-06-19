@@ -216,6 +216,16 @@ void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event
   setCurrentDialog(_main_dialog);
   disableMonitoring();
 };
+void UploadDivesProgressDialog::hideProgressGauge()
+{
+  m_uploadProgressGauge->Hide();
+  m_uploadProgressStatic->Hide();
+};
+void UploadDivesProgressDialog::showProgressGauge()
+{
+  m_uploadProgressGauge->Show();
+  m_uploadProgressStatic->Show();
+};
 
 void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
 {
@@ -231,7 +241,6 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       _wait_dive_xml = false;
       m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives to Diveboard ..."));
       GetSizer()->Fit(this);
-
     }
     if (!DiveAgent::instance().isUploadDivesRuning())
     {
@@ -252,6 +261,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
         m_openInBrowserButton->Show();
         m_doneButton->Show();
         m_actionButton->Hide();
+        hideProgressGauge();
         GetSizer()->Fit(this);
       }
       else
@@ -273,6 +283,7 @@ void UploadDivesProgressDialog::enableMonitoring()
   m_openInBrowserButton->Hide();
   m_doneButton->Hide();
   m_actionButton->Show();
+  showProgressGauge();
   GetSizer()->Fit(this);
 }
 
@@ -288,6 +299,6 @@ void UploadDivesProgressDialog::openInBrowserButtonOnButtonClick( wxCommandEvent
 void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
 {
   Hide();
-  setCurrentDialog(_main_dialog);
+  setCurrentDialog(_main_dialog, false);
 }
 
