@@ -2,6 +2,8 @@
 CURRENTPATH=`pwd`
 arch_flags="-arch i386"
 set -e
+mkdir -p ${CURRENTPATH}/lib-32/lib/
+
 LIBDIVECOMPUTER="libdivecomputer-0.4.2"
 if [ -e "${CURRENTPATH}/${LIBDIVECOMPUTER}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBDIVECOMPUTER}"
