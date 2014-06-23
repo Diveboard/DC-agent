@@ -262,7 +262,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       disableMonitoring();
       if (error.empty())
       {
-        m_statusStatic->SetLabel(wxString::FromUTF8("The data from your dive computer has been downloaded and transferred to Diveboard.\nA browser to Diveboard should open to allow you to finish the upload process.\nIf not or if you would like to open it again click on 'Open in browser' below."));
+        m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the link below.\n"));
         m_openInBrowserButton->Show();
         m_doneButton->Show();
         m_actionButton->Hide();
