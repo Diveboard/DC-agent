@@ -47,7 +47,6 @@ protected:
     timer_timeout = 100
   };
   virtual void actionButtonOnButtonClick( wxCommandEvent& event );
-  virtual void openInBrowserButtonOnButtonClick( wxCommandEvent& event );
   virtual void doneButtonOnButtonClick( wxCommandEvent& event );
   void onTimer( wxTimerEvent& event);
   void hideProgressGauge();

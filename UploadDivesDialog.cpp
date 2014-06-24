@@ -254,16 +254,16 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       {
         wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploading dives: ") + error).c_str()));
       }
-      std::string url = DiveAgent::instance().completionURL();
-      if (!url.empty())
-      {
-        wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
-      }
       disableMonitoring();
       if (error.empty())
       {
         m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the link below.\n"));
-        m_openInBrowserButton->Show();
+        std::string url = DiveAgent::instance().completionURL();
+        if (!url.empty())
+        {
+          m_FinalURLhyperlink->SetURL(wxString::FromUTF8(url.c_str()));
+        }
+        m_FinalURLhyperlink->Show();
         m_doneButton->Show();
         m_actionButton->Hide();
         hideProgressGauge();
@@ -285,20 +285,11 @@ void UploadDivesProgressDialog::enableMonitoring()
   m_uploadProgressGauge->SetValue(0);
   m_uploadProgressStatic->SetLabel(wxString::FromUTF8("0 %"));
   m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives ..."));
-  m_openInBrowserButton->Hide();
+  m_FinalURLhyperlink->Hide();
   m_doneButton->Hide();
   m_actionButton->Show();
   showProgressGauge();
   GetSizer()->Fit(this);
-}
-
-void UploadDivesProgressDialog::openInBrowserButtonOnButtonClick( wxCommandEvent& event )
-{
-  std::string url = DiveAgent::instance().completionURL();
-  if (!url.empty())
-  {
-    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
-  }
 }
 
 void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
