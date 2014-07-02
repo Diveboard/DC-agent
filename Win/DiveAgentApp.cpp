@@ -11,3 +11,7 @@ bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
 {
   return false;
 };
+
+void DiveAgentTaskBarIcon::SureProcessToForeground()
+{
+};
