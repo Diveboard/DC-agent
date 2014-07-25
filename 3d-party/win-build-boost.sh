@@ -6,11 +6,17 @@ LIBBOOST="boost_1_55_0"
 if [ -e "${CURRENTPATH}/${LIBBOOST}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBBOOST}"
 fi
-tar zxf ${LIBBOOST}.tar.gz
+tar zxf ${LIBBOOST}.tar.gz --exclude doc/html
+
 cd "${CURRENTPATH}/${LIBBOOST}"
-# run bootstrap.bat mingw from windows command prompt
-cmd
-./b2 toolset=gcc install --prefix="${CURRENTPATH}/lib-32" link=static --without-context --without-coroutine
+./bootstrap.sh
+echo "using gcc : 4.4 : i686-w64-mingw32-g++
+        :
+        <rc>i686-w64-mingw32-windres
+        <archiver>i686-w64-mingw32-ar
+;" > user-config.jam
+./b2 toolset=gcc target-os=windows variant=release threading=multi threadapi=win32 --prefix="${CURRENTPATH}/lib-32" link=static --without-context --without-coroutine --user-config=user-config.jam install
 cd ${CURRENTPATH}
+mv lib-32/lib/libboost_thread_win32.a lib-32/lib/libboost_thread.a
 echo "Done"
 

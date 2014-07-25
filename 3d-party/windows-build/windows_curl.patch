@@ -1,0 +1,13 @@
+--- curl-7.20.0/src/main.c	2010-02-03 10:16:48.000000000 -0800
++++ curl/src/main.c	2014-07-23 07:59:14.410954597 -0700
+@@ -69,10 +69,6 @@
+ #include <io.h>
+ #endif
+ 
+-#ifdef HAVE_UNISTD_H
+-#include <unistd.h>
+-#endif
+-
+ #ifdef HAVE_FCNTL_H
+ #include <fcntl.h>
+ #endif

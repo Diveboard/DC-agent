@@ -35,30 +35,21 @@ Mac : The binaries are in build/bin
 TODO
 
 ---------------------
-HOW TO BUILD ON WINDOWS
+HOW TO BUILD ON LINUX FOR WINDOWS
 1) Preparations:
-  Install MinGW. 
-  Install Cmake. 
-  Checkout project not to much in the depth of directory structure. Msys do not like to long paths. It is good to avoid spaces in the path also. 
+   apt-get install mingw-w64 binutils-mingw-w64 cmake nsis
+   Remplacer le fichier FindwxWidgets.cmake qui se trouve dans /usr/share/cmake-2.8/Modules/ par celui qui se trouve dans 3d-party/windows-build/
+
 2 Building libraries:
-  Run MinGW shell. 
   cd <project root>/3d-party.
-  2.1 Building Boost 
-    Run MinGW shell
-    cd <project root>/3d-party
-    ./win-build-boost.sh
-    it will run Windows cmd. Execute command int it and then exit
-      bootstrap.bat mingw
-      exit    
-  2.2 Building other libraries   
-    run build_win*.sh scripts one by one. 
+  run build-win-all.sh scripts one by one. 
+
 3 Generating makefiles:
-  Run MinGW shell. 
   cd <project root> 
-  mkdir build
-  cd build
-  cmake -G "MSYS Makefiles" ../
+  cmake -DCMAKE_TOOLCHAIN_FILE=./3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows
+
 4 Building.
-  Run MinGW shell. 
-  cd <project root>/build
-  make.
+  make
+
+5 Building setup.
+  makensis Win/Diveboard.nsi

@@ -5,7 +5,7 @@
 #include <tchar.h>
 #include <initguid.h>
 #include <setupapi.h>
-#include <ddk/ntddser.h>
+#include <ntdef.h>
 #endif
 
 #include "Logger.h"
