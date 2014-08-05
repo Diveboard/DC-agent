@@ -12,7 +12,9 @@
 #endif
 
 // the application icon (under Windows and OS/2 it is in resources)
-#include "icon_bw.xpm"
+//#include "icon_bw.xpm"
+//#include "new_icon_yellow.xpm"
+#include "icon_systrail.png.h"
 
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
@@ -20,6 +22,24 @@
 #include "UploadDivesDialog.h"
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
+
+
+#include <windows.h>
+
+#include <iostream>
+
+#include <fstream>
+
+#include <conio.h>
+
+#include <stdio.h>
+
+#include "Guicon.h"
+#include <crtdbg.h>
+
+
+
+
 
 namespace {
   UploadDivesDialog*          uploadDivesDialog=0;
@@ -90,7 +110,8 @@ enum
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
-EVT_TASKBAR_LEFT_DCLICK  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
+EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
+//EVT_TASKBAR_LEFT_DCLICK  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 EVT_MENU(PU_UPLOAD_DIVES, DiveAgentTaskBarIcon::OnMenuUploadDives)
 EVT_MENU(PU_PREFERENCES, DiveAgentTaskBarIcon::OnMenuPreferences)
 EVT_MENU(PU_CHECK_FOR_UPDATES, DiveAgentTaskBarIcon::OnMenuCheckForUpdates)
@@ -157,6 +178,7 @@ IMPLEMENT_APP(DiveAgentApp)
 
 DiveAgentApp::DiveAgentApp()
 {
+    RedirectIOToConsole();
   m_taskBarIcon = 0;
   m_dockIcon = 0;
 }
@@ -180,8 +202,7 @@ bool DiveAgentApp::OnInit()
   }
 
   m_taskBarIcon = new DiveAgentTaskBarIcon();
-
-  wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_bw);
+  wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_systrail);
   wxIcon icon;
   icon.CopyFromBitmap(icon_bitmap);
   if ( !m_taskBarIcon->SetIcon(icon,
