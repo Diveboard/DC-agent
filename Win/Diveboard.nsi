@@ -163,6 +163,8 @@ Delete "$INSTDIR\libssl.dll"
 Delete "$INSTDIR\libstdc++-6.dll"
 Delete "$INSTDIR\libwinpthread-1.dll"
 Delete "$INSTDIR\openssl.exe"
+Delete "$INSTDIR\libeay32.dll"
+Delete "$INSTDIR\ssleay32.dll"
 Delete "$INSTDIR\uninstall.exe"
 !ifdef WEB_SITE
 Delete "$INSTDIR\${APP_NAME} website.url"
