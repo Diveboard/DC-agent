@@ -91,6 +91,8 @@ File "../bin/libssl.dll"
 File "../bin/libstdc++-6.dll"
 File "../bin/libwinpthread-1.dll"
 File "../bin/openssl.exe"
+File "../bin/libeay32.dll"
+File "../bin/ssleay32.dll"
 SectionEnd
 
 ######################################################################

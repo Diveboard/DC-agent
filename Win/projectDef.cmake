@@ -138,3 +138,9 @@ ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libwinpthre
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libstdc++-6.dll")
+
+add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libeay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libeay32.dll")
+
+add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/ssleay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/ssleay32.dll")
