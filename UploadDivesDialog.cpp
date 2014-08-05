@@ -54,7 +54,8 @@ UploadDivesDialog::UploadDivesDialog():
     m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                               new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
   }
-
+  if (ports.size() == 0)
+    m_selectPortChoice->Append(wxString::FromUTF8(""), new wxStringClientData(wxString::FromUTF8("")));
   m_selectMakeChoice->Clear();
   for (auto it=_f.supported.begin(); it!=_f.supported.end();++it)
   {
@@ -187,6 +188,9 @@ void UploadDivesDialog::onTimer( wxTimerEvent& event)
       m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                                  new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
     }
+    if (ports.size() == 0)
+      m_selectPortChoice->Append(wxString::FromUTF8(""), new wxStringClientData(wxString::FromUTF8("")));
+
     // make some default port selection
     m_selectPortChoice->SetSelection(0);
     // try to restore previos port selection
