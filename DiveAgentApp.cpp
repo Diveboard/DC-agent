@@ -23,24 +23,6 @@
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
 
-
-#include <windows.h>
-
-#include <iostream>
-
-#include <fstream>
-
-#include <conio.h>
-
-#include <stdio.h>
-
-#include "Guicon.h"
-#include <crtdbg.h>
-
-
-
-
-
 namespace {
   UploadDivesDialog*          uploadDivesDialog=0;
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
@@ -178,7 +160,7 @@ IMPLEMENT_APP(DiveAgentApp)
 
 DiveAgentApp::DiveAgentApp()
 {
-    RedirectIOToConsole();
+  //    RedirectIOToConsole();
   m_taskBarIcon = 0;
   m_dockIcon = 0;
 }
