@@ -30,6 +30,7 @@
 #include <wx/statbmp.h>
 #include <wx/textctrl.h>
 #include <wx/bmpbuttn.h>
+#include <wx/statline.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -169,7 +170,16 @@ class MainFrameBase : public wxFrame
 		wxTextCtrl* m_passwordText;
 		wxButton* m_loginButton;
 		wxBitmapButton* m_FBconnectButton;
-		wxPanel* m_main_panel;
+		wxPanel* m_upload_dive;
+		wxStaticBitmap* m_bitmap3;
+		wxStaticText* m_staticText14;
+		wxStaticLine* m_staticline2;
+		wxStaticText* m_staticText151;
+		wxChoice* m_choice41;
+		wxStaticText* m_staticText1511;
+		wxChoice* m_choice411;
+		wxStaticText* m_staticText21;
+		wxButton* m_button9;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }

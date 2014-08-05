@@ -451,8 +451,83 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_login_panel->Layout();
 	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL, 0 );
 	
-	m_main_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	bSizer21->Add( m_main_panel, 1, wxEXPAND | wxALL, 5 );
+	m_upload_dive = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_upload_dive->SetBackgroundColour( wxColour( 251, 221, 161 ) );
+	
+	wxBoxSizer* bMainSizer;
+	bMainSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxBoxSizer* bAvatarSizer;
+	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
+	
+	bAvatarSizer->SetMinSize( wxSize( 100,-1 ) ); 
+	m_bitmap3 = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 100,100 ), 0 );
+	bAvatarSizer->Add( m_bitmap3, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText14 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	bAvatarSizer->Add( m_staticText14, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bMainSizer->Add( bAvatarSizer, 0, wxEXPAND, 5 );
+	
+	m_staticline2 = new wxStaticLine( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+	bMainSizer->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
+	
+	wxBoxSizer* bUploadSizer;
+	bUploadSizer = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bMakeSizer;
+	bMakeSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText151 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Make:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText151->Wrap( -1 );
+	bMakeSizer->Add( m_staticText151, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxArrayString m_choice41Choices;
+	m_choice41 = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choice41Choices, 0 );
+	m_choice41->SetSelection( 0 );
+	bMakeSizer->Add( m_choice41, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bUploadSizer->Add( bMakeSizer, 0, wxEXPAND|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	wxBoxSizer* bModelSizer;
+	bModelSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText1511 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Model:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1511->Wrap( -1 );
+	bModelSizer->Add( m_staticText1511, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxArrayString m_choice411Choices;
+	m_choice411 = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choice411Choices, 0 );
+	m_choice411->SetSelection( 0 );
+	bModelSizer->Add( m_choice411, 1, wxALL, 5 );
+	
+	
+	bUploadSizer->Add( bModelSizer, 1, wxEXPAND, 5 );
+	
+	m_staticText21 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Connect your dive computer to your PC, put it in \"PC\" mode and then you are ready to hit \"Upload dives\"\nbutton."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText21->Wrap( -1 );
+	bUploadSizer->Add( m_staticText21, 0, wxALL, 5 );
+	
+	
+	bUploadSizer->Add( 0, 10, 0, wxEXPAND, 5 );
+	
+	m_button9 = new wxButton( m_upload_dive, wxID_ANY, wxT("Upload Dives"), wxDefaultPosition, wxDefaultSize, 0 );
+	bUploadSizer->Add( m_button9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	bUploadSizer->Add( 0, 10, 0, wxEXPAND, 5 );
+	
+	
+	bMainSizer->Add( bUploadSizer, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	m_upload_dive->SetSizer( bMainSizer );
+	m_upload_dive->Layout();
+	bMainSizer->Fit( m_upload_dive );
+	bSizer21->Add( m_upload_dive, 1, wxEXPAND | wxALL, 5 );
 	
 	
 	bSizer21->Add( 0, 0, 1, wxEXPAND, 5 );
