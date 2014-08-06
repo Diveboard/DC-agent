@@ -23,13 +23,13 @@
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/gauge.h>
-#include <wx/hyperlink.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/statbmp.h>
 #include <wx/textctrl.h>
 #include <wx/bmpbuttn.h>
+#include <wx/hyperlink.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -74,11 +74,11 @@ class UploadDivesProgressDialogBase : public wxDialog
 	private:
 	
 	protected:
+		wxPanel* m_panel10;
 		wxStaticText* m_statusStatic;
 		wxGauge* m_uploadProgressGauge;
 		wxStaticText* m_uploadProgressStatic;
 		wxButton* m_actionButton;
-		wxHyperlinkCtrl* m_FinalURLhyperlink;
 		wxButton* m_doneButton;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -163,6 +163,7 @@ class MainFrameBase : public wxFrame
 	
 	protected:
 		wxPanel* m_login_panel;
+		wxStaticBitmap* m_bitmap3;
 		wxStaticText* m_emailStatic;
 		wxTextCtrl* m_emailText;
 		wxStaticText* m_paswordStatic;
@@ -183,7 +184,7 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxCAPTION|wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
+		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxCAPTION|wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
 		
 		~MainFrameBase();
 	

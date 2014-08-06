@@ -116,9 +116,16 @@ UploadDivesDialogBase::~UploadDivesDialogBase()
 UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 450,-1 ), wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
 	
 	wxBoxSizer* m_mainSizer;
 	m_mainSizer = new wxBoxSizer( wxVERTICAL );
+	
+	m_panel10 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panel10->SetBackgroundColour( wxColour( 251, 221, 161 ) );
+	
+	wxBoxSizer* bSizer43;
+	bSizer43 = new wxBoxSizer( wxVERTICAL );
 	
 	wxBoxSizer* m_statusSizer;
 	m_statusSizer = new wxBoxSizer( wxVERTICAL );
@@ -126,25 +133,25 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	
 	m_statusSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_statusStatic = new wxStaticText( this, wxID_ANY, wxT("Status:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_statusStatic = new wxStaticText( m_panel10, wxID_ANY, wxT("Status:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_statusStatic->Wrap( -1 );
-	m_statusSizer->Add( m_statusStatic, 1, wxALIGN_BOTTOM|wxEXPAND, 5 );
+	m_statusSizer->Add( m_statusStatic, 1, wxALIGN_BOTTOM|wxEXPAND|wxLEFT, 20 );
 	
 	
-	m_mainSizer->Add( m_statusSizer, 4, wxEXPAND, 5 );
+	bSizer43->Add( m_statusSizer, 4, wxEXPAND, 5 );
 	
 	wxBoxSizer* m_gaugeSizer;
 	m_gaugeSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_uploadProgressGauge = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
+	m_uploadProgressGauge = new wxGauge( m_panel10, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
 	m_gaugeSizer->Add( m_uploadProgressGauge, 8, wxALL|wxEXPAND, 5 );
 	
-	m_uploadProgressStatic = new wxStaticText( this, wxID_ANY, wxT("100%"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_uploadProgressStatic = new wxStaticText( m_panel10, wxID_ANY, wxT("100%"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	m_uploadProgressStatic->Wrap( -1 );
 	m_gaugeSizer->Add( m_uploadProgressStatic, 1, wxALIGN_RIGHT|wxALL, 5 );
 	
 	
-	m_mainSizer->Add( m_gaugeSizer, 1, wxEXPAND, 5 );
+	bSizer43->Add( m_gaugeSizer, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* m_buttonSizer;
 	m_buttonSizer = new wxBoxSizer( wxVERTICAL );
@@ -152,26 +159,29 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	
 	m_buttonSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_actionButton = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_actionButton = new wxButton( m_panel10, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonSizer->Add( m_actionButton, 0, wxALIGN_RIGHT|wxALL, 5 );
 	
 	
-	m_mainSizer->Add( m_buttonSizer, 1, wxEXPAND, 5 );
+	bSizer43->Add( m_buttonSizer, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* m_buttonsSizer;
 	m_buttonsSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_FinalURLhyperlink = new wxHyperlinkCtrl( this, wxID_ANY, wxT("Finalize dive upload"), wxT("http://www.wxformbuilder.org"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-	m_buttonsSizer->Add( m_FinalURLhyperlink, 0, wxALL, 5 );
-	
 	
 	m_buttonsSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_doneButton = new wxButton( this, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_doneButton = new wxButton( m_panel10, wxID_ANY, wxT("Finish on Diveboard"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonsSizer->Add( m_doneButton, 0, wxALIGN_RIGHT|wxALL, 5 );
 	
 	
-	m_mainSizer->Add( m_buttonsSizer, 1, wxEXPAND, 5 );
+	bSizer43->Add( m_buttonsSizer, 1, wxEXPAND, 5 );
+	
+	
+	m_panel10->SetSizer( bSizer43 );
+	m_panel10->Layout();
+	bSizer43->Fit( m_panel10 );
+	m_mainSizer->Add( m_panel10, 1, wxEXPAND | wxALL, 20 );
 	
 	
 	this->SetSizer( m_mainSizer );
@@ -369,24 +379,24 @@ AboutDialogBase::~AboutDialogBase()
 
 MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 500,300 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 500,500 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
 	
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	bSizer21->SetMinSize( wxSize( 500,300 ) ); 
 	
 	bSizer21->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_login_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 400,150 ), wxTAB_TRAVERSAL );
+	m_login_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 400,430 ), wxTAB_TRAVERSAL );
 	m_login_panel->SetBackgroundColour( wxColour( 251, 221, 161 ) );
-	m_login_panel->Hide();
-	m_login_panel->SetMinSize( wxSize( 400,150 ) );
-	m_login_panel->SetMaxSize( wxSize( 400,150 ) );
+	m_login_panel->SetMinSize( wxSize( 400,430 ) );
 	
 	wxBoxSizer* m_accountSetSizer;
-	m_accountSetSizer = new wxBoxSizer( wxHORIZONTAL );
+	m_accountSetSizer = new wxBoxSizer( wxVERTICAL );
+	
+	m_bitmap3 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, 0 );
+	m_accountSetSizer->Add( m_bitmap3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10 );
 	
 	wxBoxSizer* m_accountSetViaEmailSizer;
 	m_accountSetViaEmailSizer = new wxBoxSizer( wxVERTICAL );
@@ -444,7 +454,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_accountSetViaEmailSizer->Add( m_loginButtonSizer, 1, wxEXPAND, 5 );
 	
 	
-	m_accountSetSizer->Add( m_accountSetViaEmailSizer, 1, wxEXPAND, 5 );
+	m_accountSetSizer->Add( m_accountSetViaEmailSizer, 1, wxEXPAND|wxTOP, 20 );
 	
 	
 	m_login_panel->SetSizer( m_accountSetSizer );
@@ -452,6 +462,8 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL, 0 );
 	
 	m_main_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_main_panel->Hide();
+	
 	bSizer21->Add( m_main_panel, 1, wxEXPAND | wxALL, 5 );
 	
 	

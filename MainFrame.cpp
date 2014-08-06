@@ -3,8 +3,6 @@
 
 MainFrame::MainFrame() : MainFrameBase(0)
 {
-  m_passwordText->SetHint("Password");
-  m_emailText->SetHint("Email");
 }
 
 MainFrame::~MainFrame()

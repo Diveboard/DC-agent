@@ -265,9 +265,9 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
         std::string url = DiveAgent::instance().completionURL();
         if (!url.empty())
         {
-          m_FinalURLhyperlink->SetURL(wxString::FromUTF8(url.c_str()));
+          // m_FinalURLhyperlink->SetURL(wxString::FromUTF8(url.c_str()));
         }
-        m_FinalURLhyperlink->Show();
+        // m_FinalURLhyperlink->Show();
         m_doneButton->Show();
         m_actionButton->Hide();
         hideProgressGauge();
@@ -289,7 +289,7 @@ void UploadDivesProgressDialog::enableMonitoring()
   m_uploadProgressGauge->SetValue(0);
   m_uploadProgressStatic->SetLabel(wxString::FromUTF8("0 %"));
   m_statusStatic->SetLabel(wxString::FromUTF8("Status: uploading dives ..."));
-  m_FinalURLhyperlink->Hide();
+  // m_FinalURLhyperlink->Hide();
   m_doneButton->Hide();
   m_actionButton->Show();
   showProgressGauge();
