@@ -376,8 +376,12 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
 	bSizer21->SetMinSize( wxSize( 500,300 ) ); 
+	
+	bSizer21->Add( 0, 0, 1, wxEXPAND, 5 );
+	
 	m_login_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 400,150 ), wxTAB_TRAVERSAL );
 	m_login_panel->SetBackgroundColour( wxColour( 251, 221, 161 ) );
+	m_login_panel->Hide();
 	m_login_panel->SetMinSize( wxSize( 400,150 ) );
 	m_login_panel->SetMaxSize( wxSize( 400,150 ) );
 	
@@ -427,8 +431,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_loginButtonSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxSize( -1,40 ), 0 );
 	m_loginButtonSizer->Add( m_loginButton, 0, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
+	
+	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
+	m_loginButtonSizer->Add( m_FBconnectButton, 0, wxALL, 5 );
+	
+	
+	m_loginButtonSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_loginButtonSizer, 1, wxEXPAND, 5 );
@@ -436,13 +446,16 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_accountSetSizer->Add( m_accountSetViaEmailSizer, 1, wxEXPAND, 5 );
 	
-	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_accountSetSizer->Add( m_FBconnectButton, 0, wxALL, 5 );
-	
 	
 	m_login_panel->SetSizer( m_accountSetSizer );
 	m_login_panel->Layout();
-	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxALL|wxFIXED_MINSIZE);
+	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL, 0 );
+	
+	m_main_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	bSizer21->Add( m_main_panel, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	bSizer21->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer21 );

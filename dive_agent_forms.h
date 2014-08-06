@@ -169,6 +169,7 @@ class MainFrameBase : public wxFrame
 		wxTextCtrl* m_passwordText;
 		wxButton* m_loginButton;
 		wxBitmapButton* m_FBconnectButton;
+		wxPanel* m_main_panel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
