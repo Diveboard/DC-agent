@@ -22,6 +22,7 @@
 #include "UploadDivesDialog.h"
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
+#include "MainFrame.h"
 
 namespace {
   UploadDivesDialog*          uploadDivesDialog=0;
@@ -195,6 +196,8 @@ bool DiveAgentApp::OnInit()
 
   createDocIcon();
   createDialogs();
+  MainFrame *simple = new MainFrame();
+  simple->Show(true);
   return true;
 }
 
