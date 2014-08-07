@@ -175,14 +175,19 @@ class MainFrameBase : public wxFrame
 		wxStaticBitmap* m_avatar;
 		wxStaticText* m_login;
 		wxStaticLine* m_staticline2;
-		wxStaticText* m_staticText151;
-		wxChoice* m_choice41;
-		wxStaticText* m_staticText1511;
-		wxChoice* m_choice411;
+		wxStaticText* m_selecMakeStatic;
+		wxChoice* m_selectMakeChoice;
+		wxStaticText* m_modelStatic;
+		wxChoice* m_selectModelChoice;
+		wxPanel* m_selectPortPanel;
+		wxStaticText* m_selectPortStatic;
+		wxChoice* m_selectPortChoice;
+		wxCheckBox* m_selectPortManualCheck;
 		wxStaticText* m_staticText21;
-		wxButton* m_button9;
+		wxButton* m_uploadDivesButton;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void onClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnLeftUp( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnMouseMove( wxMouseEvent& event ) { event.Skip(); }
@@ -190,6 +195,7 @@ class MainFrameBase : public wxFrame
 		virtual void loginButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
+		virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

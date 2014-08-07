@@ -491,35 +491,68 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bUploadSizer;
 	bUploadSizer = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bMakeSizer;
-	bMakeSizer = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* m_selectMakeSizer;
+	m_selectMakeSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText151 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Make:  "), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText151->Wrap( -1 );
-	bMakeSizer->Add( m_staticText151, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_selectMakeSizer->SetMinSize( wxSize( -1,35 ) ); 
+	m_selecMakeStatic = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Make:  "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_selecMakeStatic->Wrap( -1 );
+	m_selectMakeSizer->Add( m_selecMakeStatic, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxArrayString m_choice41Choices;
-	m_choice41 = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choice41Choices, 0 );
-	m_choice41->SetSelection( 0 );
-	bMakeSizer->Add( m_choice41, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	
-	bUploadSizer->Add( bMakeSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
-	
-	wxBoxSizer* bModelSizer;
-	bModelSizer = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_staticText1511 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Model:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText1511->Wrap( -1 );
-	bModelSizer->Add( m_staticText1511, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	wxArrayString m_choice411Choices;
-	m_choice411 = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choice411Choices, 0 );
-	m_choice411->SetSelection( 0 );
-	bModelSizer->Add( m_choice411, 1, wxALL, 5 );
+	wxArrayString m_selectMakeChoiceChoices;
+	m_selectMakeChoice = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectMakeChoiceChoices, 0 );
+	m_selectMakeChoice->SetSelection( 0 );
+	m_selectMakeSizer->Add( m_selectMakeChoice, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	
-	bUploadSizer->Add( bModelSizer, 0, wxEXPAND, 5 );
+	bUploadSizer->Add( m_selectMakeSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
+	
+	wxBoxSizer* m_selectModelSizer;
+	m_selectModelSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_selectModelSizer->SetMinSize( wxSize( -1,35 ) ); 
+	m_modelStatic = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Model:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_modelStatic->Wrap( -1 );
+	m_selectModelSizer->Add( m_modelStatic, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxArrayString m_selectModelChoiceChoices;
+	m_selectModelChoice = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectModelChoiceChoices, 0 );
+	m_selectModelChoice->SetSelection( 0 );
+	m_selectModelSizer->Add( m_selectModelChoice, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bUploadSizer->Add( m_selectModelSizer, 0, wxEXPAND, 5 );
+	
+	m_selectPortPanel = new wxPanel( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_selectPortPanel->SetBackgroundColour( wxColour( 251, 221, 161 ) );
+	
+	wxBoxSizer* m_selectPortMainSizer;
+	m_selectPortMainSizer = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* m_selectPortSizer;
+	m_selectPortSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_selectPortSizer->SetMinSize( wxSize( -1,35 ) ); 
+	m_selectPortStatic = new wxStaticText( m_selectPortPanel, wxID_ANY, wxT("Select port:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_selectPortStatic->Wrap( -1 );
+	m_selectPortSizer->Add( m_selectPortStatic, 0, wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxArrayString m_selectPortChoiceChoices;
+	m_selectPortChoice = new wxChoice( m_selectPortPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectPortChoiceChoices, 0 );
+	m_selectPortChoice->SetSelection( 0 );
+	m_selectPortSizer->Add( m_selectPortChoice, 3, wxALL|wxEXPAND, 5 );
+	
+	
+	m_selectPortMainSizer->Add( m_selectPortSizer, 0, wxEXPAND, 5 );
+	
+	m_selectPortManualCheck = new wxCheckBox( m_selectPortPanel, wxID_ANY, wxT("Always select port manualy"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_selectPortMainSizer->Add( m_selectPortManualCheck, 1, wxALL, 5 );
+	
+	
+	m_selectPortPanel->SetSizer( m_selectPortMainSizer );
+	m_selectPortPanel->Layout();
+	m_selectPortMainSizer->Fit( m_selectPortPanel );
+	bUploadSizer->Add( m_selectPortPanel, 1, wxEXPAND | wxALL, 5 );
 	
 	m_staticText21 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Connect your dive computer to your PC, put it in \"PC\" mode and then you are ready to hit \"Upload dives\"\nbutton."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText21->Wrap( -1 );
@@ -528,8 +561,8 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	bUploadSizer->Add( 0, 20, 0, 0, 5 );
 	
-	m_button9 = new wxButton( m_upload_dive, wxID_ANY, wxT("Upload Dives"), wxDefaultPosition, wxDefaultSize, 0 );
-	bUploadSizer->Add( m_button9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_uploadDivesButton = new wxButton( m_upload_dive, wxID_ANY, wxT("Upload Dives"), wxDefaultPosition, wxDefaultSize, 0 );
+	bUploadSizer->Add( m_uploadDivesButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
 	bUploadSizer->Add( 0, 20, 0, 0, 5 );
@@ -553,6 +586,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
 	this->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
 	this->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
 	this->Connect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
@@ -560,11 +594,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
 }
 
 MainFrameBase::~MainFrameBase()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
 	this->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
 	this->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
 	this->Disconnect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
@@ -572,5 +608,6 @@ MainFrameBase::~MainFrameBase()
 	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	
 }

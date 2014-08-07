@@ -1,10 +1,9 @@
 #ifndef __UPLOAD_DIVES_DIALOG_HPP__
 #define __UPLOAD_DIVES_DIALOG_HPP__
 #include "dive_agent_forms.h"
-
+#include "UploadDivesProgressDialog.h"
 #include <wx/timer.h>
 
-class UploadDivesProgressDialog;
 class PreferencesDialog;
 class ComputerFactory;
 class UploadDivesDialog: public UploadDivesDialogBase
@@ -31,30 +30,6 @@ private:
   wxTimer*                   _timer;
   unsigned                   _timer_counter;
   ComputerFactory&           _f;
-};
-
-class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
-{
-public:
-  UploadDivesProgressDialog();
-  void setMainDialog(UploadDivesDialog* d) { _main_dialog = d; }
-  void enableMonitoring();
-  void disableMonitoring(){ _monitoring = false;}
-protected:
-  enum
-  {
-    timer_id = 100,
-    timer_timeout = 100
-  };
-  virtual void actionButtonOnButtonClick( wxCommandEvent& event );
-  virtual void doneButtonOnButtonClick( wxCommandEvent& event );
-  void onTimer( wxTimerEvent& event);
-  void hideProgressGauge();
-  void showProgressGauge();
-  UploadDivesDialog* _main_dialog;
-  bool              _monitoring;
-  bool              _wait_dive_xml;
-  wxTimer*          _timer;
 };
 
 #endif//__UPLOAD_DIVES_DIALOG_HPP__

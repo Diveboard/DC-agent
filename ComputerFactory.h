@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __COMPUTER_FACTORY_HPP__
+#define __COMPUTER_FACTORY_HPP__
 
 #include "Computer.h"
 #include <string>
@@ -23,3 +24,4 @@ protected:
 	std::map <std::string, std::vector<std::string> > recognisedPorts;
 };
 
+#endif
