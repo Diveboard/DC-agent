@@ -10,8 +10,11 @@ public:
   void OnLeftDown( wxMouseEvent& event );
   void OnLeftUp( wxMouseEvent& event );
   void OnMouseMove( wxMouseEvent& event );
-
+  void loginButtonOnButtonClick( wxCommandEvent& event );
+  virtual void FBconnectButtonOnButtonClick ( wxCommandEvent& event );
 private:
+  void InitLoginPanel();
+  void loadUploadDivesPanel();
   wxPoint m_delta;
 
 };

@@ -135,7 +135,7 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	
 	m_statusStatic = new wxStaticText( m_panel6, wxID_ANY, wxT("Status:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_statusStatic->Wrap( -1 );
-	m_statusSizer->Add( m_statusStatic, 1, wxALIGN_BOTTOM|wxEXPAND|wxLEFT, 10 );
+	m_statusSizer->Add( m_statusStatic, 1, wxALIGN_BOTTOM|wxLEFT|wxEXPAND, 10 );
 	
 	
 	bSizer32->Add( m_statusSizer, 4, wxEXPAND, 5 );
@@ -394,8 +394,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_accountSetSizer;
 	m_accountSetSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
-	m_accountSetSizer->Add( m_bitmap4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10 );
+	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("forms/icon_bw.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_accountSetSizer->Add( m_bitmap4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
+	
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer33->Add( 20, 0, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* m_accountSetViaEmailSizer;
 	m_accountSetViaEmailSizer = new wxBoxSizer( wxVERTICAL );
@@ -403,15 +409,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_EmailSizer;
 	m_EmailSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	
-	m_EmailSizer->Add( 0, 0, 1, wxEXPAND, 5 );
-	
 	m_emailStatic = new wxStaticText( m_login_panel, wxID_ANY, wxT("E-Mail:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_emailStatic->Wrap( -1 );
-	m_EmailSizer->Add( m_emailStatic, 1, wxALIGN_RIGHT|wxALL, 5 );
+	m_EmailSizer->Add( m_emailStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_emailText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_emailText = new wxTextCtrl( m_login_panel, wxID_ANY, wxT("test"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_emailText->SetMaxLength( 0 ); 
+	m_emailText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
 	m_EmailSizer->Add( m_emailText, 3, wxALL, 5 );
 	
 	
@@ -420,15 +425,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_passwordSizer;
 	m_passwordSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	
-	m_passwordSizer->Add( 0, 0, 1, wxEXPAND, 5 );
-	
 	m_paswordStatic = new wxStaticText( m_login_panel, wxID_ANY, wxT("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_paswordStatic->Wrap( -1 );
-	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_RIGHT|wxALL, 5 );
+	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
 	m_passwordText->SetMaxLength( 0 ); 
+	m_passwordText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
 	m_passwordSizer->Add( m_passwordText, 3, wxALL, 5 );
 	
 	
@@ -437,23 +441,23 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_loginButtonSizer;
 	m_loginButtonSizer = new wxBoxSizer( wxHORIZONTAL );
 	
-	
-	m_loginButtonSizer->Add( 0, 0, 1, wxEXPAND, 5 );
-	
 	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxSize( -1,40 ), 0 );
-	m_loginButtonSizer->Add( m_loginButton, 0, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
+	m_loginButtonSizer->Add( m_loginButton, 1, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
 	
 	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
-	m_loginButtonSizer->Add( m_FBconnectButton, 0, wxALL, 5 );
-	
-	
-	m_loginButtonSizer->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_loginButtonSizer->Add( m_FBconnectButton, 1, wxALL, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_loginButtonSizer, 1, wxEXPAND, 5 );
 	
 	
-	m_accountSetSizer->Add( m_accountSetViaEmailSizer, 1, wxEXPAND, 5 );
+	bSizer33->Add( m_accountSetViaEmailSizer, 1, wxEXPAND, 5 );
+	
+	
+	bSizer33->Add( 20, 0, 0, wxEXPAND, 5 );
+	
+	
+	m_accountSetSizer->Add( bSizer33, 1, wxEXPAND, 5 );
 	
 	
 	m_login_panel->SetSizer( m_accountSetSizer );
@@ -461,7 +465,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_accountSetSizer->Fit( m_login_panel );
 	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER, 0 );
 	
-	m_upload_dive = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_upload_dive = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxNO_BORDER );
 	m_upload_dive->SetBackgroundColour( wxColour( 251, 221, 161 ) );
 	m_upload_dive->Hide();
 	
@@ -471,7 +475,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bAvatarSizer;
 	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
 	
-	bAvatarSizer->SetMinSize( wxSize( 100,-1 ) ); 
 	m_bitmap3 = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
 	bAvatarSizer->Add( m_bitmap3, 0, wxALL|wxEXPAND, 5 );
 	
@@ -480,10 +483,10 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bAvatarSizer->Add( m_staticText14, 0, wxALL|wxEXPAND, 5 );
 	
 	
-	bMainSizer->Add( bAvatarSizer, 0, wxEXPAND, 5 );
+	bMainSizer->Add( bAvatarSizer, 0, 0, 5 );
 	
 	m_staticline2 = new wxStaticLine( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-	bMainSizer->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
+	bMainSizer->Add( m_staticline2, 0, wxALL, 5 );
 	
 	wxBoxSizer* bUploadSizer;
 	bUploadSizer = new wxBoxSizer( wxVERTICAL );
@@ -493,7 +496,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_staticText151 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Select Make:  "), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText151->Wrap( -1 );
-	bMakeSizer->Add( m_staticText151, 0, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	bMakeSizer->Add( m_staticText151, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxArrayString m_choice41Choices;
 	m_choice41 = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choice41Choices, 0 );
@@ -501,7 +504,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bMakeSizer->Add( m_choice41, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	bUploadSizer->Add( bMakeSizer, 0, wxEXPAND|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bUploadSizer->Add( bMakeSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bModelSizer;
 	bModelSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -516,29 +519,29 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bModelSizer->Add( m_choice411, 1, wxALL, 5 );
 	
 	
-	bUploadSizer->Add( bModelSizer, 1, wxEXPAND, 5 );
+	bUploadSizer->Add( bModelSizer, 0, wxEXPAND, 5 );
 	
 	m_staticText21 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Connect your dive computer to your PC, put it in \"PC\" mode and then you are ready to hit \"Upload dives\"\nbutton."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText21->Wrap( -1 );
 	bUploadSizer->Add( m_staticText21, 0, wxALL, 5 );
 	
 	
-	bUploadSizer->Add( 0, 20, 0, wxEXPAND, 5 );
+	bUploadSizer->Add( 0, 20, 0, 0, 5 );
 	
 	m_button9 = new wxButton( m_upload_dive, wxID_ANY, wxT("Upload Dives"), wxDefaultPosition, wxDefaultSize, 0 );
 	bUploadSizer->Add( m_button9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
-	bUploadSizer->Add( 0, 20, 0, wxEXPAND, 5 );
+	bUploadSizer->Add( 0, 20, 0, 0, 5 );
 	
 	
-	bMainSizer->Add( bUploadSizer, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	bMainSizer->Add( bUploadSizer, 0, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_upload_dive->SetSizer( bMainSizer );
 	m_upload_dive->Layout();
 	bMainSizer->Fit( m_upload_dive );
-	bSizer21->Add( m_upload_dive, 0, wxALL, 5 );
+	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxRIGHT|wxLEFT, 10 );
 	
 	
 	bSizer21->Add( 0, 0, 1, 0, 5 );

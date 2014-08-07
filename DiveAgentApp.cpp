@@ -132,8 +132,11 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  currentDialog->Raise();
-  currentDialog->Show(true);
+  MainFrame *simple = new MainFrame();
+  simple->Raise();
+  simple->Show(true);
+  // currentDialog->Raise();
+  // currentDialog->Show(true);
   SureProcessToForeground();
 };
 void DiveAgentTaskBarIcon::OnMenuPreferences(wxCommandEvent&)
