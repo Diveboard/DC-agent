@@ -80,6 +80,7 @@ void MainFrame::loadUploadDivesPanel()
   m_upload_dive->Show();
   m_login_panel->Hide();
   m_login_panel->Layout();
+  showAccountInfo();
   this->Layout();
 }
 
@@ -147,4 +148,34 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
     dlg->Destroy();
     
   }
+}
+
+void MainFrame::showAccountInfo()
+{
+  m_login->SetLabel(wxString::FromUTF8((std::string("Diveboard account: ") + DiveAgent::instance().getLogedUser()).c_str()));
+  if (!DiveAgent::instance().getLogedUserPicture().empty())
+  {
+    // ToDo: implement load directly from std::vector<char*>
+    wxString tmp_file = wxFileName::CreateTempFileName("DiveboardAgent");
+    std::ofstream ofs(tmp_file.utf8_str().data(), std::ios::out | std::ios::binary);
+    ofs.write(&DiveAgent::instance().getLogedUserPicture()[0], DiveAgent::instance().getLogedUserPicture().size());
+    ofs.close();
+    wxImage img(tmp_file.utf8_str().data());
+    if (!img.IsOk())
+    {
+      reportError("unable to display user picture");
+    }
+    else
+    {
+      wxSize sz_image  = img.GetSize();
+      wxSize sz_bitmap = m_avatar->GetSize();
+      double scale = std::min((double)sz_bitmap.x / (double) sz_image.x, (double)sz_bitmap.y / (double) sz_image.y);
+      img.Rescale(sz_image.x * scale, sz_image.y * scale);
+      wxBitmap p(img);
+      m_avatar->SetBitmap(p);
+    }
+  }
+  // m_accauntInfoPanel->Show(true);
+  // m_accountSetPanel->Show(false);
+  GetSizer()->Fit(this);
 }

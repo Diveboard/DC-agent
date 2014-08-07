@@ -475,12 +475,12 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bAvatarSizer;
 	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap3 = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
-	bAvatarSizer->Add( m_bitmap3, 0, wxALL|wxEXPAND, 5 );
+	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
+	bAvatarSizer->Add( m_avatar, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText14 = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText14->Wrap( -1 );
-	bAvatarSizer->Add( m_staticText14, 0, wxALL|wxEXPAND, 5 );
+	m_login = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_login->Wrap( -1 );
+	bAvatarSizer->Add( m_login, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	bMainSizer->Add( bAvatarSizer, 0, 0, 5 );

@@ -3354,7 +3354,7 @@
                     <property name="border">0</property>
                     <property name="flag">wxALIGN_CENTER</property>
                     <property name="proportion">0</property>
-                    <object class="wxPanel" expanded="1">
+                    <object class="wxPanel" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -3428,7 +3428,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxBoxSizer" expanded="1">
+                        <object class="wxBoxSizer" expanded="0">
                             <property name="minimum_size"></property>
                             <property name="name">m_accountSetSizer</property>
                             <property name="orient">wxVERTICAL</property>
@@ -3514,26 +3514,26 @@
                                     <event name="OnUpdateUI"></event>
                                 </object>
                             </object>
-                            <object class="sizeritem" expanded="1">
+                            <object class="sizeritem" expanded="0">
                                 <property name="border">5</property>
                                 <property name="flag">wxEXPAND</property>
                                 <property name="proportion">1</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer33</property>
                                     <property name="orient">wxHORIZONTAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND</property>
                                         <property name="proportion">0</property>
-                                        <object class="spacer" expanded="1">
+                                        <object class="spacer" expanded="0">
                                             <property name="height">0</property>
                                             <property name="permission">protected</property>
                                             <property name="width">20</property>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND</property>
                                         <property name="proportion">1</property>
@@ -4106,11 +4106,11 @@
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND</property>
                                         <property name="proportion">0</property>
-                                        <object class="spacer" expanded="1">
+                                        <object class="spacer" expanded="0">
                                             <property name="height">0</property>
                                             <property name="permission">protected</property>
                                             <property name="width">20</property>
@@ -4199,16 +4199,16 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxBoxSizer" expanded="0">
+                        <object class="wxBoxSizer" expanded="1">
                             <property name="minimum_size"></property>
                             <property name="name">bMainSizer</property>
                             <property name="orient">wxHORIZONTAL</property>
                             <property name="permission">none</property>
-                            <object class="sizeritem" expanded="0">
+                            <object class="sizeritem" expanded="1">
                                 <property name="border">5</property>
                                 <property name="flag"></property>
                                 <property name="proportion">0</property>
-                                <object class="wxBoxSizer" expanded="0">
+                                <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size">-1,-1</property>
                                     <property name="name">bAvatarSizer</property>
                                     <property name="orient">wxVERTICAL</property>
@@ -4253,7 +4253,7 @@
                                             <property name="minimize_button">0</property>
                                             <property name="minimum_size">-1,-1</property>
                                             <property name="moveable">1</property>
-                                            <property name="name">m_bitmap3</property>
+                                            <property name="name">m_avatar</property>
                                             <property name="pane_border">1</property>
                                             <property name="pane_position"></property>
                                             <property name="pane_size"></property>
@@ -4334,7 +4334,7 @@
                                             <property name="minimize_button">0</property>
                                             <property name="minimum_size"></property>
                                             <property name="moveable">1</property>
-                                            <property name="name">m_staticText14</property>
+                                            <property name="name">m_login</property>
                                             <property name="pane_border">1</property>
                                             <property name="pane_position"></property>
                                             <property name="pane_size"></property>

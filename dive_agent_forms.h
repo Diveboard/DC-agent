@@ -172,8 +172,8 @@ class MainFrameBase : public wxFrame
 		wxButton* m_loginButton;
 		wxBitmapButton* m_FBconnectButton;
 		wxPanel* m_upload_dive;
-		wxStaticBitmap* m_bitmap3;
-		wxStaticText* m_staticText14;
+		wxStaticBitmap* m_avatar;
+		wxStaticText* m_login;
 		wxStaticLine* m_staticline2;
 		wxStaticText* m_staticText151;
 		wxChoice* m_choice41;

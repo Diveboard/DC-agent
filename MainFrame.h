@@ -15,6 +15,7 @@ public:
 private:
   void InitLoginPanel();
   void loadUploadDivesPanel();
+  void showAccountInfo();
   wxPoint m_delta;
 
 };
