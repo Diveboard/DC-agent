@@ -377,7 +377,8 @@ AboutDialogBase::~AboutDialogBase()
 	
 }
 
-MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : 
+BaseScreen( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 500,450 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
