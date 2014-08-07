@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "UploadDivesDialog.h"
+#include "UploadDivesProgressDialog.h"
 #include "ComputerFactory.h"
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
 #include <wx/msgdlg.h>
-#include "PreferencesDialog.h"
 
 UploadDivesProgressDialog::UploadDivesProgressDialog():
   UploadDivesProgressDialogBase(0),
@@ -19,9 +18,7 @@ UploadDivesProgressDialog::UploadDivesProgressDialog():
 void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event )
 {
   DiveAgent::instance().cancelUploadDives();
-  assert(_main_dialog);
   this->Hide();
-  setCurrentDialog(_main_dialog);
   disableMonitoring();
 };
 void UploadDivesProgressDialog::hideProgressGauge()
@@ -69,7 +66,6 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       else
       {
         Hide();
-        setCurrentDialog(_main_dialog);
       }
     }
   }

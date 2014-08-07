@@ -3,11 +3,9 @@
 #include "dive_agent_forms.h"
 
 #include <wx/timer.h>
-class UploadDivesDialog;
 class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
 {
 public:  UploadDivesProgressDialog();
-  void setMainDialog(UploadDivesDialog* d) { _main_dialog = d; }
   void enableMonitoring();
   void disableMonitoring(){ _monitoring = false;}
 protected:
@@ -21,7 +19,6 @@ protected:
   void onTimer( wxTimerEvent& event);
   void hideProgressGauge();
   void showProgressGauge();
-  UploadDivesDialog* _main_dialog;
   bool              _monitoring;
   bool              _wait_dive_xml;
   wxTimer*          _timer;

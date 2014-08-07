@@ -20,39 +20,23 @@
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
 
-#include "UploadDivesDialog.h"
-#include "PreferencesDialog.h"
 #include "AboutDialog.h"
 
 namespace {
-  UploadDivesDialog*          uploadDivesDialog=0;
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
-  PreferencesDialog*          preferencesDialog=0;
   AboutDilog*                 aboutDilog=0;
   MainFrame*		      mainFrame=0;
-  wxDialog*                   currentDialog=0;
 
   void createDialogs()
   {
-    // uploadDivesDialog         = new UploadDivesDialog();
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
-    preferencesDialog         = new PreferencesDialog();
     aboutDilog                = new AboutDilog();
-
-    // uploadDivesDialog->setProgressDialog(uploadDivesProgressDialog);
-    // uploadDivesDialog->setPreferencesDialog(preferencesDialog);
-    // uploadDivesProgressDialog->setMainDialog(uploadDivesDialog);
-    currentDialog = uploadDivesDialog;
   };
 
   void destroyDalogs()
   {
-    if (uploadDivesDialog)
-      delete uploadDivesDialog;
     if (uploadDivesProgressDialog)
       delete uploadDivesProgressDialog;
-    if (preferencesDialog)
-      delete preferencesDialog;
     if (aboutDilog)
       delete aboutDilog;
   };
@@ -60,7 +44,7 @@ namespace {
 
 void setCurrentDialog(wxDialog *d, bool show)
 {
-  currentDialog = d;
+  // currentDialog = d;
   if (show)
   {
     d->Raise();
@@ -84,21 +68,12 @@ void reportError(const std::string& error)
 enum
 {
   PU_RESTORE = 10001,
-  PU_EXIT,
-  PU_UPLOAD_DIVES,
-  PU_PREFERENCES,
-  PU_CHECK_FOR_UPDATES,
-  PU_ABOUT
+  PU_EXIT
 };
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
-//EVT_TASKBAR_LEFT_DCLICK  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
-EVT_MENU(PU_UPLOAD_DIVES, DiveAgentTaskBarIcon::OnMenuUploadDives)
-EVT_MENU(PU_PREFERENCES, DiveAgentTaskBarIcon::OnMenuPreferences)
-EVT_MENU(PU_CHECK_FOR_UPDATES, DiveAgentTaskBarIcon::OnMenuCheckForUpdates)
-EVT_MENU(PU_ABOUT, DiveAgentTaskBarIcon::OnMenuAbout)
 END_EVENT_TABLE()
 
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
@@ -110,11 +85,6 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 {
   wxMenu *menu = new wxMenu;
-  menu->Append(PU_UPLOAD_DIVES, wxT("&Upload Dives"));
-  menu->Append(PU_PREFERENCES, wxT("&Preferences"));
-  menu->Append(PU_CHECK_FOR_UPDATES, wxT("&Check for updates"));
-  menu->Append(PU_ABOUT, wxT("&About"));
-
   if ( !haveQuitMenuFromSystem() )
   {
     menu->AppendSeparator();
@@ -132,29 +102,7 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  // if (mainFrame != NULL)
-  //   return;
-  // mainFrame = new MainFrame();
-  // mainFrame->setProgressDialog(uploadDivesProgressDialog);
   mainFrame->Show(true);
-  // currentDialog->Raise();
-  // currentDialog->Show(true);
-  SureProcessToForeground();
-};
-void DiveAgentTaskBarIcon::OnMenuPreferences(wxCommandEvent&)
-{
-  preferencesDialog->Raise();
-  preferencesDialog->Show(true);
-  SureProcessToForeground();
-};
-void DiveAgentTaskBarIcon::OnMenuCheckForUpdates(wxCommandEvent&)
-{
-
-};
-void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent&)
-{
-  aboutDilog->Raise();
-  aboutDilog->Show(true);
   SureProcessToForeground();
 };
 
