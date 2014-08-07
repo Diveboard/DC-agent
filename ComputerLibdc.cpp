@@ -699,7 +699,7 @@ dc_status_t ComputerLibdc::search (std::string stdname)
     const char *product = libdc_p.descriptor_get_product (l_descriptor);
 
     size_t n = strlen (vendor);
-    if (strcasencmp (name, vendor, n) == 0 && name[n] == ' ' &&
+    if (strncasecmp (name, vendor, n) == 0 && name[n] == ' ' &&
       strcasecmp (name + n + 1, product) == 0)
     {
       current = l_descriptor;
