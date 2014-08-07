@@ -16,32 +16,32 @@
 //#include "new_icon_yellow.xpm"
 #include "icon_systrail.png.h"
 
+#include "MainFrame.h"
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
 
 #include "UploadDivesDialog.h"
 #include "PreferencesDialog.h"
 #include "AboutDialog.h"
-#include "MainFrame.h"
 
 namespace {
   UploadDivesDialog*          uploadDivesDialog=0;
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
   PreferencesDialog*          preferencesDialog=0;
   AboutDilog*                 aboutDilog=0;
+  MainFrame*		      mainFrame=0;
   wxDialog*                   currentDialog=0;
 
   void createDialogs()
   {
-    uploadDivesDialog         = new UploadDivesDialog();
+    // uploadDivesDialog         = new UploadDivesDialog();
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     preferencesDialog         = new PreferencesDialog();
     aboutDilog                = new AboutDilog();
 
-    uploadDivesDialog->setProgressDialog(uploadDivesProgressDialog);
-    uploadDivesDialog->setPreferencesDialog(preferencesDialog);
-    uploadDivesProgressDialog->setMainDialog(uploadDivesDialog);
-
+    // uploadDivesDialog->setProgressDialog(uploadDivesProgressDialog);
+    // uploadDivesDialog->setPreferencesDialog(preferencesDialog);
+    // uploadDivesProgressDialog->setMainDialog(uploadDivesDialog);
     currentDialog = uploadDivesDialog;
   };
 
@@ -132,9 +132,11 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  MainFrame *simple = new MainFrame();
-  simple->Raise();
-  simple->Show(true);
+  // if (mainFrame != NULL)
+  //   return;
+  // mainFrame = new MainFrame();
+  // mainFrame->setProgressDialog(uploadDivesProgressDialog);
+  mainFrame->Show(true);
   // currentDialog->Raise();
   // currentDialog->Show(true);
   SureProcessToForeground();
@@ -199,8 +201,9 @@ bool DiveAgentApp::OnInit()
 
   createDocIcon();
   createDialogs();
-  MainFrame *simple = new MainFrame();
-  simple->Show(true);
+  mainFrame = new MainFrame();
+  mainFrame->setProgressDialog(uploadDivesProgressDialog);
+  mainFrame->Show(true);
   return true;
 }
 

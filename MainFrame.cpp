@@ -40,6 +40,7 @@ namespace
 MainFrame::MainFrame() : MainFrameBase(0), _f( * new ComputerFactory())
 {
   InitLoginPanel();
+  aboutDialog = new AboutDilog();
 }
 
 void MainFrame::InitUploadDivesPanel()
@@ -78,9 +79,26 @@ void MainFrame::InitUploadDivesPanel()
   wxCommandEvent e;
   selectMakeChoiceOnChoice(e);
 }
+void MainFrame::loadUploadDivesPanel()
+{
+  m_upload_dive->Show();
+  m_login_panel->Hide();
+  m_upload_dive->Layout();
+  SetMenuBar(m_menubar);
+  this->Layout();
+  GetSizer()->Fit(this);
+  InitUploadDivesPanel();
+}
 
 void MainFrame::InitLoginPanel()
 {
+  m_login_panel->Show();
+  m_upload_dive->Hide();
+  m_login_panel->Layout();
+  SetMenuBar(NULL);
+  m_login_panel->Fit();
+  this->Layout();
+  GetSizer()->Fit(this);
   std::string email_value = DiveAgent::readProfile("login_email");
   if ( !email_value.empty() )
   {
@@ -137,15 +155,6 @@ void MainFrame::OnLeftUp(wxMouseEvent& evt)
     {
       ReleaseMouse();
     }
-}
-
-void MainFrame::loadUploadDivesPanel()
-{
-  m_upload_dive->Show();
-  m_login_panel->Hide();
-  m_login_panel->Layout();
-  this->Layout();
-  InitUploadDivesPanel();
 }
 
 void MainFrame::loginButtonOnButtonClick( wxCommandEvent& event )
@@ -216,7 +225,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 
 void MainFrame::showAccountInfo()
 {
-  m_login->SetLabel(wxString::FromUTF8((std::string("Diveboard account: ") + DiveAgent::instance().getLogedUser()).c_str()));
+  m_login->SetLabel(wxString::FromUTF8((std::string("Logged in as: ") + DiveAgent::instance().getLogedUser()).c_str()));
   if (!DiveAgent::instance().getLogedUserPicture().empty())
   {
     // ToDo: implement load directly from std::vector<char*>
@@ -379,4 +388,17 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
 void MainFrame::onClose( wxCloseEvent& event ) 
 {
   this->Hide();
+}
+
+
+void MainFrame::onLogoutUser( wxCommandEvent& event )
+{
+  DiveAgent::instance().logoff();
+  InitLoginPanel();  
+}
+
+void MainFrame::onOpenAbout( wxCommandEvent& event )
+{
+  aboutDialog->Raise();
+  aboutDialog->Show(true);
 }

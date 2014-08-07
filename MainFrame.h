@@ -4,6 +4,7 @@
 #include "UploadDivesProgressDialog.h"
 #include <wx/timer.h>
 #include "ComputerFactory.h"
+#include "AboutDialog.h"
 
 class MainFrame : public MainFrameBase
 {
@@ -16,6 +17,8 @@ public:
   void loginButtonOnButtonClick( wxCommandEvent& event );
   virtual void FBconnectButtonOnButtonClick ( wxCommandEvent& event );
   void onClose( wxCloseEvent& event );
+  void onLogoutUser( wxCommandEvent& event );
+  void onOpenAbout( wxCommandEvent& event );
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
 private:
   // Panel Login
@@ -23,6 +26,7 @@ private:
   void loadUploadDivesPanel();
   void showAccountInfo();
   wxPoint m_delta;
+  AboutDilog*                 aboutDialog=NULL;
 
   // Panel Upload Dive
   void InitUploadDivesPanel();

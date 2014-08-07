@@ -335,29 +335,42 @@ PreferencesDialogBase::~PreferencesDialogBase()
 AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 400,-1 ), wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
 	
 	wxBoxSizer* m_mainSizer;
 	m_mainSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap2 = new wxStaticBitmap( this, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
-	m_mainSizer->Add( m_bitmap2, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	m_panel8 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panel8->SetBackgroundColour( wxColour( 251, 221, 161 ) );
 	
-	m_aboutStatic = new wxStaticText( this, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	wxBoxSizer* bSizer36;
+	bSizer36 = new wxBoxSizer( wxVERTICAL );
+	
+	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer36->Add( m_bitmap2, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
+	m_aboutStatic = new wxStaticText( m_panel8, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_aboutStatic->Wrap( -1 );
 	m_aboutStatic->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	m_mainSizer->Add( m_aboutStatic, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	bSizer36->Add( m_aboutStatic, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
-	m_staticText12 = new wxStaticText( this, wxID_ANY, wxT("Version 1.0.0\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText12 = new wxStaticText( m_panel8, wxID_ANY, wxT("Version 1.0.0\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText12->Wrap( -1 );
-	m_mainSizer->Add( m_staticText12, 0, wxALL, 5 );
+	bSizer36->Add( m_staticText12, 0, wxALL, 5 );
 	
-	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxT("http://www.diveboard.com"), wxT("http://www.diveboard.com/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-	m_mainSizer->Add( m_hyperlink2, 0, wxALL, 5 );
+	m_hyperlink2 = new wxHyperlinkCtrl( m_panel8, wxID_ANY, wxT("http://www.diveboard.com"), wxT("http://www.diveboard.com/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	bSizer36->Add( m_hyperlink2, 0, wxALL, 5 );
 	
-	m_okButton = new wxButton( this, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_okButton = new wxButton( m_panel8, wxID_OK, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_okButton->SetDefault(); 
-	m_mainSizer->Add( m_okButton, 1, wxALIGN_RIGHT|wxALL, 5 );
+	bSizer36->Add( m_okButton, 1, wxALIGN_RIGHT|wxALL, 5 );
+	
+	
+	m_panel8->SetSizer( bSizer36 );
+	m_panel8->Layout();
+	bSizer36->Fit( m_panel8 );
+	m_mainSizer->Add( m_panel8, 1, wxEXPAND | wxALL, 20 );
 	
 	
 	this->SetSizer( m_mainSizer );
@@ -377,8 +390,7 @@ AboutDialogBase::~AboutDialogBase()
 	
 }
 
-MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : 
-BaseScreen( parent, id, title, pos, size, style )
+MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 500,450 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
@@ -395,7 +407,7 @@ BaseScreen( parent, id, title, pos, size, style )
 	wxBoxSizer* m_accountSetSizer;
 	m_accountSetSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("forms/icon_bw.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("forms/full_diveboard_grey.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_accountSetSizer->Add( m_bitmap4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
 	
 	wxBoxSizer* bSizer33;
@@ -414,7 +426,7 @@ BaseScreen( parent, id, title, pos, size, style )
 	m_emailStatic->Wrap( -1 );
 	m_EmailSizer->Add( m_emailStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_emailText = new wxTextCtrl( m_login_panel, wxID_ANY, wxT("test"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_emailText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_emailText->SetMaxLength( 0 ); 
 	m_emailText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	
@@ -449,7 +461,7 @@ BaseScreen( parent, id, title, pos, size, style )
 	m_loginButtonSizer->Add( m_FBconnectButton, 1, wxALL, 5 );
 	
 	
-	m_accountSetViaEmailSizer->Add( m_loginButtonSizer, 1, wxEXPAND, 5 );
+	m_accountSetViaEmailSizer->Add( m_loginButtonSizer, 1, wxEXPAND|wxBOTTOM, 10 );
 	
 	
 	bSizer33->Add( m_accountSetViaEmailSizer, 1, wxEXPAND, 5 );
@@ -477,14 +489,14 @@ BaseScreen( parent, id, title, pos, size, style )
 	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
 	
 	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("forms/icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
-	bAvatarSizer->Add( m_avatar, 0, wxALL|wxEXPAND, 5 );
+	bAvatarSizer->Add( m_avatar, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 	
 	m_login = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_login->Wrap( -1 );
 	bAvatarSizer->Add( m_login, 0, wxALL|wxEXPAND, 5 );
 	
 	
-	bMainSizer->Add( bAvatarSizer, 0, 0, 5 );
+	bMainSizer->Add( bAvatarSizer, 0, wxTOP|wxLEFT, 10 );
 	
 	m_staticline2 = new wxStaticLine( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
 	bMainSizer->Add( m_staticline2, 0, wxALL, 5 );
@@ -569,13 +581,13 @@ BaseScreen( parent, id, title, pos, size, style )
 	bUploadSizer->Add( 0, 20, 0, 0, 5 );
 	
 	
-	bMainSizer->Add( bUploadSizer, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	bMainSizer->Add( bUploadSizer, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT, 10 );
 	
 	
 	m_upload_dive->SetSizer( bMainSizer );
 	m_upload_dive->Layout();
 	bMainSizer->Fit( m_upload_dive );
-	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxRIGHT|wxLEFT, 10 );
+	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxRIGHT|wxLEFT, 20 );
 	
 	
 	bSizer21->Add( 0, 0, 1, 0, 5 );
@@ -583,6 +595,24 @@ BaseScreen( parent, id, title, pos, size, style )
 	
 	this->SetSizer( bSizer21 );
 	this->Layout();
+	m_menubar = new wxMenuBar( 0 );
+	m_menubar->SetForegroundColour( wxColour( 251, 175, 23 ) );
+	m_menubar->SetBackgroundColour( wxColour( 251, 175, 23 ) );
+	m_menubar->Hide();
+	
+	m_file = new wxMenu();
+	wxMenuItem* m_logout;
+	m_logout = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("Logout") ) , wxEmptyString, wxITEM_NORMAL );
+	m_file->Append( m_logout );
+	
+	wxMenuItem* m_about;
+	m_about = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
+	m_file->Append( m_about );
+	
+	m_menubar->Append( m_file, wxT("File") ); 
+	
+	this->SetMenuBar( m_menubar );
+	
 	
 	this->Centre( wxBOTH );
 	
@@ -596,6 +626,8 @@ BaseScreen( parent, id, title, pos, size, style )
 	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
 	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
+	this->Connect( m_logout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onLogoutUser ) );
+	this->Connect( m_about->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
 }
 
 MainFrameBase::~MainFrameBase()
@@ -610,5 +642,7 @@ MainFrameBase::~MainFrameBase()
 	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
 	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onLogoutUser ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
 	
 }

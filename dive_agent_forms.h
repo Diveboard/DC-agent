@@ -31,10 +31,8 @@
 #include <wx/bmpbuttn.h>
 #include <wx/hyperlink.h>
 #include <wx/statline.h>
+#include <wx/menu.h>
 #include <wx/frame.h>
-
-#include <wx/wx.h>
-#include "BaseScreen.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -141,6 +139,7 @@ class AboutDialogBase : public wxDialog
 	private:
 	
 	protected:
+		wxPanel* m_panel8;
 		wxStaticBitmap* m_bitmap2;
 		wxStaticText* m_aboutStatic;
 		wxStaticText* m_staticText12;
@@ -161,7 +160,7 @@ class AboutDialogBase : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainFrameBase
 ///////////////////////////////////////////////////////////////////////////////
-class MainFrameBase : public BaseScreen 
+class MainFrameBase : public wxFrame 
 {
 	private:
 	
@@ -188,6 +187,8 @@ class MainFrameBase : public BaseScreen
 		wxCheckBox* m_selectPortManualCheck;
 		wxStaticText* m_staticText21;
 		wxButton* m_uploadDivesButton;
+		wxMenuBar* m_menubar;
+		wxMenu* m_file;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void onClose( wxCloseEvent& event ) { event.Skip(); }
@@ -199,6 +200,8 @@ class MainFrameBase : public BaseScreen
 		virtual void FBconnectButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onLogoutUser( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onOpenAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

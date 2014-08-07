@@ -99,7 +99,7 @@ void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
     }
   // m_FinalURLhyperlink->Show();
   Hide();
-  setCurrentDialog(_main_dialog, false);
+  // setCurrentDialog(_main_dialog, false);
 
 }
 
