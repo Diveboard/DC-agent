@@ -106,6 +106,8 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
   if ( !haveQuitMenuFromSystem() )
   {
     menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
+    menu->Append(PU_LOGOUT,    wxT("Logout"));
+    menu->Append(PU_ABOUT,    wxT("About"));
     menu->Append(PU_EXIT,    wxT("E&xit"));
   }
   return menu;
