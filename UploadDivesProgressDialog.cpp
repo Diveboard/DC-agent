@@ -57,7 +57,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       disableMonitoring();
       if (error.empty())
       {
-        m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the link below.\n"));
+        m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the button below.\n"));
         m_doneButton->Show();
         m_actionButton->Hide();
         hideProgressGauge();

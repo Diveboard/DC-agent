@@ -21,11 +21,13 @@
 #include "DiveAgentApp.h"
 
 #include "AboutDialog.h"
+#include <wx/snglinst.h>
 
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
   AboutDilog*                 aboutDilog=0;
-  MainFrame*		      mainFrame=0;
+  MainFrame*		              mainFrame=0;
+  wxSingleInstanceChecker*    m_checker=0;
 
   void createDialogs()
   {
@@ -125,6 +127,15 @@ DiveAgentApp::~DiveAgentApp()
 
 bool DiveAgentApp::OnInit()
 {
+  m_checker = new wxSingleInstanceChecker;
+  if ( m_checker->IsAnotherRunning() )
+    {
+      wxLogError(_("Another program instance is already running, aborting."));
+      delete m_checker; // OnExit() won't be called if we return false
+      m_checker = NULL;
+      return false;
+    }
+
   wxInitAllImageHandlers();
   if ( !wxApp::OnInit() )
     return false;
@@ -141,8 +152,7 @@ bool DiveAgentApp::OnInit()
   wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_systrail);
   wxIcon icon;
   icon.CopyFromBitmap(icon_bitmap);
-  if ( !m_taskBarIcon->SetIcon(icon,
-                               "DiveAgent") )
+  if ( !m_taskBarIcon->SetIcon(icon, "DiveAgent") )
   {
     wxLogError(wxT("Could not set icon."));
   }
@@ -157,6 +167,7 @@ bool DiveAgentApp::OnInit()
 
 int DiveAgentApp::OnExit()
 {
+  delete m_checker;
   // dive computer instance must be deleted befor system call to static objects distructor.
   // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
   DiveAgent::instance().deleteDiveComputerInstance();
