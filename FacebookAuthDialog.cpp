@@ -35,6 +35,8 @@ void FacbookAuthDialog::OnNaviagting(wxWebViewEvent& event)
   // check for access token in redirect url
   std::string url = event.GetURL().utf8_str().data();
   std::string key("access_token=");
+
+  std::cout << "[" <<  url << "]" << std::endl;
   size_t b = url.find(key);
   if (b != std::string::npos)
     {
