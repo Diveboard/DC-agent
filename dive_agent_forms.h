@@ -135,6 +135,7 @@ class MainFrameBase : public wxFrame
 		virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLogoutUser( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onOpenAbout( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onMenuExit( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

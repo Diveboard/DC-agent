@@ -402,3 +402,8 @@ void MainFrame::onOpenAbout( wxCommandEvent& event )
   aboutDialog->Raise();
   aboutDialog->Show(true);
 }
+
+void MainFrame::onMenuExit( wxCommandEvent& event )
+{
+  wxExit();
+}

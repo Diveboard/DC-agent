@@ -19,6 +19,7 @@ public:
   void onClose( wxCloseEvent& event );
   void onLogoutUser( wxCommandEvent& event );
   void onOpenAbout( wxCommandEvent& event );
+  void onMenuExit( wxCommandEvent& event );
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
 private:
   // Panel Login
