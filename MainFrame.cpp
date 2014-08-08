@@ -84,8 +84,9 @@ void MainFrame::loadUploadDivesPanel()
   m_upload_dive->Show();
   m_login_panel->Hide();
   m_upload_dive->Layout();
-  SetMenuBar(m_menubar);
-  m_menubar->Attach(this);
+  //SetMenuBar(m_menubar);
+  if (!m_menubar->isAttached())
+    m_menubar->Attach(this);
   this->Layout();
   GetSizer()->Fit(this);
   InitUploadDivesPanel();
@@ -96,8 +97,9 @@ void MainFrame::InitLoginPanel()
   m_login_panel->Show();
   m_upload_dive->Hide();
   m_login_panel->Layout();
-  SetMenuBar(NULL);
-  m_menubar->Detach();
+  //SetMenuBar(NULL);
+  if (m_menubar->isAttached())
+    m_menubar->Detach();
   m_login_panel->Fit();
   this->Layout();
   GetSizer()->Fit(this);
