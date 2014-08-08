@@ -22,7 +22,8 @@
 
 #include "AboutDialog.h"
 #include <wx/snglinst.h>
-
+#include <ApplicationServices/ApplicationServices.h>
+ 
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
   AboutDilog*                 aboutDilog=0;
