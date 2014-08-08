@@ -1,6 +1,7 @@
 #include "../DiveAgentApp.h"
 #include "../icon_systrail.png.h"
 #include <wx/icon.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 void DiveAgentApp::createDocIcon()
 {
