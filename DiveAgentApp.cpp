@@ -15,7 +15,7 @@
 //#include "icon_bw.xpm"
 //#include "new_icon_yellow.xpm"
 #include "icon_systrail.png.h"
-#include "Win/Guicon.h"
+//#include "Win/Guicon.h"
 #include "MainFrame.h"
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
@@ -116,7 +116,7 @@ IMPLEMENT_APP(DiveAgentApp)
 
 DiveAgentApp::DiveAgentApp()
 {
-  RedirectIOToConsole();
+  //  RedirectIOToConsole();
   m_taskBarIcon = 0;
   m_dockIcon = 0;
 }
