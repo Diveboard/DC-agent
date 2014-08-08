@@ -17,8 +17,7 @@ public:
   void OnMenuExit(wxCommandEvent&);
   
   void OnMenuUploadDives(wxCommandEvent&);
-  void OnMenuPreferences(wxCommandEvent&);
-  void OnMenuCheckForUpdates(wxCommandEvent&);
+  void OnMenuLogout(wxCommandEvent&);
   void OnMenuAbout(wxCommandEvent&);
   
   virtual wxMenu *CreatePopupMenu();
