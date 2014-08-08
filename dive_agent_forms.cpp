@@ -7,6 +7,10 @@
 
 #include "dive_agent_forms.h"
 
+#include "FBloginbutton.png.h"
+#include "full_diveboard_grey.png.h"
+#include "icon_about.png.h"
+
 ///////////////////////////////////////////////////////////////////////////
 
 UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -113,7 +117,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer36;
 	bSizer36 = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, wxBitmap( wxT("icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer36->Add( m_bitmap2, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
 	m_aboutStatic = new wxStaticText( m_panel8, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -174,7 +178,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_accountSetSizer;
 	m_accountSetSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("full_diveboard_grey.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, full_diveboard_grey_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_accountSetSizer->Add( m_bitmap4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
 	
 	wxBoxSizer* bSizer33;
@@ -224,7 +228,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxSize( -1,40 ), 0 );
 	m_loginButtonSizer->Add( m_loginButton, 1, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, wxBitmap( wxT("FBloginbutton.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
+	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
 	m_loginButtonSizer->Add( m_FBconnectButton, 1, wxALL, 5 );
 	
 	
@@ -255,7 +259,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bAvatarSizer;
 	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
+	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxSize( 100,100 ), 0 );
 	bAvatarSizer->Add( m_avatar, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 	
 	m_login = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
