@@ -40,7 +40,6 @@ namespace
 MainFrame::MainFrame() : MainFrameBase(0), _f( * new ComputerFactory())
 {
   InitLoginPanel();
-  aboutDialog = new AboutDilog();
 }
 
 void MainFrame::InitUploadDivesPanel()
@@ -84,9 +83,6 @@ void MainFrame::loadUploadDivesPanel()
   m_upload_dive->Show();
   m_login_panel->Hide();
   m_upload_dive->Layout();
-  SetMenuBar(m_menubar);
-  if (!m_menubar->IsAttached())
-    m_menubar->Attach(this);
   this->Layout();
   GetSizer()->Fit(this);
   InitUploadDivesPanel();
@@ -97,9 +93,6 @@ void MainFrame::InitLoginPanel()
   m_login_panel->Show();
   m_upload_dive->Hide();
   m_login_panel->Layout();
-  SetMenuBar(NULL);
-  if (m_menubar->IsAttached())
-    m_menubar->Detach();
   m_login_panel->Fit();
   this->Layout();
   GetSizer()->Fit(this);
@@ -392,22 +385,4 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
 void MainFrame::onClose( wxCloseEvent& event ) 
 {
   this->Hide();
-}
-
-
-void MainFrame::onLogoutUser( wxCommandEvent& event )
-{
-  DiveAgent::instance().logoff();
-  InitLoginPanel();  
-}
-
-void MainFrame::onOpenAbout( wxCommandEvent& event )
-{
-  aboutDialog->Raise();
-  aboutDialog->Show(true);
-}
-
-void MainFrame::onMenuExit( wxCommandEvent& event )
-{
-  wxExit();
 }

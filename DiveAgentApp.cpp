@@ -22,26 +22,25 @@
 
 #include "AboutDialog.h"
 #include <wx/snglinst.h>
-#include <ApplicationServices/ApplicationServices.h>
  
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
-  AboutDilog*                 aboutDilog=0;
+  AboutDilog*                 aboutDialog=0;
   MainFrame*		              mainFrame=0;
   wxSingleInstanceChecker*    m_checker=0;
 
   void createDialogs()
   {
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
-    aboutDilog                = new AboutDilog();
+    aboutDialog                = new AboutDilog();
   };
 
   void destroyDalogs()
   {
     if (uploadDivesProgressDialog)
       delete uploadDivesProgressDialog;
-    if (aboutDilog)
-      delete aboutDilog;
+    if (aboutDialog)
+      delete aboutDialog;
   };
 }
 
@@ -72,15 +71,29 @@ enum
 {
   PU_RESTORE = 10001,
   PU_UPLOAD_DIVES,
+  PU_LOGOUT,
+  PU_ABOUT,
   PU_EXIT
 };
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
+EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
+EVT_MENU(PU_LOGOUT,    DiveAgentTaskBarIcon::OnMenuLogout)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
 
+void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& )
+{
+  DiveAgent::instance().logoff();
+  mainFrame->InitLoginPanel();  
+}
+void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
+{
+  aboutDialog->Raise();
+  aboutDialog->Show(true);
+}
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
   wxExit();
