@@ -363,10 +363,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->SetSizer( bSizer21 );
 	this->Layout();
 	m_menubar = new wxMenuBar( 0 );
-	m_menubar->SetForegroundColour( wxColour( 251, 175, 23 ) );
-	m_menubar->SetBackgroundColour( wxColour( 251, 175, 23 ) );
-	m_menubar->Hide();
-	
 	m_file = new wxMenu();
 	wxMenuItem* m_logout;
 	m_logout = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("Logout") ) , wxEmptyString, wxITEM_NORMAL );

@@ -70,10 +70,12 @@ void reportError(const std::string& error)
 enum
 {
   PU_RESTORE = 10001,
+  PU_UPLOAD_DIVES,
   PU_EXIT
 };
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
+EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
@@ -89,7 +91,7 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
   wxMenu *menu = new wxMenu;
   if ( !haveQuitMenuFromSystem() )
   {
-    menu->AppendSeparator();
+    menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
     menu->Append(PU_EXIT,    wxT("E&xit"));
   }
   return menu;
