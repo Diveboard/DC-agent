@@ -369,11 +369,11 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_file->Append( m_logout );
 	
 	wxMenuItem* m_about;
-	m_about = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
+	m_about = new wxMenuItem( m_file, wxID_ABOUT, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
 	m_file->Append( m_about );
 	
 	wxMenuItem* m_exit;
-	m_exit = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("Exit") ) , wxEmptyString, wxITEM_NORMAL );
+	m_exit = new wxMenuItem( m_file, wxID_EXIT, wxString( wxT("Exit") ) , wxEmptyString, wxITEM_NORMAL );
 	m_file->Append( m_exit );
 	
 	m_menubar->Append( m_file, wxT("File") ); 
@@ -411,7 +411,7 @@ MainFrameBase::~MainFrameBase()
 	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
 	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onLogoutUser ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onMenuExit ) );
+	this->Disconnect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
+	this->Disconnect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onMenuExit ) );
 	
 }
