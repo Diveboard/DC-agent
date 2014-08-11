@@ -29,14 +29,13 @@ namespace {
   MainFrame*		              mainFrame=0;
   wxSingleInstanceChecker*    m_checker=0;
 
-  void createDialogs(DiveAgentTaskBarIcon   *m_taskBarIcon)
+  void createDialogs()
   {
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     aboutDialog                = new AboutDilog();
     mainFrame = new MainFrame();
 
     uploadDivesProgressDialog->setMainFrame(mainFrame);
-    mainFrame->setMenu(m_taskBarIcon->m_menu);
     mainFrame->setProgressDialog(uploadDivesProgressDialog);
     mainFrame->Show(true);
   };
@@ -50,9 +49,17 @@ namespace {
   };
 }
 
+wxDialog *currentDialog;
+bool isLoginEnable = true;
+
+void setIsLoginEnable(bool e)
+{
+  isLoginEnable = e;
+}
+
 void setCurrentDialog(wxDialog *d, bool show)
 {
-  // currentDialog = d;
+   currentDialog = d;
   if (show)
   {
     d->Raise();
@@ -118,6 +125,7 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
     m_menu->Append(PU_ABOUT,    wxT("About"));
     m_menu->Append(PU_EXIT,    wxT("Exit"));
   }
+  m_menu->Enable(PU_LOGOUT, isLoginEnable);
   return m_menu;
 }
 
@@ -130,7 +138,7 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  mainFrame->Show(true);
+  currentDialog->Show(true);
   SureProcessToForeground();
 };
 
@@ -184,7 +192,7 @@ bool DiveAgentApp::OnInit()
   }
 
   createDocIcon();
-  createDialogs(m_taskBarIcon);
+  createDialogs();
   return true;
 }
 

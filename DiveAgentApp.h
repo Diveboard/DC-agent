@@ -54,5 +54,6 @@ protected:
 class wxDialog;
 void setCurrentDialog(wxDialog *d, bool show=true);
 void reportError(const std::string&);
+void setIsLoginEnable(bool e);
 
 #endif//_DIVE_AGENT_APP_HPP

@@ -20,6 +20,8 @@ void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event
 {
   DiveAgent::instance().cancelUploadDives();
   this->Hide();
+  setCurrentDialog(mainFrame);
+  setIsLoginEnable(true);
   mainFrame->Show();
   disableMonitoring();
 };
@@ -67,7 +69,9 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       }
       else
       {
+	setIsLoginEnable(true);
 	mainFrame->Show();
+	setCurrentDialog(mainFrame);
         Hide();
       }
     }
@@ -95,6 +99,8 @@ void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
     {
       wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
     }
+  setIsLoginEnable(true);
+  setCurrentDialog(mainFrame);
   Hide();
 }
 
