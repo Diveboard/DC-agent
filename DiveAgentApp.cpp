@@ -39,7 +39,8 @@ namespace {
 
     uploadDivesProgressDialog->setMainFrame(mainFrame);
     mainFrame->setProgressDialog(uploadDivesProgressDialog);
-    mainFrame->Show(true);
+    mainFrame->Raise();
+    mainFrame->Show();
   };
 
   void destroyDalogs()
@@ -64,8 +65,8 @@ void setCurrentDialog(wxDialog *d, bool show)
    currentDialog = d;
   if (show)
   {
-    d->Raise();
     d->Show();
+    d->Raise();
   }
   else
     d->Hide();
@@ -107,6 +108,7 @@ void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
 {
   aboutDialog->Raise();
   aboutDialog->Show();
+  SureProcessToForeground();
 }
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
@@ -140,7 +142,8 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  currentDialog->Show(true);
+  currentDialog->Raise();
+  currentDialog->Show();
   SureProcessToForeground();
 };
 
