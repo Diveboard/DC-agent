@@ -31,7 +31,6 @@
 #include <wx/statline.h>
 #include <wx/choice.h>
 #include <wx/checkbox.h>
-#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -90,9 +89,9 @@ class AboutDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class MainFrameBase
+/// Class MainDialogBase
 ///////////////////////////////////////////////////////////////////////////////
-class MainFrameBase : public wxFrame 
+class MainDialogBase : public wxDialog 
 {
 	private:
 	
@@ -121,10 +120,6 @@ class MainFrameBase : public wxFrame
 		wxButton* m_uploadDivesButton;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void onClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
-		virtual void OnLeftUp( wxMouseEvent& event ) { event.Skip(); }
-		virtual void OnMouseMove( wxMouseEvent& event ) { event.Skip(); }
 		virtual void loginButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void loginButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
@@ -134,9 +129,8 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Diveboard"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 639,450 ), long style = wxCAPTION|wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
-		
-		~MainFrameBase();
+		MainDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~MainDialogBase();
 	
 };
 

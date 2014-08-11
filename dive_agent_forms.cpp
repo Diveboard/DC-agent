@@ -161,7 +161,7 @@ AboutDialogBase::~AboutDialogBase()
 	
 }
 
-MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 500,450 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
@@ -247,7 +247,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_login_panel->SetSizer( m_accountSetSizer );
 	m_login_panel->Layout();
 	m_accountSetSizer->Fit( m_login_panel );
-	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER, 0 );
+	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxALL, 20 );
 	
 	m_upload_dive = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxNO_BORDER );
 	m_upload_dive->SetBackgroundColour( wxColour( 251, 221, 161 ) );
@@ -358,7 +358,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_upload_dive->SetSizer( bMainSizer );
 	m_upload_dive->Layout();
 	bMainSizer->Fit( m_upload_dive );
-	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxRIGHT|wxLEFT, 20 );
+	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxALL, 20 );
 	
 	
 	bSizer21->Add( 0, 0, 1, 0, 5 );
@@ -366,32 +366,25 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	this->SetSizer( bSizer21 );
 	this->Layout();
+	bSizer21->Fit( this );
 	
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
-	this->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
-	this->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
-	this->Connect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
-	m_loginButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::loginButtonOnButtonClick ), NULL, this );
-	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
-	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
-	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
-	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
+	m_loginButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
+	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
+	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 }
 
-MainFrameBase::~MainFrameBase()
+MainDialogBase::~MainDialogBase()
 {
 	// Disconnect Events
-	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
-	this->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
-	this->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
-	this->Disconnect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
-	m_loginButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::loginButtonOnButtonClick ), NULL, this );
-	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
-	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
-	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
-	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
+	m_loginButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
+	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
+	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	
 }

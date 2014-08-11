@@ -37,7 +37,7 @@ namespace
   }
 };
 
-MainFrame::MainFrame() : MainFrameBase(0), _f( * new ComputerFactory())
+MainFrame::MainFrame() : MainDialogBase(0), _f( * new ComputerFactory())
 {
   InitLoginPanel();
 }

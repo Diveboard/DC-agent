@@ -6,7 +6,7 @@
 #include "ComputerFactory.h"
 #include "AboutDialog.h"
 
-class MainFrame : public MainFrameBase
+class MainFrame : public MainDialogBase
 {
 public:
   MainFrame();
