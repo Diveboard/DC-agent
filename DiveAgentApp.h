@@ -10,6 +10,7 @@
 class DiveAgentTaskBarIcon : public wxTaskBarIcon
 {
 public:
+  wxMenu *m_menu;
   DiveAgentTaskBarIcon(wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE): wxTaskBarIcon(iconType)
   {}
   
@@ -27,6 +28,14 @@ protected:
   void SureProcessToForeground();
   bool haveQuitMenuFromSystem();
 };
+  enum
+  {
+    PU_RESTORE = 10001,
+    PU_UPLOAD_DIVES,
+    PU_LOGOUT,
+    PU_ABOUT,
+    PU_EXIT
+  };
 
 // Define a new application
 class DiveAgentApp : public wxApp
@@ -36,6 +45,7 @@ public:
   ~DiveAgentApp();
   virtual bool  OnInit();
   virtual int   OnExit();
+
 protected:
   void createDocIcon();
   DiveAgentTaskBarIcon   *m_taskBarIcon;

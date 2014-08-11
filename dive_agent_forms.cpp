@@ -201,7 +201,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	m_emailText->SetMaxLength( 0 ); 
 	m_emailText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	
-	m_EmailSizer->Add( m_emailText, 3, wxALL, 5 );
+	m_EmailSizer->Add( m_emailText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_EmailSizer, 1, wxEXPAND, 5 );
@@ -213,11 +213,11 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	m_paswordStatic->Wrap( -1 );
 	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_PROCESS_ENTER );
 	m_passwordText->SetMaxLength( 0 ); 
 	m_passwordText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	
-	m_passwordSizer->Add( m_passwordText, 3, wxALL, 5 );
+	m_passwordSizer->Add( m_passwordText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_passwordSizer, 1, wxEXPAND, 5 );
@@ -371,6 +371,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_passwordText->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
 	m_loginButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
 	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
@@ -382,6 +383,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 MainDialogBase::~MainDialogBase()
 {
 	// Disconnect Events
+	m_passwordText->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
 	m_loginButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
 	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );

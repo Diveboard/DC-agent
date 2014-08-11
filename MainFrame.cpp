@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainFrame.h"
 #include "DiveAgent.h"
+#include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
 #include <rapidjson/rapidjson.h>
@@ -222,6 +223,8 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 
 void MainFrame::showAccountInfo()
 {
+  //  m_menu->SetLabel(PU_LOGOUT, wxT("Logout"));
+
   m_login->SetLabel(wxString::FromUTF8((std::string("Logged in as: ") + DiveAgent::instance().getLogedUser()).c_str()));
   if (!DiveAgent::instance().getLogedUserPicture().empty())
   {
@@ -380,9 +383,15 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
   assert(_progress_dialog);
   setCurrentDialog(_progress_dialog);
   _progress_dialog->enableMonitoring();
+  this->Hide();
 }
 
 void MainFrame::onClose( wxCloseEvent& event ) 
 {
   this->Hide();
+}
+
+void MainFrame::setMenu(wxMenu *menu)
+{
+  this->m_menu = menu;
 }

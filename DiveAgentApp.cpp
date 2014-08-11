@@ -29,10 +29,16 @@ namespace {
   MainFrame*		              mainFrame=0;
   wxSingleInstanceChecker*    m_checker=0;
 
-  void createDialogs()
+  void createDialogs(DiveAgentTaskBarIcon   *m_taskBarIcon)
   {
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     aboutDialog                = new AboutDilog();
+    mainFrame = new MainFrame();
+
+    uploadDivesProgressDialog->setMainFrame(mainFrame);
+    mainFrame->setMenu(m_taskBarIcon->m_menu);
+    mainFrame->setProgressDialog(uploadDivesProgressDialog);
+    mainFrame->Show(true);
   };
 
   void destroyDalogs()
@@ -67,15 +73,6 @@ void reportError(const std::string& error)
 // DiveAgentTaskBarIcon implementation
 // ----------------------------------------------------------------------------
 
-enum
-{
-  PU_RESTORE = 10001,
-  PU_UPLOAD_DIVES,
-  PU_LOGOUT,
-  PU_ABOUT,
-  PU_EXIT
-};
-
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
 EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
@@ -84,10 +81,18 @@ EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
 
-void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& )
+void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& e)
 {
-  DiveAgent::instance().logoff();
-  mainFrame->InitLoginPanel();  
+  if (DiveAgent::instance().restore_login())
+    {
+      DiveAgent::instance().logoff();
+      mainFrame->InitLoginPanel();
+      m_menu->SetLabel(PU_LOGOUT, wxT("Login"));
+    }
+  else
+    {
+      OnMenuUploadDives(e);
+    }
 }
 void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
 {
@@ -102,15 +107,18 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 // Overridables
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 {
-  wxMenu *menu = new wxMenu;
+  m_menu = new wxMenu();
   if ( !haveQuitMenuFromSystem() )
   {
-    menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
-    menu->Append(PU_LOGOUT,    wxT("Logout"));
-    menu->Append(PU_ABOUT,    wxT("About"));
-    menu->Append(PU_EXIT,    wxT("E&xit"));
+    m_menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
+    if (DiveAgent::instance().restore_login())
+      m_menu->Append(PU_LOGOUT,    wxT("Logout"));
+    else
+      m_menu->Append(PU_LOGOUT,    wxT("Login"));
+    m_menu->Append(PU_ABOUT,    wxT("About"));
+    m_menu->Append(PU_EXIT,    wxT("Exit"));
   }
-  return menu;
+  return m_menu;
 }
 
 void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
@@ -176,10 +184,7 @@ bool DiveAgentApp::OnInit()
   }
 
   createDocIcon();
-  createDialogs();
-  mainFrame = new MainFrame();
-  mainFrame->setProgressDialog(uploadDivesProgressDialog);
-  mainFrame->Show(true);
+  createDialogs(m_taskBarIcon);
   return true;
 }
 

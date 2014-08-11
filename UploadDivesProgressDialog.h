@@ -3,11 +3,13 @@
 #include "dive_agent_forms.h"
 
 #include <wx/timer.h>
+class MainFrame;
 class UploadDivesProgressDialog: public UploadDivesProgressDialogBase
 {
 public:  UploadDivesProgressDialog();
   void enableMonitoring();
   void disableMonitoring(){ _monitoring = false;}
+  void setMainFrame(MainFrame *m) {mainFrame = m;}
 protected:
   enum
   {
@@ -22,6 +24,7 @@ protected:
   bool              _monitoring;
   bool              _wait_dive_xml;
   wxTimer*          _timer;
+  MainFrame	    *mainFrame;
 };
 
 #endif
