@@ -375,6 +375,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_selectMakeChoice->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainDialogBase::selectMakeChoiceOnChoice ), NULL, this );
 	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 }
 
@@ -385,6 +386,7 @@ MainDialogBase::~MainDialogBase()
 	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
 	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_selectMakeChoice->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainDialogBase::selectMakeChoiceOnChoice ), NULL, this );
 	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	
 }

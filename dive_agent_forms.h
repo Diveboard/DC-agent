@@ -124,6 +124,7 @@ class MainDialogBase : public wxDialog
 		virtual void loginButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
+		virtual void selectMakeChoiceOnChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		
 	
