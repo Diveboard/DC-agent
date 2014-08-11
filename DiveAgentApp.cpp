@@ -106,7 +106,7 @@ void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& e)
 void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
 {
   aboutDialog->Raise();
-  aboutDialog->Show(true);
+  aboutDialog->Show();
 }
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
