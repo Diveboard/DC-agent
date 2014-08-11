@@ -31,8 +31,6 @@
 #include <wx/statline.h>
 #include <wx/choice.h>
 #include <wx/checkbox.h>
-#include <wx/menu.h>
-#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -91,9 +89,9 @@ class AboutDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class MainFrameBase
+/// Class MainDialogBase
 ///////////////////////////////////////////////////////////////////////////////
-class MainFrameBase : public wxFrame 
+class MainDialogBase : public wxDialog 
 {
 	private:
 	
@@ -120,29 +118,20 @@ class MainFrameBase : public wxFrame
 		wxCheckBox* m_selectPortManualCheck;
 		wxStaticText* m_staticText21;
 		wxButton* m_uploadDivesButton;
-		wxMenuBar* m_menubar;
-		wxMenu* m_file;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void onClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
-		virtual void OnLeftUp( wxMouseEvent& event ) { event.Skip(); }
-		virtual void OnMouseMove( wxMouseEvent& event ) { event.Skip(); }
 		virtual void loginButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void loginButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void FBconnectButtonOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
+		virtual void selectMakeChoiceOnChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void uploadDivesButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onLogoutUser( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onOpenAbout( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onMenuExit( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 639,450 ), long style = wxCAPTION|wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL );
-		
-		~MainFrameBase();
+		MainDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~MainDialogBase();
 	
 };
 

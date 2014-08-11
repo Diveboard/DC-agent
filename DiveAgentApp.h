@@ -10,6 +10,7 @@
 class DiveAgentTaskBarIcon : public wxTaskBarIcon
 {
 public:
+  wxMenu *m_menu;
   DiveAgentTaskBarIcon(wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE): wxTaskBarIcon(iconType)
   {}
   
@@ -17,8 +18,7 @@ public:
   void OnMenuExit(wxCommandEvent&);
   
   void OnMenuUploadDives(wxCommandEvent&);
-  void OnMenuPreferences(wxCommandEvent&);
-  void OnMenuCheckForUpdates(wxCommandEvent&);
+  void OnMenuLogout(wxCommandEvent&);
   void OnMenuAbout(wxCommandEvent&);
   
   virtual wxMenu *CreatePopupMenu();
@@ -28,6 +28,14 @@ protected:
   void SureProcessToForeground();
   bool haveQuitMenuFromSystem();
 };
+  enum
+  {
+    PU_RESTORE = 10001,
+    PU_UPLOAD_DIVES,
+    PU_LOGOUT,
+    PU_ABOUT,
+    PU_EXIT
+  };
 
 // Define a new application
 class DiveAgentApp : public wxApp
@@ -37,6 +45,7 @@ public:
   ~DiveAgentApp();
   virtual bool  OnInit();
   virtual int   OnExit();
+
 protected:
   void createDocIcon();
   DiveAgentTaskBarIcon   *m_taskBarIcon;
@@ -45,5 +54,6 @@ protected:
 class wxDialog;
 void setCurrentDialog(wxDialog *d, bool show=true);
 void reportError(const std::string&);
+void setIsLoginEnable(bool e);
 
 #endif//_DIVE_AGENT_APP_HPP

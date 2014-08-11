@@ -7,6 +7,11 @@
 
 #include "dive_agent_forms.h"
 
+#include "FBloginbutton.png.h"
+#include "full_diveboard_grey.png.h"
+#include "icon_about.png.h"
+#include "icon_bw.png.h"
+
 ///////////////////////////////////////////////////////////////////////////
 
 UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -113,7 +118,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer36;
 	bSizer36 = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, wxBitmap( wxT("icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, icon_bw_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer36->Add( m_bitmap2, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
 	m_aboutStatic = new wxStaticText( m_panel8, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -157,7 +162,7 @@ AboutDialogBase::~AboutDialogBase()
 	
 }
 
-MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 500,450 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
@@ -174,7 +179,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* m_accountSetSizer;
 	m_accountSetSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, wxBitmap( wxT("full_diveboard_grey.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_bitmap4 = new wxStaticBitmap( m_login_panel, wxID_ANY, full_diveboard_grey_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_accountSetSizer->Add( m_bitmap4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
 	
 	wxBoxSizer* bSizer33;
@@ -197,7 +202,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_emailText->SetMaxLength( 0 ); 
 	m_emailText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	
-	m_EmailSizer->Add( m_emailText, 3, wxALL, 5 );
+	m_EmailSizer->Add( m_emailText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_EmailSizer, 1, wxEXPAND, 5 );
@@ -209,11 +214,11 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_paswordStatic->Wrap( -1 );
 	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_PROCESS_ENTER );
 	m_passwordText->SetMaxLength( 0 ); 
 	m_passwordText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	
-	m_passwordSizer->Add( m_passwordText, 3, wxALL, 5 );
+	m_passwordSizer->Add( m_passwordText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_accountSetViaEmailSizer->Add( m_passwordSizer, 1, wxEXPAND, 5 );
@@ -224,7 +229,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxSize( -1,40 ), 0 );
 	m_loginButtonSizer->Add( m_loginButton, 1, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
 	
-	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, wxBitmap( wxT("FBloginbutton.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
+	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
 	m_loginButtonSizer->Add( m_FBconnectButton, 1, wxALL, 5 );
 	
 	
@@ -243,7 +248,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_login_panel->SetSizer( m_accountSetSizer );
 	m_login_panel->Layout();
 	m_accountSetSizer->Fit( m_login_panel );
-	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER, 0 );
+	bSizer21->Add( m_login_panel, 0, wxALIGN_CENTER|wxALL, 20 );
 	
 	m_upload_dive = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxNO_BORDER );
 	m_upload_dive->SetBackgroundColour( wxColour( 251, 221, 161 ) );
@@ -255,7 +260,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bAvatarSizer;
 	bAvatarSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, wxBitmap( wxT("icon_about.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,100 ), 0 );
+	m_avatar = new wxStaticBitmap( m_upload_dive, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxSize( 100,100 ), 0 );
 	bAvatarSizer->Add( m_avatar, 0, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 	
 	m_login = new wxStaticText( m_upload_dive, wxID_ANY, wxT("Logged in as..."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -354,7 +359,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_upload_dive->SetSizer( bMainSizer );
 	m_upload_dive->Layout();
 	bMainSizer->Fit( m_upload_dive );
-	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxRIGHT|wxLEFT, 20 );
+	bSizer21->Add( m_upload_dive, 0, wxALIGN_CENTER|wxALL, 20 );
 	
 	
 	bSizer21->Add( 0, 0, 1, 0, 5 );
@@ -362,56 +367,29 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	this->SetSizer( bSizer21 );
 	this->Layout();
-	m_menubar = new wxMenuBar( 0 );
-	m_file = new wxMenu();
-	wxMenuItem* m_logout;
-	m_logout = new wxMenuItem( m_file, wxID_ANY, wxString( wxT("Logout") ) , wxEmptyString, wxITEM_NORMAL );
-	m_file->Append( m_logout );
-	
-	wxMenuItem* m_about;
-	m_about = new wxMenuItem( m_file, wxID_ABOUT, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
-	m_file->Append( m_about );
-	
-	wxMenuItem* m_exit;
-	m_exit = new wxMenuItem( m_file, wxID_EXIT, wxString( wxT("Exit") ) , wxEmptyString, wxITEM_NORMAL );
-	m_file->Append( m_exit );
-	
-	m_menubar->Append( m_file, wxT("File") ); 
-	
-	this->SetMenuBar( m_menubar );
-	
+	bSizer21->Fit( this );
 	
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
-	this->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
-	this->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
-	this->Connect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
-	m_loginButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::loginButtonOnButtonClick ), NULL, this );
-	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
-	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
-	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
-	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
-	this->Connect( m_logout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onLogoutUser ) );
-	this->Connect( m_about->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
-	this->Connect( m_exit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onMenuExit ) );
+	m_passwordText->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
+	m_FBconnectButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
+	m_FBconnectButton->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_selectMakeChoice->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainDialogBase::selectMakeChoiceOnChoice ), NULL, this );
+	m_uploadDivesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 }
 
-MainFrameBase::~MainFrameBase()
+MainDialogBase::~MainDialogBase()
 {
 	// Disconnect Events
-	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::onClose ) );
-	this->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrameBase::OnLeftDown ) );
-	this->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrameBase::OnLeftUp ) );
-	this->Disconnect( wxEVT_MOTION, wxMouseEventHandler( MainFrameBase::OnMouseMove ) );
-	m_loginButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::loginButtonOnButtonClick ), NULL, this );
-	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::loginButtonOnUpdateUI ), NULL, this );
-	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::FBconnectButtonOnButtonClick ), NULL, this );
-	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrameBase::FBconnectButtonOnUpdateUI ), NULL, this );
-	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::uploadDivesButtonOnButtonClick ), NULL, this );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onLogoutUser ) );
-	this->Disconnect( wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenAbout ) );
-	this->Disconnect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onMenuExit ) );
+	m_passwordText->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::loginButtonOnButtonClick ), NULL, this );
+	m_loginButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::loginButtonOnUpdateUI ), NULL, this );
+	m_FBconnectButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::FBconnectButtonOnButtonClick ), NULL, this );
+	m_FBconnectButton->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainDialogBase::FBconnectButtonOnUpdateUI ), NULL, this );
+	m_selectMakeChoice->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainDialogBase::selectMakeChoiceOnChoice ), NULL, this );
+	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	
 }

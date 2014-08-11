@@ -22,36 +22,51 @@
 
 #include "AboutDialog.h"
 #include <wx/snglinst.h>
-#include <ApplicationServices/ApplicationServices.h>
  
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
-  AboutDilog*                 aboutDilog=0;
+  AboutDilog*                 aboutDialog=0;
   MainFrame*		              mainFrame=0;
   wxSingleInstanceChecker*    m_checker=0;
 
   void createDialogs()
   {
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
-    aboutDilog                = new AboutDilog();
+    aboutDialog                = new AboutDilog();
+    mainFrame = new MainFrame();
+    
+    setCurrentDialog(mainFrame);
+
+    uploadDivesProgressDialog->setMainFrame(mainFrame);
+    mainFrame->setProgressDialog(uploadDivesProgressDialog);
+    mainFrame->Raise();
+    mainFrame->Show();
   };
 
   void destroyDalogs()
   {
     if (uploadDivesProgressDialog)
       delete uploadDivesProgressDialog;
-    if (aboutDilog)
-      delete aboutDilog;
+    if (aboutDialog)
+      delete aboutDialog;
   };
+}
+
+wxDialog *currentDialog;
+bool isLoginEnable = true;
+
+void setIsLoginEnable(bool e)
+{
+  isLoginEnable = e;
 }
 
 void setCurrentDialog(wxDialog *d, bool show)
 {
-  // currentDialog = d;
+   currentDialog = d;
   if (show)
   {
-    d->Raise();
     d->Show();
+    d->Raise();
   }
   else
     d->Hide();
@@ -68,19 +83,33 @@ void reportError(const std::string& error)
 // DiveAgentTaskBarIcon implementation
 // ----------------------------------------------------------------------------
 
-enum
-{
-  PU_RESTORE = 10001,
-  PU_UPLOAD_DIVES,
-  PU_EXIT
-};
-
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
+EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
+EVT_MENU(PU_LOGOUT,    DiveAgentTaskBarIcon::OnMenuLogout)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
 
+void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& e)
+{
+  if (DiveAgent::instance().restore_login())
+    {
+      DiveAgent::instance().logoff();
+      mainFrame->InitLoginPanel();
+      m_menu->SetLabel(PU_LOGOUT, wxT("Login"));
+    }
+  else
+    {
+      OnMenuUploadDives(e);
+    }
+}
+void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
+{
+  aboutDialog->Raise();
+  aboutDialog->Show();
+  SureProcessToForeground();
+}
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
   wxExit();
@@ -89,13 +118,19 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 // Overridables
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 {
-  wxMenu *menu = new wxMenu;
+  m_menu = new wxMenu();
   if ( !haveQuitMenuFromSystem() )
   {
-    menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
-    menu->Append(PU_EXIT,    wxT("E&xit"));
+    m_menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
+    if (DiveAgent::instance().restore_login())
+      m_menu->Append(PU_LOGOUT,    wxT("Logout"));
+    else
+      m_menu->Append(PU_LOGOUT,    wxT("Login"));
+    m_menu->Append(PU_ABOUT,    wxT("About"));
+    m_menu->Append(PU_EXIT,    wxT("Exit"));
   }
-  return menu;
+  m_menu->Enable(PU_LOGOUT, isLoginEnable);
+  return m_menu;
 }
 
 void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
@@ -107,7 +142,8 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 
 void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
 {
-  mainFrame->Show(true);
+  currentDialog->Raise();
+  currentDialog->Show();
   SureProcessToForeground();
 };
 
@@ -162,9 +198,6 @@ bool DiveAgentApp::OnInit()
 
   createDocIcon();
   createDialogs();
-  mainFrame = new MainFrame();
-  mainFrame->setProgressDialog(uploadDivesProgressDialog);
-  mainFrame->Show(true);
   return true;
 }
 

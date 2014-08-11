@@ -9,6 +9,7 @@ fi
 tar zxf ${OPENSSL}.tar.gz
 cd "${CURRENTPATH}/${OPENSSL}"
 ./config shared --prefix="${CURRENTPATH}/lib-32/ssl"
+#./config --prefix="${CURRENTPATH}/lib-32"
 make
 make install
 cd ${CURRENTPATH}

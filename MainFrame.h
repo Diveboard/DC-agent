@@ -6,7 +6,7 @@
 #include "ComputerFactory.h"
 #include "AboutDialog.h"
 
-class MainFrame : public MainFrameBase
+class MainFrame : public MainDialogBase
 {
 public:
   MainFrame();
@@ -17,17 +17,13 @@ public:
   void loginButtonOnButtonClick( wxCommandEvent& event );
   virtual void FBconnectButtonOnButtonClick ( wxCommandEvent& event );
   void onClose( wxCloseEvent& event );
-  void onLogoutUser( wxCommandEvent& event );
-  void onOpenAbout( wxCommandEvent& event );
-  void onMenuExit( wxCommandEvent& event );
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
+  void InitLoginPanel();
 private:
   // Panel Login
-  void InitLoginPanel();
   void loadUploadDivesPanel();
   void showAccountInfo();
   wxPoint m_delta;
-  AboutDilog*                 aboutDialog=NULL;
 
   // Panel Upload Dive
   void InitUploadDivesPanel();

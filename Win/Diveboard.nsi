@@ -93,9 +93,6 @@ File "../bin/libwinpthread-1.dll"
 File "../bin/openssl.exe"
 File "../bin/libeay32.dll"
 File "../bin/ssleay32.dll"
-File "../full_diveboard_grey.png"
-File "../icon_about.png"
-File "../FBloginbutton.png"
 SectionEnd
 
 ######################################################################
@@ -168,9 +165,6 @@ Delete "$INSTDIR\libwinpthread-1.dll"
 Delete "$INSTDIR\openssl.exe"
 Delete "$INSTDIR\libeay32.dll"
 Delete "$INSTDIR\ssleay32.dll"
-Delete "$INSTDIR\full_diveboard_grey.png"
-Delete "$INSTDIR\icon_about.png"
-Delete "$INSTDIR\FBloginbutton.png"
 Delete "$INSTDIR\uninstall.exe"
 !ifdef WEB_SITE
 Delete "$INSTDIR\${APP_NAME} website.url"
