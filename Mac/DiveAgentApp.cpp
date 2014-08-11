@@ -5,10 +5,6 @@
 
 void DiveAgentApp::createDocIcon()
 {
-
-ProcessSerialNumber PSN;
-GetCurrentProcess(&PSN);
-TransformProcessType(&PSN,kProcessTransformToForegroundApplication);
   m_dockIcon = new DiveAgentTaskBarIcon(wxTBI_DOCK);
   wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_systrail);
   wxIcon icon;
