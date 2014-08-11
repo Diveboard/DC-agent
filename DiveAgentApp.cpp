@@ -34,6 +34,8 @@ namespace {
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     aboutDialog                = new AboutDilog();
     mainFrame = new MainFrame();
+    
+    setCurrentDialog(mainFrame);
 
     uploadDivesProgressDialog->setMainFrame(mainFrame);
     mainFrame->setProgressDialog(uploadDivesProgressDialog);
