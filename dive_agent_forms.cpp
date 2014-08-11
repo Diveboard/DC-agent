@@ -10,6 +10,7 @@
 #include "FBloginbutton.png.h"
 #include "full_diveboard_grey.png.h"
 #include "icon_about.png.h"
+#include "icon_bw.png.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -117,7 +118,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer36;
 	bSizer36 = new wxBoxSizer( wxVERTICAL );
 	
-	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, icon_about_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bitmap2 = new wxStaticBitmap( m_panel8, wxID_ANY, icon_bw_png_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer36->Add( m_bitmap2, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
 	m_aboutStatic = new wxStaticText( m_panel8, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );

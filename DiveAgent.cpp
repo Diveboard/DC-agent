@@ -168,7 +168,7 @@ namespace {
         throw DBException("login responce: field 'user.nickname' of type String is expected");
       if (!d["user"]["id"].IsUint())
         throw DBException("login responce: field 'user.id' of type String is expected");
-      if (!d["user"]["picture"].IsString())
+      if (!d["user"]["picture_large"].IsString())
         throw DBException("login responce: field 'user.picture' of type String is expected");
       // get data
       _token = d["token"].GetString();
@@ -177,7 +177,7 @@ namespace {
       std::stringstream s;
       s <<  id;
       _user_id= s.str();
-      std::string user_picture_url = d["user"]["picture"].GetString();
+      std::string user_picture_url = d["user"]["picture_large"].GetString();
       shttp_get(user_picture_url);
       _user_picture = std::vector<char>(_resp_body.begin(), _resp_body.end());
 
