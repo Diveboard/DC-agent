@@ -8,7 +8,7 @@
 !define COMP_NAME "Diveboard"
 !define WEB_SITE "http://www.diveboard.com/"
 !define VERSION "00.00.00.00"
-!define COPYRIGHT "Diveboard  � 2014"
+!define COPYRIGHT "Diveboard  © 2014"
 !define DESCRIPTION "Application"
 !define INSTALLER_NAME "../bin/setup.exe"
 !define MAIN_APP_EXE "DiveboardAgent.exe"
@@ -107,6 +107,8 @@ ExecWait "$TEMP\vcredist_x86.exe"
 
 installed:
 ;we are done
+CreateShortCut “$SMSTARTUP\DiveboardAgent.lnk” “$INSTDIR\${MAIN_APP_EXE}”
+
 SectionEnd
 
 ######################################################################
