@@ -3,6 +3,7 @@
 
 #include "wx/app.h"
 #include "wx/taskbar.h"
+#include <wx/timer.h>
 
 // ----------------------------------------------------------------------------
 // DiveAgentTaskBarIcon
@@ -47,6 +48,17 @@ public:
   virtual int   OnExit();
 
 protected:
+  enum
+  {
+    timer_id = 200,
+    timer_timeout = 1000,
+    timer_mx_count = 10
+  };
+  void onTimer( wxTimerEvent& event);
+  wxTimer*                   _timer;
+  unsigned                   _timer_counter;
+  bool			     _alreadyDetected = false;
+
   void SureProcessToForeground();
   void InitStartOnLogin();
   void createDocIcon();
