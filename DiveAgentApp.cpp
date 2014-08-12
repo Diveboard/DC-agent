@@ -195,6 +195,7 @@ bool DiveAgentApp::OnInit()
 
   createDocIcon();
   createDialogs();
+  SureProcessToForeground();
   return true;
 }
 
