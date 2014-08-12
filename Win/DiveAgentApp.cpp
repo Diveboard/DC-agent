@@ -29,3 +29,7 @@ bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
 void DiveAgentTaskBarIcon::SureProcessToForeground()
 {
 };
+
+void DiveAgentApp::SureProcessToForeground()
+{
+};
