@@ -195,6 +195,7 @@ bool DiveAgentApp::OnInit()
   {
     wxLogError(wxT("Could not set icon."));
   }
+  InitStartOnLogin();
 
   createDocIcon();
   createDialogs();

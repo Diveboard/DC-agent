@@ -2,7 +2,7 @@
 #import <AppKit/NSRunningApplication.h>
 
 #include "../DiveAgentApp.h"
-
+#include "LaunchAtLoginController.h"
 
 void DiveAgentTaskBarIcon::SureProcessToForeground()
 {
@@ -14,4 +14,12 @@ void DiveAgentApp::SureProcessToForeground()
 {
   NSRunningApplication* thisApp = [NSRunningApplication currentApplication];
   [thisApp activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+};
+
+
+void DiveAgentApp::InitStartOnLogin()
+{
+LaunchAtLoginController *launchController = [[LaunchAtLoginController alloc] init];
+[launchController setLaunchAtLogin:YES];
+[launchController release];
 };

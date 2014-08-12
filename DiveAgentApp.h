@@ -48,6 +48,7 @@ public:
 
 protected:
   void SureProcessToForeground();
+  void InitStartOnLogin();
   void createDocIcon();
   DiveAgentTaskBarIcon   *m_taskBarIcon;
   DiveAgentTaskBarIcon   *m_dockIcon;

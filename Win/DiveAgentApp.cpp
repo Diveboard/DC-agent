@@ -33,3 +33,6 @@ void DiveAgentTaskBarIcon::SureProcessToForeground()
 void DiveAgentApp::SureProcessToForeground()
 {
 };
+void DiveAgentApp::InitStartOnLogin()
+{
+};

@@ -19,3 +19,4 @@ bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
 {
   return !OSXIsStatusItem();
 };
+
