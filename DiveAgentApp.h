@@ -47,7 +47,7 @@ public:
   virtual int   OnExit();
 
 protected:
-  void SureProcessToForeground() {}
+  void SureProcessToForeground();
   void createDocIcon();
   DiveAgentTaskBarIcon   *m_taskBarIcon;
   DiveAgentTaskBarIcon   *m_dockIcon;
