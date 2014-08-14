@@ -53,3 +53,9 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 
 5 Building setup.
   makensis Win/Diveboard.nsi
+
+
+HOW TO BUILD ON LINUX
+
+1)
+apt-get install mesa-common-dev freeglut3-dev libwebkitgtk-dev
