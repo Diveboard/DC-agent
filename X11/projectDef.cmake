@@ -3,9 +3,9 @@
 
 # remember that the current source dir is the project root; this file is in ${PLATFORM_NAME}/
 file (GLOB PLATFORM RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    lin/[^.]*.cpp
-    lin/[^.]*.h
-    lin/[^.]*.cmake
+    X11/[^.]*.cpp
+    X11/[^.]*.h
+    X11/[^.]*.cmake
     )
 
 SOURCE_GROUP(Lin FILES ${PLATFORM})
