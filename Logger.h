@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <string>
-
+#include <string.h>
 
 #ifdef WIN32
 #define __THIS_FILE__ ((strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\'): (__FILE__ - 1)) + 1)

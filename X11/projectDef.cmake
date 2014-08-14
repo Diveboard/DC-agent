@@ -19,6 +19,7 @@ set (SOURCES
     ${PLATFORM}
     )
     
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fpermissive")
 #add_x11_plugin(${PROJNAME} SOURCES)
 
 #set(3d_party_ROOT "./3d-party/lib-32")
@@ -32,17 +33,13 @@ find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQU
 include("${wxWidgets_USE_FILE}")
 
 set(BOOST_ROOT "${3d_party_ROOT}")
-
+set(BOOST_INCLUDEDIRS "${3d_party_ROOT}/include/")
+set(BOOST_LIBRARYDIRS "${3d_party_ROOT}/lib/")
 set(BOOST_INCLUDEDIR "${3d_party_ROOT}/include/")
 set(BOOST_LIBRARYDIR "${3d_party_ROOT}/lib/")
-#message("Using boost at: ${Boost_INCLUDE_DIRS}")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
-# find_package( Boost COMPONENTS thread REQUIRED) 
 find_package( Boost COMPONENTS thread system REQUIRED) 
-# include_directories(${Boost_INCLUDE_DIRS})
-# link_directories(${Boost_LIBRARY_DIRS})
-
 include_directories(${BOOST_INCLUDEDIR})
 link_directories(${BOOST_LIBRARYDIR})
 
@@ -51,9 +48,7 @@ message("Using boost at: ${Boost_INCLUDE_DIRS}")
 set(CMAKE_PREFIX_PATH "${3d_party_ROOT}")
 set(Curl_INCLUDE_DIR "${3d_party_ROOT}/include/curl")
 
- #find_package( Curl REQUIRED)
 include_directories(${Curl_INCLUDE_DIR})
-# link_directories(${Curl_LIBRARY_DIRS})
 find_library(LIBDIVECOMPUTER divecomputer)
 find_library(LIBCONFIG config++)
 find_library(LIBICONV iconv)
@@ -76,7 +71,22 @@ foreach(dir ${dirs})
   endif()
 endforeach()
 
+# ENABLE_LANGUAGE(RC)
+# SET(CMAKE_RC_COMPILE_OBJECT "<FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+
+#@PACKAGE_INIT@
+#set(CMAKE_PREFIX_PATH "@PACKAGE_SOME_INSTALL_DIR@")
+
+add_executable(${PROJNAME} ${SOURCES} ${RES_FILES})
+#add_definitions(-std=c++11)
+
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
 target_link_libraries(${PROJNAME}
     ${PLUGIN_INTERNAL_DEPS}
+    ${wxWidgets_LIBRARIES}
+    ${LIBDIVECOMPUTER}
+    ${Boost_LIBRARIES}
+    ${LIBICONV}
+    ${LIBCONFIG}
+    curl
     )

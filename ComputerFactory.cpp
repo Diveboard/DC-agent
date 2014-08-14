@@ -14,6 +14,7 @@
 #include "ComputerMares.h"
 #include "ComputerLibdc.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <iostream>
 #include <errno.h>

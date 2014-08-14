@@ -1,3 +1,4 @@
+#include <wx/webview.h>
 #include "FacebookAuthDialog.h"
 
 void FacbookAuthDialog::OnLoaded(wxWebViewEvent& event)
