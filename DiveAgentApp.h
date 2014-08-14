@@ -20,6 +20,7 @@ public:
   
   void OnMenuUploadDives(wxCommandEvent&);
   void OnMenuLogout(wxCommandEvent&);
+  void OnMenuLog(wxCommandEvent&);
   void OnMenuAbout(wxCommandEvent&);
   
   virtual wxMenu *CreatePopupMenu();
@@ -35,6 +36,7 @@ protected:
     PU_UPLOAD_DIVES,
     PU_LOGOUT,
     PU_ABOUT,
+    PU_LOG,
     PU_EXIT
   };
 

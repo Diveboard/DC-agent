@@ -19,7 +19,7 @@
 #include "MainFrame.h"
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
-
+#include "Logger.h"
 #include "AboutDialog.h"
 #include <wx/snglinst.h>
  
@@ -31,6 +31,7 @@ namespace {
 
   void createDialogs()
   {
+    Logger::append("Start loading all Dialog in startup");
     mainFrame = new MainFrame();
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     aboutDialog                = new AboutDilog();
@@ -41,6 +42,7 @@ namespace {
     mainFrame->setProgressDialog(uploadDivesProgressDialog);
     mainFrame->Raise();
     mainFrame->Show();
+    Logger::append("Finish loading all Dialog in startup");
   };
 
   void destroyDalogs()
@@ -87,6 +89,7 @@ BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
 EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
 EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
 EVT_MENU(PU_LOGOUT,    DiveAgentTaskBarIcon::OnMenuLogout)
+EVT_MENU(PU_LOG,    DiveAgentTaskBarIcon::OnMenuLog)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
@@ -114,6 +117,10 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
   wxExit();
 }
+void DiveAgentTaskBarIcon::OnMenuLog(wxCommandEvent& )
+{
+  std::cout << Logger::toString() << std::endl;
+}
 
 // Overridables
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
@@ -127,6 +134,7 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
     else
       m_menu->Append(PU_LOGOUT,    wxT("Login"));
     m_menu->Append(PU_ABOUT,    wxT("About"));
+    m_menu->Append(PU_LOG,    wxT("Log"));
     m_menu->Append(PU_EXIT,    wxT("Exit"));
   }
   m_menu->Enable(PU_LOGOUT, isLoginEnable);
@@ -155,6 +163,8 @@ IMPLEMENT_APP(DiveAgentApp)
 
 DiveAgentApp::DiveAgentApp()
 {
+  Logger::append("Start application");
+
   //  RedirectIOToConsole();
   m_taskBarIcon = 0;
   m_dockIcon = 0;
@@ -169,6 +179,7 @@ bool DiveAgentApp::OnInit()
   m_checker = new wxSingleInstanceChecker;
   if ( m_checker->IsAnotherRunning() )
     {
+      Logger::append("Another program instance is already running, aborting.");
       wxLogError(_("Another program instance is already running, aborting."));
       delete m_checker; // OnExit() won't be called if we return false
       m_checker = NULL;
@@ -200,6 +211,7 @@ bool DiveAgentApp::OnInit()
   createDocIcon();
   createDialogs();
   SureProcessToForeground();
+  Logger::append("Start the check for connected device timer");
 
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(DiveAgentApp::onTimer), NULL, this );
@@ -219,6 +231,8 @@ void DiveAgentApp::onTimer( wxTimerEvent& event)
     };
     if (port_detected && !mainFrame->IsShown() && !_alreadyDetected)
     {
+      Logger::append("Connected device timer find a new device");
+
       _alreadyDetected = true;
       mainFrame->Show();
       mainFrame->Raise();
@@ -230,6 +244,8 @@ void DiveAgentApp::onTimer( wxTimerEvent& event)
 
 int DiveAgentApp::OnExit()
 {
+  Logger::append("Exit from application");
+
   delete m_checker;
   // dive computer instance must be deleted befor system call to static objects distructor.
   // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
