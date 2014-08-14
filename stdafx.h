@@ -5,7 +5,6 @@
 #define WINVER 0x0502
 #define _UNICODE
 #define UNICODE
-#include <winsock2.h>
 #include <windows.h>
 #endif
 

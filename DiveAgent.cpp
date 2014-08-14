@@ -15,6 +15,16 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "DBException.h"
 
+#define VERSION "1.0"
+
+#ifdef WIN32
+#define OS_CHECK_UPDATE "agent_win32"
+#elif __MACH__
+#define OS_CHECK_UPDATE "agent_osx"
+#elif __linux__
+#define OS_CHECK_UPDATE "agent_linux"
+#endif
+
 namespace {
 
   class ServerAPI
@@ -144,6 +154,19 @@ namespace {
         throw DBException("computerupload responce: field 'completion_form_url' of type String is expected");
       return d["completion_form_url"].GetString();;
     }
+    std::string check_update()
+    {
+      shttp_get(apiBaseURL() + "version/" + OS_CHECK_UPDATE);
+      //
+      rapidjson::Document d;
+      d.Parse<0>(_resp_body.c_str());
+      printf("test2\n");
+      std::string version = d["version"].GetString();
+      if (VERSION == version)
+	return "";
+      else
+	return d["url"].GetString();
+    };
   private:
     void get_user_info()
     {
@@ -203,6 +226,7 @@ namespace {
       DiveAgent::instance().writeSecureProfile("user_info", buffer.GetString());
 
     };
+
     std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
     std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
     void reinit_curl_handle()
@@ -652,5 +676,12 @@ void DiveAgent::deleteDiveComputerInstance()
     delete _dive_computer;
     _dive_computer = 0;
   }
+
 }
+
+std::string DiveAgent::check_update()
+{
+  return api.check_update();
+};
+
 
