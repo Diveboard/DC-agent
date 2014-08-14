@@ -10,6 +10,9 @@
 #include <fstream>
 #include "DiveAgentApp.h"
 #include "FacebookAuthDialog.h"
+#include "ImageSize.h"
+#include "Logger.h"
+
 namespace
 {
   // get custorm item data as string id
@@ -44,6 +47,7 @@ MainFrame::MainFrame() : MainDialogBase(0), _f( * new ComputerFactory())
 
 void MainFrame::InitUploadDivesPanel()
 {
+  scaleFactor = GetContentScaleFactor();
   _expect_port_selected_manualy = false;
   showAccountInfo();
   _timer = new wxTimer(this, timer_id);
@@ -90,6 +94,7 @@ void MainFrame::loadUploadDivesPanel()
 
 void MainFrame::InitLoginPanel()
 {
+  Logger::append("Init Login panel");
   m_login_panel->Show();
   m_upload_dive->Hide();
   m_login_panel->Layout();
@@ -106,6 +111,8 @@ void MainFrame::InitLoginPanel()
   {
     if (DiveAgent::instance().restore_login())
     {
+      Logger::append("User already logged in");
+
       loadUploadDivesPanel();
     }
   }
@@ -156,11 +163,14 @@ void MainFrame::OnLeftUp(wxMouseEvent& evt)
 
 void MainFrame::loginButtonOnButtonClick( wxCommandEvent& event )
 {
+  Logger::append("Click on login button");
+
   try
   {
     if ( !DiveAgent::instance().login_email(m_emailText->GetValue().utf8_str().data(),
                                             m_passwordText->GetValue().utf8_str().data()) )
     {
+      Logger::append((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
       wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
       wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
       dlg->ShowModal();
@@ -168,6 +178,7 @@ void MainFrame::loginButtonOnButtonClick( wxCommandEvent& event )
     }
     else
     {
+      Logger::append("Success login");
       loadUploadDivesPanel();
      // showAccountInfo();
       DiveAgent::writeProfile("login_email", m_emailText->GetValue().utf8_str().data());
@@ -181,6 +192,8 @@ void MainFrame::loginButtonOnButtonClick( wxCommandEvent& event )
 
 void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 {
+  Logger::append("Click on facebook login button");
+
   std::string token;
   std::string id;
   FacbookAuthDialog* dlg = new FacbookAuthDialog(0,  wxID_ANY);
@@ -194,6 +207,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
     {
       if ( !DiveAgent::instance().login_fb(id, token) )
       {
+	Logger::append((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
         wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
         wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
         dlg->ShowModal();
@@ -201,6 +215,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
       }
       else
       {
+      Logger::append("Success facebook login");
       loadUploadDivesPanel();
         // showAccountInfo();
       }
@@ -212,6 +227,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
   }
   else
   {
+    Logger::append("Login have not been completed");
     wxString msg = wxString::FromUTF8("Login have not been completed.");
     wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
     dlg->ShowModal();
@@ -222,6 +238,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 
 void MainFrame::showAccountInfo()
 {
+  Logger::append("Load user info");
   m_login->SetLabel(wxString::FromUTF8((std::string("Logged in as: ") + DiveAgent::instance().getLogedUser()).c_str()));
   if (!DiveAgent::instance().getLogedUserPicture().empty())
   {
@@ -233,6 +250,7 @@ void MainFrame::showAccountInfo()
     wxImage img(tmp_file.utf8_str().data());
     if (!img.IsOk())
     {
+      Logger::append("Unable to display user picture");
       reportError("unable to display user picture");
     }
     else
@@ -307,10 +325,14 @@ void MainFrame::selectMakeChoiceOnChoice( wxCommandEvent& )
 
 void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
 {
+    Logger::append("Start uploading dives");
+
   // check is loged in and not expired
   if (DiveAgent::instance().getLogedUser().empty() ||
       (!DiveAgent::instance().getLogedUser().empty() && DiveAgent::instance().isLoginExpired()))
   {
+    Logger::append("User is not logged in or login is expired");
+
     wxString msg = wxString::FromUTF8("User is not logged in or login is expired.\nPlease, try to login.");
     wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
     dlg->ShowModal();
@@ -349,6 +371,8 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
       m_selectPortPanel->Show();
       GetSizer()->Fit(this);
       _expect_port_selected_manualy = true;
+      Logger::append("Unable to detect port autmaticaly.\nPlease, select it manualy and try again.");
+
       wxString msg = wxString::FromUTF8("Unable to detect port autmaticaly.\nPlease, select it manualy and try again.");
       wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8("Dive agent"));
       dlg->ShowModal();

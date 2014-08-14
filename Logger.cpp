@@ -136,6 +136,7 @@ void Logger::appendF(int line, const char*file, const char * level, std::string 
 {
     char buff[2048];
     FILE *fp = std::fopen(filename.c_str(), "r");
+    printf("-----------------%s----------------------\n", filename.c_str());
     if (!fp) return;
     while(std::fgets(buff, sizeof(buff), fp)) {
         // strip trailing '\n' if it exists
