@@ -124,10 +124,20 @@ LIBTYPE openDLLLibrary()
   }
 
   return libdc;
-#elif defined(__MACH__) || defined(__linux__)
+#elif defined(__MACH__) 
 
   void *libdc;
   std::string library_name = DiveAgent::exeFolder() + "libdivecomputer.dylib";
+  libdc = dlopen(library_name.c_str(),RTLD_LAZY);
+  if (!libdc) DBthrowError("Impossible to load library : %s", dlerror());
+
+  return libdc;
+
+
+#elif defined(__linux__)
+
+  void *libdc;
+  std::string library_name = DiveAgent::exeFolder() + "libdivecomputer.so";
   libdc = dlopen(library_name.c_str(),RTLD_LAZY);
   if (!libdc) DBthrowError("Impossible to load library : %s", dlerror());
 
