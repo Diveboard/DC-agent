@@ -23,8 +23,8 @@ set (SOURCES
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g3")
 
-#set(3d_party_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
-set(3d_party_ROOT "./3d-party/lib-32")
+set(3d_party_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
+#/home/ligol/Desktop/Diveboard/diveboard-agent/3d-party/lib-32/wxWidgets-3.0/bin/wx-config
 set(wxWidgets_CONFIG_EXECUTABLE "${3d_party_ROOT}/wxWidgets-3.0/bin/wx-config")
 
 

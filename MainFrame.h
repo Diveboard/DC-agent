@@ -19,6 +19,7 @@ public:
   void onClose( wxCloseEvent& event );
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
   void InitLoginPanel();
+  ComputerFactory& getComputerFactory() {return _f;}
 private:
   // Panel Login
   void loadUploadDivesPanel();
