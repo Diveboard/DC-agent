@@ -4,6 +4,7 @@
 #include "DiveAgent.h"
 #include "DiveAgentApp.h"
 #include "MainFrame.h"
+#include "Logger.h"
 #include <wx/msgdlg.h>
 
 UploadDivesProgressDialog::UploadDivesProgressDialog():
@@ -57,6 +58,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       if (!error.empty())
       {
         wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploading dives: ") + error).c_str()));
+	Logger::append((std::string("There was errors while uploading dives: ") + error).c_str());
       }
       disableMonitoring();
       if (error.empty())
