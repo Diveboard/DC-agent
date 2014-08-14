@@ -80,6 +80,28 @@ endforeach()
 add_executable(${PROJNAME} ${SOURCES} ${RES_FILES})
 #add_definitions(-std=c++11)
 
+if( UNIX AND NOT APPLE )
+    if( NOT DESKTOP_ENTRY )
+      set( DESKTOP_ENTRY /X11/diveboard-agent.desktop )
+    endif( NOT DESKTOP_ENTRY )
+  
+    add_custom_command( OUTPUT ${DESKTOP_ENTRY}
+      COMMAND touch ${DESKTOP_ENTRY}
+      COMMAND sh /X11/db-agent-desktop.sh ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
+      DEPENDS /X11/db-agent-desktop.sh
+      COMMENT "Generating desktop entry file"
+      )
+    add_custom_target( DESKTOP_ENTRY_FILE ALL
+      DEPENDS ${DESKTOP_ENTRY}
+      )
+  
+    set( APP_ICON forms/icon_ellow.png )
+endif( UNIX AND NOT APPLE )
+message("desktop file created and added to register correctly")
+if(UNIX AND NOT APPLE)
+    install( FILES ${APP_ICON} DESTINATION share/icons )
+endif(UNIX AND NOT APPLE)
+
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
 target_link_libraries(${PROJNAME}
     ${PLUGIN_INTERNAL_DEPS}
