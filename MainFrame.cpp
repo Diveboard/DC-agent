@@ -10,6 +10,7 @@
 #include <fstream>
 #include "DiveAgentApp.h"
 #include "FacebookAuthDialog.h"
+#include "ImageSize.h"
 namespace
 {
   // get custorm item data as string id
@@ -44,6 +45,7 @@ MainFrame::MainFrame() : MainDialogBase(0), _f( * new ComputerFactory())
 
 void MainFrame::InitUploadDivesPanel()
 {
+  scaleFactor = GetContentScaleFactor();
   _expect_port_selected_manualy = false;
   showAccountInfo();
   _timer = new wxTimer(this, timer_id);

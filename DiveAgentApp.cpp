@@ -31,9 +31,9 @@ namespace {
 
   void createDialogs()
   {
+    mainFrame = new MainFrame();
     uploadDivesProgressDialog = new UploadDivesProgressDialog;
     aboutDialog                = new AboutDilog();
-    mainFrame = new MainFrame();
     
     setCurrentDialog(mainFrame);
 
