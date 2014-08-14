@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 
-message(" test [${CMAKE_SYSTEM_NAME}]")
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set (FB_PLATFORM_NAME "Win")
 elseif(APPLE)
