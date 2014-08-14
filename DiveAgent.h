@@ -22,6 +22,7 @@ public:
   bool  isLoginExpired() const;
   const std::vector<char> &getLogedUserPicture();
   void logoff();
+  std::string check_update();
   static std::string exeFolder();
   static void writeProfile(const std::string& key, const std::string& value);
   static std::string readProfile(const std::string& key);

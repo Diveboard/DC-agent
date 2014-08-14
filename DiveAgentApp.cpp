@@ -90,6 +90,7 @@ EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
 EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
 EVT_MENU(PU_LOGOUT,    DiveAgentTaskBarIcon::OnMenuLogout)
 EVT_MENU(PU_LOG,    DiveAgentTaskBarIcon::OnMenuLog)
+EVT_MENU(PU_UPDATE,    DiveAgentTaskBarIcon::OnMenuUpdate)
 EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
@@ -121,6 +122,24 @@ void DiveAgentTaskBarIcon::OnMenuLog(wxCommandEvent& )
 {
   std::cout << Logger::toString() << std::endl;
 }
+void DiveAgentTaskBarIcon::OnMenuUpdate(wxCommandEvent& )
+{
+
+  std::string url = DiveAgent::instance().check_update();
+  if (url.empty())
+    return;
+  wxMessageDialog *dial = new wxMessageDialog(NULL,
+					      wxT("A new version can be downloaded, do you want to download it?"), wxT("Question"),
+					      wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+
+  int ret = dial->ShowModal();
+  dial->Destroy();
+
+  if (ret == wxID_YES) {
+    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
+  }
+  std::cout << "check for update" << url << std::endl;
+}
 
 // Overridables
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
@@ -134,7 +153,8 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
     else
       m_menu->Append(PU_LOGOUT,    wxT("Login"));
     m_menu->Append(PU_ABOUT,    wxT("About"));
-    m_menu->Append(PU_LOG,    wxT("Log"));
+    m_menu->Append(PU_LOG,    wxT("Send Log"));
+    m_menu->Append(PU_UPDATE,    wxT("Check for update"));
     m_menu->Append(PU_EXIT,    wxT("Exit"));
   }
   m_menu->Enable(PU_LOGOUT, isLoginEnable);
