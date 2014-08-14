@@ -19,6 +19,7 @@ set (SOURCES
     ${PLATFORM}
     )
     
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fpermissive")
 #add_x11_plugin(${PROJNAME} SOURCES)
 
 #set(3d_party_ROOT "./3d-party/lib-32")
@@ -70,14 +71,14 @@ foreach(dir ${dirs})
   endif()
 endforeach()
 
-ENABLE_LANGUAGE(RC)
-SET(CMAKE_RC_COMPILE_OBJECT "<FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+# ENABLE_LANGUAGE(RC)
+# SET(CMAKE_RC_COMPILE_OBJECT "<FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
 
 #@PACKAGE_INIT@
 #set(CMAKE_PREFIX_PATH "@PACKAGE_SOME_INSTALL_DIR@")
 
 add_executable(${PROJNAME} ${SOURCES} ${RES_FILES})
-add_definitions(-std=c++11)
+#add_definitions(-std=c++11)
 
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
 target_link_libraries(${PROJNAME}

@@ -1,5 +1,6 @@
 #include "DeviceSuuntoEmu.h"
 #include "Logger.h"
+#include <string.h>
 
 int DeviceSuuntoEmu::open(){ return(0);}
 void DeviceSuuntoEmu::close(){}
