@@ -1,3 +1,9 @@
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../stdafx.h"
 #include <string>
 #include "../DiveAgent.h"
@@ -15,33 +21,18 @@ namespace
 
 std::string DiveAgent::homeFolder()
 {
-  // HANDLE h_proccess = GetCurrentProcess();
-  // HANDLE h_token = 0;
-  // OpenProcessToken(h_proccess, TOKEN_QUERY, &h_token);
-  // TCHAR buffer[MAX_PATH];
-  // DWORD sz = MAX_PATH - 1;
-  // std::string res;
-  // if (GetUserProfileDirectory(h_token, buffer, &sz))
-  //   res = ws2s(buffer) + std::string("\\");
-  // CloseHandle(h_token);
-  // CloseHandle(h_proccess);
-  // return res;
-  return "";
+  struct passwd *pw = getpwuid(getuid());
+  const char *homedir = pw->pw_dir;
+  return std::string(homedir);
 };
 
 std::string DiveAgent::exeFolder()
 {
-  // TCHAR buffer[MAX_PATH];
-  // if (GetModuleFileName(NULL, buffer, MAX_PATH))
-  // {
-  //   std::string exe_name = ws2s(buffer);
-  //   size_t i = exe_name.size() - 1;
-  //   while (i != 0 && exe_name[i]!='\\' ) i--;
-  //   return exe_name.substr(0, i);
-  // }
-  return "";
+  return std::string(get_current_dir_name());
 };
+
 int err =0;
+
 void DiveAgent::writeSecureProfile(const std::string& key, const std::string& value)
 {
   // std::vector<char> buffer(value.begin(), value.end());
