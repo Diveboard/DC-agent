@@ -393,3 +393,115 @@ MainDialogBase::~MainDialogBase()
 	m_uploadDivesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::uploadDivesButtonOnButtonClick ), NULL, this );
 	
 }
+
+LogDialogBase::LogDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 251, 175, 23 ) );
+	
+	wxBoxSizer* bSizer23;
+	bSizer23 = new wxBoxSizer( wxVERTICAL );
+	
+	
+	bSizer23->Add( 0, 0, 1, 0, 5 );
+	
+	m_panel6 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panel6->SetBackgroundColour( wxColour( 251, 221, 161 ) );
+	
+	wxBoxSizer* bSizer24;
+	bSizer24 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer25;
+	bSizer25 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer25->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText12 = new wxStaticText( m_panel6, wxID_ANY, wxT("Send Log"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText12->Wrap( -1 );
+	m_staticText12->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer25->Add( m_staticText12, 0, wxALL, 5 );
+	
+	
+	bSizer25->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	bSizer24->Add( bSizer25, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText13 = new wxStaticText( m_panel6, wxID_ANY, wxT("Email"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	bSizer26->Add( m_staticText13, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_email = new wxTextCtrl( m_panel6, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( m_email, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer24->Add( bSizer26, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer27;
+	bSizer27 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText14 = new wxStaticText( m_panel6, wxID_ANY, wxT("Subject"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	bSizer27->Add( m_staticText14, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_subject = new wxTextCtrl( m_panel6, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer27->Add( m_subject, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer24->Add( bSizer27, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer28;
+	bSizer28 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText15 = new wxStaticText( m_panel6, wxID_ANY, wxT("Message"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer28->Add( m_staticText15, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_message = new wxTextCtrl( m_panel6, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+	bSizer28->Add( m_message, 3, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	
+	bSizer24->Add( bSizer28, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer29;
+	bSizer29 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer29->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_send = new wxButton( m_panel6, wxID_ANY, wxT("Send Log"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer29->Add( m_send, 0, wxALL, 5 );
+	
+	
+	bSizer24->Add( bSizer29, 1, wxEXPAND, 5 );
+	
+	
+	m_panel6->SetSizer( bSizer24 );
+	m_panel6->Layout();
+	bSizer24->Fit( m_panel6 );
+	bSizer23->Add( m_panel6, 1, wxALL|wxEXPAND, 10 );
+	
+	
+	bSizer23->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer23 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_send->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogDialogBase::OnClickSendLog ), NULL, this );
+}
+
+LogDialogBase::~LogDialogBase()
+{
+	// Disconnect Events
+	m_send->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogDialogBase::OnClickSendLog ), NULL, this );
+	
+}

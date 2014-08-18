@@ -108,6 +108,7 @@ namespace {
     }
     const std::string user() const { return _user;}
     const std::vector<char>& user_picture() const { return _user_picture; }
+    const std::string user_id() const { return _user_id; }
     void login_fb(const std::string fbid, const std::string& fbtoken)
     {
       std::map< std::string, std::string > param;
@@ -166,6 +167,11 @@ namespace {
 	return "";
       else
 	return d["url"].GetString();
+    };
+
+    void send_log(const std::map<std::string, std::string>& param)
+    {
+      shttp_post("http://diveboard.uservoice.com/api/v1/tickets.json?client=oz4Uu7RNYXsgRVQAlvgXyg", param);
     };
   private:
     void get_user_info()
@@ -307,6 +313,7 @@ namespace {
         throw DBException("Curl error: Unable to set cookie option");
 
     }
+
     int shttp_post(const std::string url, const std::map<std::string, std::string>& params)
     {
       prepare_request(url);
@@ -659,6 +666,11 @@ const std::vector<char>& DiveAgent::getLogedUserPicture()
   return api.user_picture();
 };
 
+const std::string DiveAgent::getLogedUserId()
+{
+  return api.user_id();
+};
+
 bool  DiveAgent::isLoginExpired() const
 {
   return api.is_login_expired();
@@ -682,6 +694,11 @@ void DiveAgent::deleteDiveComputerInstance()
 std::string DiveAgent::check_update()
 {
   return api.check_update();
+};
+
+void DiveAgent::send_log(const std::map<std::string, std::string>& param)
+{
+  api.send_log(param);
 };
 
 

@@ -135,4 +135,33 @@ class MainDialogBase : public wxDialog
 	
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class LogDialogBase
+///////////////////////////////////////////////////////////////////////////////
+class LogDialogBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxPanel* m_panel6;
+		wxStaticText* m_staticText12;
+		wxStaticText* m_staticText13;
+		wxTextCtrl* m_email;
+		wxStaticText* m_staticText14;
+		wxTextCtrl* m_subject;
+		wxStaticText* m_staticText15;
+		wxTextCtrl* m_message;
+		wxButton* m_send;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnClickSendLog( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		LogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 450,400 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		~LogDialogBase();
+	
+};
+
 #endif //__DIVE_AGENT_FORMS_H__
