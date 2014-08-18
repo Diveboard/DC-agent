@@ -23,18 +23,19 @@ std::string DiveAgent::homeFolder()
 {
   struct passwd *pw = getpwuid(getuid());
   const char *homedir = pw->pw_dir;
-  return std::string(homedir);
+  return std::string(homedir) + "/";
 };
 
 std::string DiveAgent::exeFolder()
 {
-  return std::string(get_current_dir_name());
+  return std::string(get_current_dir_name()) + "/";
 };
 
 int err =0;
 
 void DiveAgent::writeSecureProfile(const std::string& key, const std::string& value)
 {
+  writeProfile(key, value);
   // std::vector<char> buffer(value.begin(), value.end());
   // DATA_BLOB DataIn = {buffer.size(),(BYTE*)&buffer[0]};
   // DATA_BLOB DataOut;
@@ -43,14 +44,14 @@ void DiveAgent::writeSecureProfile(const std::string& key, const std::string& va
   //   std::stringstream s;
   //   for (size_t i=0; i< DataOut.cbData; ++i)
   //     s << std::setw(2) << std::setfill('0') << std::hex << (unsigned)DataOut.pbData[i] << " ";
-  //   writeProfile(key, s.str());
   //   LocalFree((HLOCAL)DataOut.pbData);
   // }
 };
 
 std::string DiveAgent::readSecureProfile(const std::string& key)
 {
-  // std::string value = readProfile(key);
+  std::string value = readProfile(key);
+  return value;
   // if (!value.empty())
   // {
   //   std::stringstream s(value);
@@ -76,5 +77,5 @@ std::string DiveAgent::readSecureProfile(const std::string& key)
   //     return res;
   //   }
   // }
-  return std::string();
+  //  return std::string();
 };

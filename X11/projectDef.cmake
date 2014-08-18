@@ -92,3 +92,6 @@ target_link_libraries(${PROJNAME}
     ${LIBCONFIG}
     curl
     )
+
+add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libdivecomputer.so" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer.so")
