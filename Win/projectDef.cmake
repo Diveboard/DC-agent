@@ -127,8 +127,8 @@ ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libssl.dll.a" 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E rename "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll")
 
-add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
+# add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+# ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libgcc_s_sjlj-1.dll")
