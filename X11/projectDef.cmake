@@ -29,6 +29,15 @@ set(wxWidgets_CONFIG_EXECUTABLE "${3d_party_ROOT}/wxWidgets-3.0/bin/wx-config")
 set(wxWidgets_ROOT_DIR "${3d_party_ROOT}/wxWidgets-3.0/")
 set(wxWidgets_LIB_DIR "${3d_party_ROOT}/wxWidgets-3.0/lib")
 
+#install the .desktop file
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/${FB_PLATFORM_NAME}/${PROJNAME}.desktop DESTINATION /usr/share/applications)
+message("Installed .desktop file on ${CMAKE_INSTALL_PREFIX}/share/applications")
+
+#install the icon
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/forms/icon_ellow.png DESTINATION /usr/share/pixmaps)
+message("Installed icon file on ${CMAKE_INSTALL_PREFIX}/share/pixmaps")
+
+
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
@@ -41,6 +50,7 @@ set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package( Boost COMPONENTS thread system REQUIRED) 
 include_directories(${BOOST_INCLUDEDIR})
+include_directories($ {GTK_INCLUDE_DIRS})
 link_directories(${BOOST_LIBRARYDIR})
 
 message("Using boost at: ${Boost_INCLUDE_DIRS}")
@@ -76,11 +86,7 @@ add_executable(${PROJNAME} ${SOURCES} ${RES_FILES})
 
 set(EXECUTABLE_NAME ${PROJNAME})
 message("-- ${CMAKE_INSTALL_PREFIX}")
-#install the icon
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/forms/icon_ellow.png DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps COMPONENT ${EXECUTABLE_NAME} RENAME ${EXECUTABLE_NAME}.png)
 
-#install the .desktop file
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/${FB_PLATFORM_NAME}/${PROJNAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications COMPONENT ${EXECUTABLE_NAME})
 
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
 target_link_libraries(${PROJNAME}
