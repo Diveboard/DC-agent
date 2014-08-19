@@ -199,8 +199,12 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
   FacbookAuthDialog* dlg = new FacbookAuthDialog(0,  wxID_ANY);
   dlg->ShowModal();
   token = dlg->Token();
-  id  = dlg->Id();
+  //TODO CURL to get token
+  //id  = dlg->Id();
+  //https://www.diveboard.com/connect/login_success.html?#access_token=CAACwQ4E5CZCwBAMCj5rrYCyAEXZC2lvbc6gCZCFZBDgzmWUqz3IMoabR2HkL7UO8jENpZC2OYCDNWXxfD5YDbZBuK9pYAtHacLPAet6CHmjGLjHKbIZCyL5Ly3AZCvZCVN1g3ZAIZBwnkZByfdWxFle0N8783q0EvwPEg5p9kf6rfnjSoEdxH792P1Y5Sq0j3AOBZAuJ9pMqOdeF0caZBaBusEVmYT&expires_in=7147
   dlg->Destroy();
+  id = DiveAgent::instance().get_id_from_token(token);
+
   if ( !token.empty() && ! id.empty())
   {
     try

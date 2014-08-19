@@ -62,6 +62,9 @@ namespace {
       if (_curl)
         curl_easy_cleanup(_curl);
     }
+
+
+
     void restore_login()
     {
       std::string v = DiveAgent::instance().readSecureProfile("user_info");
@@ -168,6 +171,15 @@ namespace {
       else
 	return d["url"].GetString();
     };
+
+
+    std::string get_id_from_token(const std::string& token){
+      shttp_get("https://graph.facebook.com/me?access_token="+ token);
+      rapidjson::Document d;
+      d.Parse<0>(_resp_body.c_str());
+      printf("test2\n");
+      return d["id"].GetString();
+    }
 
     void send_log(const std::map<std::string, std::string>& param)
     {
@@ -701,4 +713,7 @@ void DiveAgent::send_log(const std::map<std::string, std::string>& param)
   api.send_log(param);
 };
 
+std::string DiveAgent::get_id_from_token(const std::string& token){
+  return api.get_id_from_token(token);
+}
 
