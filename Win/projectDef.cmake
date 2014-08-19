@@ -21,7 +21,7 @@ set (SOURCES
     ${PLATFORM}
     )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(3d_party_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
 #/home/ligol/Desktop/Diveboard/diveboard-agent/3d-party/lib-32/wxWidgets-3.0/bin/wx-config
@@ -127,8 +127,8 @@ ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libssl.dll.a" 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E rename "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll")
 
-add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
+# add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+# ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libgcc_s_sjlj-1.dll")

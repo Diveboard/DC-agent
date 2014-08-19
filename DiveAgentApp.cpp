@@ -21,6 +21,7 @@
 #include "DiveAgentApp.h"
 #include "Logger.h"
 #include "AboutDialog.h"
+#include "LogDialog.h"
 #include <wx/snglinst.h>
  
 namespace {
@@ -120,6 +121,9 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 }
 void DiveAgentTaskBarIcon::OnMenuLog(wxCommandEvent& )
 {
+  LogDialog *d = new LogDialog();
+
+  d->Show();
   std::cout << Logger::toString() << std::endl;
 }
 void DiveAgentTaskBarIcon::OnMenuUpdate(wxCommandEvent& )
