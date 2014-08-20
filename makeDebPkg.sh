@@ -14,6 +14,7 @@ VERSION=`cat "$DIR/VERSION"`
 
 
 BINDIR=$DIR/build/bin
+SHAREDIR=$BINDIR/share
 BUILDDIR=$BINDIR/deb
 OUTDIR=$DIR/build/packages
 
@@ -67,6 +68,7 @@ mkdir -p $BUILDDIR/usr/bin/
 echo Copying package contents...
 cp $APPDIVEBOARD $BUILDDIR/usr/bin/DiveboardAgent
 cp $LIBDIVE $BUILDDIR/usr/lib/diveboard/libdivecomputer.so
+cp -r $SHAREDIR $BUILDDIR/usr/
 
 echo Stripping binaries...
 strip $BUILDDIR/usr/bin/DiveboardAgent
@@ -75,6 +77,7 @@ strip $BUILDDIR/usr/lib/diveboard/libdivecomputer.so
 echo Fixing permissions...
 chmod 755 $BUILDDIR/usr/bin/DiveboardAgent
 chmod 644 $BUILDDIR/usr/lib/diveboard/libdivecomputer.so
+#chmod 644 $BUILDDIR/usr/share/* -R
 
 echo Creating control file...
 mkdir -p $BUILDDIR/DEBIAN
@@ -85,7 +88,7 @@ cat > $BUILDDIR/DEBIAN/postinst <<EOF
 #!/bin/bash
 
 set -e
-
+gtk-update-icon-cache /usr/share/icons/hicolor > /dev/null 2>&1
 
 exit 0
  EOF
@@ -111,4 +114,3 @@ if [ ! -f $OUTDIR/$PKGNAME ];then
     echo Something went wrong!
     exit 1
 fi
-rm -rf $BUILDDIR
