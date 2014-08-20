@@ -35,6 +35,7 @@ public:
   // It is becouse dive computer implementation is using static objects from Logger.cpp in its destructor
   void deleteDiveComputerInstance();
   static std::string AppName() { return "DiveboardAgent"; };
+  std::string get_id_from_token(const std::string& token);
 protected:
   DiveAgent();
   void uploadDivesToServer();
