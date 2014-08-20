@@ -45,13 +45,16 @@ HOW TO BUILD ON LINUX FOR WINDOWS
   run build-win-all.sh scripts one by one. 
 
 3 Generating makefiles:
-  cd <project root> 
-  cmake -DCMAKE_TOOLCHAIN_FILE=./3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows
+  cd <project root>
+  mkdir build
+  cd build 
+  cmake -DCMAKE_TOOLCHAIN_FILE=../3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
 
 4 Building.
   make
 
 5 Building setup.
+  cd ..
   makensis Win/Diveboard.nsi
 
 
