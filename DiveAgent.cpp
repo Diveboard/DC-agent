@@ -14,16 +14,7 @@
 #include "Logger.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "DBException.h"
-
-#define VERSION "1.0"
-
-#ifdef WIN32
-#define OS_CHECK_UPDATE "agent_win32"
-#elif __MACH__
-#define OS_CHECK_UPDATE "agent_osx"
-#elif __linux__
-#define OS_CHECK_UPDATE "agent_linux"
-#endif
+#include "Global.h"
 
 namespace {
 
@@ -114,8 +105,8 @@ namespace {
       std::map< std::string, std::string > param;
       param["fbid"]     = fbid;
       param["fbtoken"]  = fbtoken;
-      param["apikey"]   = apiKey();
-      shttp_post(apiBaseURL() + "login_fb", param);
+      param["apikey"]   = APIKEY;
+      shttp_post(std::string(APIBASEURL) + "login_fb", param);
       get_user_info();
     };
     void login_email( const std::string& email, const std::string& password)
@@ -123,8 +114,8 @@ namespace {
       std::map< std::string, std::string > param;
       param["email"]    = email;
       param["password"] = password;
-      param["apikey"]   = apiKey();
-      shttp_post(apiBaseURL() + "login_email", param);
+      param["apikey"]   = APIKEY;
+      shttp_post(std::string(APIBASEURL) + "login_email", param);
       get_user_info();
     }
     std::string computerupload(const std::string& computer,
@@ -134,13 +125,13 @@ namespace {
       std::map< std::string, std::string > param;
       param["user_id"] = _user_id;
       param["auth_token"] = _token;
-      param["apikey"] = apiKey();
+      param["apikey"] = APIKEY;
       param["xmlFormSend"] = xml;
       param["logFormSend"] = log;
       param["verFormSend"] = DiveAgent::AppName() + " v1.0.1";
       param["computer_model"] = computer;
 
-      shttp_post(apiBaseURL() + "computerupload.json", param);
+      shttp_post(std::string(APIBASEURL) + "computerupload.json", param);
       rapidjson::Document d;
       d.Parse<0>(_resp_body.c_str());
       if (!d["success"].IsBool())
@@ -157,7 +148,7 @@ namespace {
     }
     std::string check_update()
     {
-      shttp_get(apiBaseURL() + "version/" + OS_CHECK_UPDATE);
+      shttp_get(std::string(APIBASEURL) + "version/" + OS_CHECK_UPDATE);
       //
       rapidjson::Document d;
       d.Parse<0>(_resp_body.c_str());
@@ -233,8 +224,6 @@ namespace {
 
     };
 
-    std::string apiBaseURL() const {  return "https://stage.diveboard.com/api/"; }
-    std::string apiKey()     const {  return "BVu3iqQKTeB7iI3T"; }
     void reinit_curl_handle()
     {
       if (_curl)
