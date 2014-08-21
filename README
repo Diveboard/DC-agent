@@ -89,16 +89,15 @@ make
 
 4) build package
 cd <project root>/
-./makeLinuxPkg.sh
 
-5)Sign package
 cp pgp/ ~/.gnupg -r
 gpg --export -a 'Diveboard Tech' > RPM-GPG-KEY-diveboard
 sudo rpm --import RPM-GPG-KEY-diveboard
 echo "%_signature gpg
 %_gpg_name  Diveboard Tech" > ~/.rpmmacros
 
+./makeLinuxPkg.sh
 
-rpm --addsign build/packages/diveboard-agent-1.0.0-1.i386.rpm
+//SIGNED ON REPREPRO SO THIS IS JUST TO FORCE SIGNING
 fakeroot dpkg-sig -k "Diveboard Tech" --sign builder build/packages/diveboard-agent-1.0.0-i386.deb 
 

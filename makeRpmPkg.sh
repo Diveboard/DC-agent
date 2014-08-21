@@ -72,7 +72,7 @@ rpmbuild --clean "$SPECFILE"
 rpmbuild -bp "$SPECFILE"
 rpmbuild -bc --short-circuit "$SPECFILE"
 rpmbuild -bi --short-circuit "$SPECFILE"
-rpmbuild -ba --short-circuit "$SPECFILE"
+rpmbuild -ba --short-circuit "$SPECFILE" --sign
 
 cp ~/rpmbuild/RPMS/*/diveboard-agent-$VERSION*.rpm $DIR/build/packages
 
