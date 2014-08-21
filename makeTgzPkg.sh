@@ -18,7 +18,7 @@ SHAREDIR=$DIR/build/bin/share
 LIBDIVE=$DIR/build/bin/libdivecomputer.so
 APPDIVEBOARD=$DIR/build/bin/DiveboardAgent
 
-PKGNAME=diveboard-plugin-$VERSION-$ARCH.tgz
+PKGNAME=diveboard-agent-$VERSION-$ARCH.tgz
 
 #
 # Put the package together
