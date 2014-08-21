@@ -130,8 +130,14 @@ void DiveAgentTaskBarIcon::OnMenuUpdate(wxCommandEvent& )
 {
 
   std::string url = DiveAgent::instance().check_update();
-  if (url.empty())
+  if (url.empty()){
+    wxMessageDialog *dial = new wxMessageDialog(NULL,
+                wxT("You already have the most recent agent version :)"), wxT("Update"),
+                wxOK | wxICON_QUESTION);
+    dial->ShowModal();
+    dial->Destroy();
     return;
+  }
   wxMessageDialog *dial = new wxMessageDialog(NULL,
 					      wxT("A new version can be downloaded, do you want to download it?"), wxT("Question"),
 					      wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
