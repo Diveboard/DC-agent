@@ -30,7 +30,7 @@ Version: $VERSION
 Section: web
 Priority: optional
 Architecture: $ARCHITECTURE
-Depends: libc6 (>= 2.11)
+Depends: libc6 (>= 2.11), libssl1.0.0, libconfig++9, libcurl3
 Replaces: diveboard (<= 1.1.1)
 Maintainer: Diveboard <support@diveboard.com>
 Installed-Size: $INSTALLED_SIZE
