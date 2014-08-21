@@ -110,6 +110,7 @@ chmod 755 $BUILDDIR/DEBIAN/prerm
 echo Building Package...
 fakeroot dpkg-deb --build $BUILDDIR $OUTDIR/$PKGNAME
 
+
 if [ ! -f $OUTDIR/$PKGNAME ];then
     echo Something went wrong!
     exit 1

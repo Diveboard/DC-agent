@@ -60,6 +60,7 @@ www.diveboard.com
 - memory and cpu optimisations
 * Fri Sep 16 2011 Sergio Rubio <rubiojr@frameos.org> - 1.1.0alpha1-1
 - Initial Release
+
  EOF
 EOF
 
