@@ -88,7 +88,6 @@ cat > $BUILDDIR/DEBIAN/postinst <<EOF
 #!/bin/bash
 
 set -e
-gtk-update-icon-cache /usr/share/icons/hicolor > /dev/null 2>&1
 
 exit 0
  EOF
