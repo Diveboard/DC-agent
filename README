@@ -32,7 +32,7 @@ Mac : The binaries are in build/bin
 
 4/ Package the result
 ---------------------
-TODO
+./makeMacPkg.sh
 
 ---------------------
 HOW TO BUILD ON LINUX FOR WINDOWS
@@ -42,6 +42,8 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 
 2 Building libraries:
   cd <project root>/3d-party.
+  //IF WENT FASTER COMPILING
+  export MAKEFLAGS=-j(number of process(optionnal))
   run build-win-all.sh scripts one by one. 
 
 3 Generating makefiles:
@@ -60,8 +62,43 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 
 HOW TO BUILD ON LINUX
 
-1)
-apt-get install mesa-common-dev freeglut3-dev libwebkitgtk-dev
+1) install package
+apt-get install mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig
+
+//ONLY ON UBUNTU WITH UNITY
+//FOR USER ALSO
 sudo apt-add-repository ppa:gurqn/systray-trusty
 sudo apt-get update
 sudo apt-get upgrade
+
+
+2) build 3d-party
+cd <project root>/3d-party
+//IF WENT FASTER COMPILING
+export MAKEFLAGS=-j(number of process(optionnal))
+
+./lin-build-all
+
+3) build Diveboard agent
+
+cd <project root>/
+mkdir build
+cd <project root>/build
+cmake ..
+make
+
+4) build package
+cd <project root>/
+./makeLinuxPkg.sh
+
+5)Sign package
+cp pgp/ ~/.gnupg -r
+gpg --export -a 'Diveboard Tech' > RPM-GPG-KEY-diveboard
+sudo rpm --import RPM-GPG-KEY-diveboard
+echo "%_signature gpg
+%_gpg_name  Diveboard Tech" > ~/.rpmmacros
+
+
+rpm --addsign build/packages/diveboard-agent-1.0.0-1.i386.rpm
+fakeroot dpkg-sig -k "Diveboard Tech" --sign builder build/packages/diveboard-agent-1.0.0-i386.deb 
+
