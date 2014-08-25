@@ -1,6 +1,6 @@
 #pragma once
 
-#define VERSION "20140820"
+#define VERSION "20140825"
 
 #ifdef WIN32
 #define OS_CHECK_UPDATE "agent_win32"
@@ -11,5 +11,5 @@
 #define LIBDIVE_SO "/usr/lib/diveboard"
 #endif
 
-#define APIBASEURL "https://diveboard.com/api/"
+#define APIBASEURL "https://www.diveboard.com/api/"
 #define APIKEY "BVu3iqQKTeB7iI3T"
