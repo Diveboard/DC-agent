@@ -30,6 +30,7 @@ DMGFINALFILE=$OUTDIR/diveboard-agent.dmg
 device=$(hdiutil attach -readwrite -noverify -noautoopen "$DMGFILE" | egrep '^/dev/' | sed 1q | awk '{print $1}')
 chmod -Rf go-w /Volumes/diveboardagent
 cp -r build/bin/DiveboardAgent.app /Volumes/diveboardagent
+cp -r Mac/Driver/* /Volumes/diveboardagent/Driver
 
 sync
 
