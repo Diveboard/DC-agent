@@ -303,8 +303,8 @@ void MainFrame::onTimer( wxTimerEvent& event)
         break;
       }
     }
-
   }
+  _timer->Stop();
 }
 
 void MainFrame::selectMakeChoiceOnChoice( wxCommandEvent& )

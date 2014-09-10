@@ -270,6 +270,7 @@ void DiveAgentApp::onTimer( wxTimerEvent& event)
     }
     else if (!port_detected)
       _alreadyDetected = false;
+    _timer->Stop();
 }
 
 int DiveAgentApp::OnExit()
