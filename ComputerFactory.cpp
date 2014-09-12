@@ -280,7 +280,7 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 	while ((dirp = readdir(dp)) != NULL) {
 		//todo : a NULL can also mean an error....
 #if defined(__MACH__)
-		//LOGDEBUG(str(boost::format("Filename : %1% %2%") % dirp->d_name % ((int)strncmp("tty.usbserial-", dirp->d_name, 14))));
+		//LOGDEBUG(str(boost::format("Filename : %1% %2%")     zxcvbnbm,/.% dirp->d_name % ((int)strncmp("tty.usbserial-", dirp->d_name, 14))));
 		if (!strncmp("tty.", dirp->d_name, 4)) {
 #elif defined(__linux__)
 		if (!strncmp("ttyS", dirp->d_name, 4) || !strncmp("ttyUSB", dirp->d_name, 6) || !strncmp("ttyACM", dirp->d_name, 6)) {
@@ -382,10 +382,8 @@ bool ComputerFactory::isComputerPluggedin()
 	//1 list ports
 #ifdef _WIN32
 	UsingSetupAPI1(fileNames, friendlyNames);
-	LOGINFO("Autodetect : Win 32!");
 #elif defined(__MACH__) || defined(__linux__)
 	ListTTY(fileNames, friendlyNames);
-	LOGINFO("Autodetect : Mac Linux!");
 #else
 #error "Platform not supported"
 #endif
