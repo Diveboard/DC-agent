@@ -246,12 +246,12 @@ bool DiveAgentApp::OnInit()
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(DiveAgentApp::onTimer), NULL, this );
   _timer->Start(timer_timeout);
-
-  return true;
+   return true;
 }
 void DiveAgentApp::onTimer( wxTimerEvent& event)
 {
-    bool port_detected;
+    //wxLogError("onTimerDiveAgentApp");
+     bool port_detected;
     try
     {
       port_detected = mainFrame->getComputerFactory().isComputerPluggedin();
@@ -269,7 +269,7 @@ void DiveAgentApp::onTimer( wxTimerEvent& event)
       SureProcessToForeground();
     }
     else if (!port_detected)
-      _alreadyDetected = false;
+      _alreadyDetected = false; 
 }
 
 int DiveAgentApp::OnExit()

@@ -275,6 +275,7 @@ void MainFrame::showAccountInfo()
 
 void MainFrame::onTimer( wxTimerEvent& event)
 {
+  //wxLogError("onTimerMainFrame");
   std::string port_selected = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
   if (++_timer_counter >= timer_mx_count)
   {
@@ -303,7 +304,6 @@ void MainFrame::onTimer( wxTimerEvent& event)
         break;
       }
     }
-
   }
 }
 
