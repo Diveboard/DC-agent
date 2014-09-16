@@ -11,6 +11,7 @@
 #include "full_diveboard_grey.png.h"
 #include "icon_about.png.h"
 #include "icon_bw.png.h"
+#include "Global.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -127,7 +128,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	bSizer36->Add( m_aboutStatic, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
-	m_staticText12 = new wxStaticText( m_panel8, wxID_ANY, wxT("Version 1.0.0\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText12 = new wxStaticText( m_panel8, wxID_ANY, wxT("Version " APPVERSION " build #" VERSION "\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText12->Wrap( -1 );
 	bSizer36->Add( m_staticText12, 0, wxALL, 5 );
 	
