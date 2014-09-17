@@ -8,7 +8,7 @@ class AboutDilog:public AboutDialogBase
 public:
   AboutDilog():AboutDialogBase(0)
   {
-  	m_staticText12->SetLabelText("Version " APPVERSION " build #" VERSION "\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n");
+ 		m_staticText12->SetLabelText(wxT("Version " APPVERSION " build #" VERSION "\nCopyright © 2014 Diveboard SARL or its subsidiaries\n\nDiveboard Agent detect compatible dive computers connected to the\ncomputer and transfers available dive profiles to \n"));
   };
 };
 
