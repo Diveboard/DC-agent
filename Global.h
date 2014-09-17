@@ -1,7 +1,7 @@
 #pragma once
 
-#define VERSION "20140825"
-#define APPVERSION "1.0.0"
+#define APPVERSION "1.0.1"
+#define VERSION "20140914"
 
 #ifdef WIN32
 #define OS_CHECK_UPDATE "agent_win32"

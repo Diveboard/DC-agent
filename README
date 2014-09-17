@@ -63,7 +63,7 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 HOW TO BUILD ON LINUX
 
 1) install package
-apt-get install mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig
+apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool
 
 //ONLY ON UBUNTU WITH UNITY
 //FOR USER ALSO
@@ -99,5 +99,27 @@ echo "%_signature gpg
 ./makeLinuxPkg.sh
 
 //SIGNED ON REPREPRO SO THIS IS JUST TO FORCE SIGNING
+//WARNING: this needs to be adapted to the actual name of debian file
 fakeroot dpkg-sig -k "Diveboard Tech" --sign builder build/packages/diveboard-agent-1.0.0-i386.deb 
 
+
+
+HOW TO PUSH ON SERVEUR
+
+- connect on diveboard server and upload all the package
+- Get a terminal on the server
+  - For windows, Mac and TGZ, only copy/paste the package on the good folder
+    - cp setup.exe package/win
+    - cp DiveboardAgent.dmg package/osx
+    - cp DiveboardAgent.tgz package/tgz
+  - For Fedora copy the package in the folder and launch the createrepo command
+    - cp DiveboardAgent.rpm package/rpm
+    - createrepo .
+  - For Ubuntu/Debian
+    - cd package/deb
+    - reprepro includedeb stable "PATH TO DEB FILE/DiveboardAgent.deb"
+    - Signing of deb file is during the reprepro add so the command ask you for the gnupg key password.
+
+HOW TO UPDATE THE SERVER
+  - Change the version number in the method "versions" line 1487 of the api_controller.rb
+  - You need to make this change for each platform.
