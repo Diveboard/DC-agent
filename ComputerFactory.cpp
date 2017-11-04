@@ -283,7 +283,7 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 		//LOGDEBUG(str(boost::format("Filename : %1% %2%")     zxcvbnbm,/.% dirp->d_name % ((int)strncmp("tty.usbserial-", dirp->d_name, 14))));
 		if (!strncmp("tty.", dirp->d_name, 4)) {
 #elif defined(__linux__)
-		if (!strncmp("ttyS", dirp->d_name, 4) || !strncmp("ttyUSB", dirp->d_name, 6) || !strncmp("ttyACM", dirp->d_name, 6)) {
+		if (!strncmp("ttyS", dirp->d_name, 4) || !strncmp("ttyUSB", dirp->d_name, 6) || !strncmp("ttyACM", dirp->d_name, 6) || !strncmp("rfcomm", dirp->d_name, 6)) {
 #endif
 			files.push_back(str(boost::format("/dev/%1%") % dirp->d_name));
 			friendlyNames.push_back(std::string(dirp->d_name));
