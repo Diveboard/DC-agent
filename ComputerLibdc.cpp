@@ -85,7 +85,7 @@ static void logger_proxy(dc_context_t *context, dc_loglevel_t loglevel, const ch
 		if ((*curs == '/' || *curs == '\\' ) && *(curs+1) != 0)
 			short_file = curs+1;
 
-	Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
+	//THOR: crashes... Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
 }
 
 
