@@ -160,7 +160,7 @@ void Logger::binary(const std::string &type, unsigned char *data, unsigned int l
 {
 	std::string buff;
 
-    for (unsigned int i=0; i < len; i++)
+	for (unsigned int i=0; i < len; i++)
 		buff += str(boost::format("%02X") % ((unsigned int)(data[i])));
 
 	binary(type, buff);
