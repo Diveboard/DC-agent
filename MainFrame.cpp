@@ -109,7 +109,7 @@ void MainFrame::InitLoginPanel()
   // showSetAccount();
   try
   {
-    if (DiveAgent::instance().restore_login())
+    if (DiveAgent::instance().restore_login() && !DiveAgent::instance().getLoggedInUser().empty() && !DiveAgent::instance().isLoginExpired())
     {
       Logger::append("User already logged in");
 
