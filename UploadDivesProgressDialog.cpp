@@ -41,20 +41,12 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
 {
   if (_monitoring)
   {
-  	int uploadDivesProgress = DiveAgent::instance().uploadDivesProgress();
-  	if (uploadDivesProgress < 1 || uploadDivesProgress>100) {
-  		/* XXX
-		  std::stringstream tmp;
-			tmp << std::string("There was errors while getting the progress: ");
-		  tmp << uploadDivesProgress << " ";
-      wxMessageOutputMessageBox().Output(wxString::FromUTF8(tmp.str().c_str()));
-      */
-  	}
-  	else {
-		  m_uploadProgressGauge->SetValue(uploadDivesProgress);
-		  std::stringstream s;
-		  s << m_uploadProgressGauge->GetValue() << " %";
-		  m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
+    int uploadDivesProgress = DiveAgent::instance().uploadDivesProgress();
+    if (1 <= uploadDivesProgress && uploadDivesProgress <= 100) {
+	  m_uploadProgressGauge->SetValue(uploadDivesProgress);
+	  std::stringstream s;
+	  s << m_uploadProgressGauge->GetValue() << " %";
+	  m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
     }
 
     if (DiveAgent::instance().isDivesXmlReady() && _wait_dive_xml)
