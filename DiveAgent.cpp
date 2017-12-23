@@ -634,7 +634,7 @@ bool DiveAgent::login_fb(const std::string& fbid, const std::string& token)
   return true;
 };
 
-std::string DiveAgent::getLogedUser() const
+std::string DiveAgent::getLoggedInUser() const
 {
   return api.user();
 };
@@ -662,12 +662,12 @@ std::string DiveAgent::completionURL()
 
 };
 
-const std::vector<char>& DiveAgent::getLogedUserPicture()
+const std::vector<char>& DiveAgent::getLoggedInUserPicture()
 {
   return api.user_picture();
 };
 
-const std::string DiveAgent::getLogedUserId()
+const std::string DiveAgent::getLoggedInUserId()
 {
   return api.user_id();
 };

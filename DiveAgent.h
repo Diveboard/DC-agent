@@ -18,10 +18,10 @@ public:
   bool login_email(const std::string& email, const std::string& password);
   bool login_fb(const std::string& fbid, const std::string& token);
   bool restore_login();
-  std::string getLogedUser() const;
+  std::string getLoggedInUser() const;
   bool  isLoginExpired() const;
-  const std::vector<char> &getLogedUserPicture();
-  const std::string getLogedUserId();
+  const std::vector<char> &getLoggedInUserPicture();
+  const std::string getLoggedInUserId();
   void logoff();
   std::string check_update();
   void send_log(const std::map<std::string, std::string>& param);

@@ -52,7 +52,7 @@ void LogDialog::OnClickSendLog( wxCommandEvent& event )
   std::map< std::string, std::string > param;
   param["email"] = m_email->GetValue();
   param["ticket[subject]"] = m_subject->GetValue();
-  param["ticket[message]"] = m_message->GetValue() + "\n User_id = " + DiveAgent::instance().getLogedUserId();
+  param["ticket[message]"] = m_message->GetValue() + "\n User_id = " + DiveAgent::instance().getLoggedInUserId();
   param["ticket[attachments][][name]"] = "log.txt";
   std::string log  = Logger::toString();
   std::string encoded = base64_encode(reinterpret_cast<const unsigned char*>(log.c_str()), log.length());
