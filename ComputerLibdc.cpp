@@ -85,7 +85,7 @@ static void logger_proxy(dc_context_t *context, dc_loglevel_t loglevel, const ch
 		if ((*curs == '/' || *curs == '\\' ) && *(curs+1) != 0)
 			short_file = curs+1;
 
-	//THOR: crashes... Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
+	Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
 }
 
 
@@ -847,7 +847,13 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       // Download the dives.
       LOGINFO("Downloading the dives.");
 
-      rc = libdc_p.device_foreach (device, G_dive_cb, this);
+      //required for slow-startup connections like bt ...
+      int retries = 5;
+      do {
+        retries--;
+        rc = libdc_p.device_foreach (device, G_dive_cb, this);
+      } while (rc != DC_STATUS_SUCCESS && retries);
+
       if (rc != DC_STATUS_SUCCESS) {
         LOGDEBUG("Error downloading the dives.");
         libdc_p.buffer_free (fingerprint);
