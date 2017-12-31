@@ -84,6 +84,7 @@ void MainFrame::InitUploadDivesPanel()
 }
 void MainFrame::loadUploadDivesPanel()
 {
+  refreshLoggedInMenuButton();
   m_upload_dive->Show();
   m_login_panel->Hide();
   m_upload_dive->Layout();
