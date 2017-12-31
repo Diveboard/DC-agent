@@ -5,6 +5,8 @@
 #include "wx/taskbar.h"
 #include <wx/timer.h>
 
+class DiveAgentApp;
+
 // ----------------------------------------------------------------------------
 // DiveAgentTaskBarIcon
 // ----------------------------------------------------------------------------
@@ -12,8 +14,9 @@ class DiveAgentTaskBarIcon : public wxTaskBarIcon
 {
 public:
   wxMenu *m_menu;
-  DiveAgentTaskBarIcon(wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE): wxTaskBarIcon(iconType)
-  {}
+  DiveAgentTaskBarIcon(DiveAgentApp *app, wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE): wxTaskBarIcon(iconType) {
+  	m_app = app;
+  }
   
   void OnLeftButtonDClick(wxTaskBarIconEvent&);
   void OnMenuExit(wxCommandEvent&);
@@ -28,8 +31,7 @@ public:
   
   DECLARE_EVENT_TABLE()
 protected:
-  void SureProcessToForeground();
-  bool haveQuitMenuFromSystem();
+	DiveAgentApp *m_app;
 };
   enum
   {
@@ -51,6 +53,10 @@ public:
   virtual bool  OnInit();
   virtual int   OnExit();
 
+  void SureProcessToForeground();
+  bool haveQuitMenuFromSystem();
+  DiveAgentTaskBarIcon   *m_taskBarIcon;
+
 protected:
   enum
   {
@@ -63,15 +69,14 @@ protected:
   unsigned                   _timer_counter;
   bool			     _alreadyDetected = false;
 
-  void SureProcessToForeground();
   void InitStartOnLogin();
   void createDocIcon();
-  DiveAgentTaskBarIcon   *m_taskBarIcon;
   DiveAgentTaskBarIcon   *m_dockIcon;
 };
 class wxDialog;
 void setCurrentDialog(wxDialog *d, bool show=true);
 void reportError(const std::string&);
 void setIsLoginEnable(bool e);
+void refreshLoggedInMenuButton();
 
 #endif//_DIVE_AGENT_APP_HPP
