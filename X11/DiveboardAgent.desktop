@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Diveboard Agent
+GenericName=Diveboard Agent
+Comment=Sync your dives on diveboard
+Exec=DiveboardAgent
+Terminal=false
+Type=Application
+Icon=diveboard
+Categories=Network;
+StartupNotify=false
