@@ -94,6 +94,8 @@ ELSE()
 	include_directories(${Atk_INCLUDE_DIR})
 	set(Appindicator_INCLUDE_DIR "/usr/include/libappindicator-0.1")
 	include_directories(${Appindicator_INCLUDE_DIR})
+
+	message("Using appindicator at: ${Appindicator_INCLUDE_DIR}")
 ENDIF()
 
 
