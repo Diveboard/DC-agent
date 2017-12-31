@@ -23,6 +23,20 @@
 #include "AboutDialog.h"
 #include "LogDialog.h"
 #include <wx/snglinst.h>
+
+#ifdef INDICATOR_ENABLED
+#include <gtk/gtk.h>
+#include <libappindicator/app-indicator.h>
+
+GtkWidget *g_indicator_item_logout = NULL;
+
+static GtkWidget* addMenuEntry (GtkWidget *menu, const char *label, GCallback callback, DiveAgentApp *app) {
+  GtkWidget *indicator_item = gtk_menu_item_new_with_label (label);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), indicator_item);
+  g_signal_connect (indicator_item, "activate", G_CALLBACK (callback), app);
+  return indicator_item;
+}
+#endif
  
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
@@ -82,6 +96,82 @@ void reportError(const std::string& error)
     dlg->ShowModal();
     dlg->Destroy();
 }
+
+void refreshLoggedInMenuButton()
+{
+#ifdef INDICATOR_ENABLED
+  gtk_menu_item_set_label((GtkMenuItem*)g_indicator_item_logout, "Logout");
+#endif
+}
+
+
+static void doUploadDives(DiveAgentApp *app) {
+  currentDialog->Raise();
+  currentDialog->Show();
+  app->SureProcessToForeground();
+}
+
+static void doAbout(DiveAgentApp *app) {
+  aboutDialog->Raise();
+  aboutDialog->Show();
+  app->SureProcessToForeground();
+}
+
+static void doLogInOut(DiveAgentApp *app) {
+  if (DiveAgent::instance().restore_login() && !DiveAgent::instance().getLoggedInUser().empty() && !DiveAgent::instance().isLoginExpired()) {
+    DiveAgent::instance().logoff();
+    mainFrame->InitLoginPanel();
+    if (app->m_taskBarIcon && app->m_taskBarIcon->m_menu) {
+      app->m_taskBarIcon->m_menu->SetLabel(PU_LOGOUT, wxT("Login"));
+    }
+#ifdef INDICATOR_ENABLED
+    gtk_menu_item_set_label((GtkMenuItem*)g_indicator_item_logout, "Login");
+#endif
+  }
+  else {
+    doUploadDives(app);
+  }
+}
+
+static void doLog(DiveAgentApp *app) {
+  LogDialog *d = new LogDialog();
+
+  d->Show();
+  std::cout << Logger::toString() << std::endl;
+}
+
+static void doUpdate(DiveAgentApp *app) {
+  std::string url = DiveAgent::instance().check_update();
+  if (url.empty()){
+    wxMessageDialog *dial = new wxMessageDialog(NULL,
+                wxT("You already have the most recent agent version :)"), wxT("Update"),
+                wxOK | wxICON_QUESTION);
+    dial->ShowModal();
+    dial->Destroy();
+    return;
+  }
+  wxMessageDialog *dial = new wxMessageDialog(NULL,
+                wxT("A new version can be downloaded, do you want to download it?"), wxT("Question"),
+                wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+
+  int ret = dial->ShowModal();
+  dial->Destroy();
+
+  if (ret == wxID_YES) {
+    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
+  }
+  std::cout << "check for update" << url << std::endl;
+}
+
+#ifdef INDICATOR_ENABLED
+static void IndicatorOnUploadMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doUploadDives(app); }
+static void IndicatorOnAboutMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doAbout(app); }
+static void IndicatorOnLogoutMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doLogInOut(app); }
+static void IndicatorOnSendLogMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doLog(app); }
+static void IndicatorOnUpdateMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doUpdate(app); }
+static void IndicatorOnExitMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { wxExit(); }
+#endif
+
 // ----------------------------------------------------------------------------
 // DiveAgentTaskBarIcon implementation
 // ----------------------------------------------------------------------------
@@ -98,22 +188,11 @@ END_EVENT_TABLE()
 
 void DiveAgentTaskBarIcon::OnMenuLogout(wxCommandEvent& e)
 {
-  if (DiveAgent::instance().restore_login())
-    {
-      DiveAgent::instance().logoff();
-      mainFrame->InitLoginPanel();
-      m_menu->SetLabel(PU_LOGOUT, wxT("Login"));
-    }
-  else
-    {
-      OnMenuUploadDives(e);
-    }
+  doLogInOut(m_app);
 }
 void DiveAgentTaskBarIcon::OnMenuAbout(wxCommandEvent& )
 {
-  aboutDialog->Raise();
-  aboutDialog->Show();
-  SureProcessToForeground();
+  doAbout(m_app);
 }
 void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
@@ -121,44 +200,26 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 }
 void DiveAgentTaskBarIcon::OnMenuLog(wxCommandEvent& )
 {
-  LogDialog *d = new LogDialog();
-
-  d->Show();
-  std::cout << Logger::toString() << std::endl;
+  doLog(m_app);
 }
 void DiveAgentTaskBarIcon::OnMenuUpdate(wxCommandEvent& )
 {
+  doUpdate(m_app);
+}
 
-  std::string url = DiveAgent::instance().check_update();
-  if (url.empty()){
-    wxMessageDialog *dial = new wxMessageDialog(NULL,
-                wxT("You already have the most recent agent version :)"), wxT("Update"),
-                wxOK | wxICON_QUESTION);
-    dial->ShowModal();
-    dial->Destroy();
-    return;
-  }
-  wxMessageDialog *dial = new wxMessageDialog(NULL,
-					      wxT("A new version can be downloaded, do you want to download it?"), wxT("Question"),
-					      wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
-
-  int ret = dial->ShowModal();
-  dial->Destroy();
-
-  if (ret == wxID_YES) {
-    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
-  }
-  std::cout << "check for update" << url << std::endl;
+void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
+{
+  doUploadDives(m_app);
 }
 
 // Overridables
 wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
 {
   m_menu = new wxMenu();
-  if ( !haveQuitMenuFromSystem() )
+  if ( !m_app->haveQuitMenuFromSystem() )
   {
     m_menu->Append(PU_UPLOAD_DIVES,    wxT("Upload Dives"));
-    if (DiveAgent::instance().restore_login())
+    if (DiveAgent::instance().restore_login() && !DiveAgent::instance().getLoggedInUser().empty() && !DiveAgent::instance().isLoginExpired())
       m_menu->Append(PU_LOGOUT,    wxT("Logout"));
     else
       m_menu->Append(PU_LOGOUT,    wxT("Login"));
@@ -175,15 +236,8 @@ void DiveAgentTaskBarIcon::OnLeftButtonDClick(wxTaskBarIconEvent&)
 {
   wxCommandEvent e;
   OnMenuUploadDives(e);
-  SureProcessToForeground();
+  m_app->SureProcessToForeground();
 }
-
-void DiveAgentTaskBarIcon::OnMenuUploadDives(wxCommandEvent&)
-{
-  currentDialog->Raise();
-  currentDialog->Show();
-  SureProcessToForeground();
-};
 
 // ----------------------------------------------------------------------------
 // DiveAgentApp
@@ -228,7 +282,7 @@ bool DiveAgentApp::OnInit()
         );
   }
 
-  m_taskBarIcon = new DiveAgentTaskBarIcon();
+  m_taskBarIcon = new DiveAgentTaskBarIcon(this);
   wxBitmap icon_bitmap = wxBITMAP_PNG_FROM_DATA(icon_systrail);
   wxIcon icon;
   icon.CopyFromBitmap(icon_bitmap);
@@ -236,6 +290,27 @@ bool DiveAgentApp::OnInit()
   {
     wxLogError(wxT("Could not set icon."));
   }
+
+#ifdef INDICATOR_ENABLED
+  AppIndicator *indicator = app_indicator_new("diveboard-appindicator", "diveboard", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+  app_indicator_set_icon_full(indicator, "diveboard", "DiveboardAgent Systray Icon");
+  app_indicator_set_title (indicator, "DiveboardAgent");
+  app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
+
+  GtkWidget *menu = gtk_menu_new();
+  addMenuEntry(menu, "Upload Dives", G_CALLBACK (IndicatorOnUploadMenuItemSelected), this);
+  const char *labelText = (DiveAgent::instance().restore_login() && !DiveAgent::instance().getLoggedInUser().empty() && !DiveAgent::instance().isLoginExpired()) ? "Logout" : "Login";
+  g_indicator_item_logout = addMenuEntry(menu, labelText, G_CALLBACK (IndicatorOnLogoutMenuItemSelected), this);
+  addMenuEntry(menu, "About", G_CALLBACK (IndicatorOnAboutMenuItemSelected), this);
+  addMenuEntry(menu, "Send Log", G_CALLBACK (IndicatorOnSendLogMenuItemSelected), this);
+  addMenuEntry(menu, "Check for update", G_CALLBACK (IndicatorOnUpdateMenuItemSelected), this);
+  addMenuEntry(menu, "Exit", G_CALLBACK (IndicatorOnExitMenuItemSelected), this);
+  gtk_widget_show_all(menu);
+  gtk_widget_set_sensitive(g_indicator_item_logout, isLoginEnable);
+
+  app_indicator_set_menu (indicator, GTK_MENU (menu));
+#endif
+
   InitStartOnLogin();
 
   createDocIcon();
