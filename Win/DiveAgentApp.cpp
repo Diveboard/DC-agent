@@ -19,20 +19,17 @@
 
 void DiveAgentApp::createDocIcon()
 {
-};
+}
 
-bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
+bool DiveAgentApp::haveQuitMenuFromSystem()
 {
   return false;
-};
-
-void DiveAgentTaskBarIcon::SureProcessToForeground()
-{
-};
+}
 
 void DiveAgentApp::SureProcessToForeground()
 {
-};
+}
+
 void DiveAgentApp::InitStartOnLogin()
 {
-};
+}

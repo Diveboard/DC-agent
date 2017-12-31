@@ -13,10 +13,9 @@ void DiveAgentApp::createDocIcon()
   {
     wxLogError(wxT("Could not set icon."));
   }
-};
+}
 
-bool DiveAgentTaskBarIcon::haveQuitMenuFromSystem()
+bool DiveAgentApp::haveQuitMenuFromSystem()
 {
   return !OSXIsStatusItem();
-};
-
+}
