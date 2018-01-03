@@ -2,7 +2,7 @@
 CURRENTPATH=`pwd`
 arch_flags=""
 set -e
-LIBBOOST="boost_1_55_0"
+LIBBOOST="boost_1_57_0"
 if [ -e "${CURRENTPATH}/${LIBBOOST}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBBOOST}"
 fi
