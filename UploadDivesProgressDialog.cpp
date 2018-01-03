@@ -11,10 +11,10 @@ UploadDivesProgressDialog::UploadDivesProgressDialog():
   UploadDivesProgressDialogBase(0),
   _monitoring(false)
 {
+  m_uploadProgressGauge->SetRange(100);
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesProgressDialog::onTimer), NULL, this );
   _timer->Start(timer_timeout);
-  m_uploadProgressGauge->SetRange(100);
 };
 
 void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event )
@@ -41,10 +41,13 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
 {
   if (_monitoring)
   {
-    m_uploadProgressGauge->SetValue(DiveAgent::instance().uploadDivesProgress());
-    std::stringstream s;
-    s << m_uploadProgressGauge->GetValue() << " %";
-    m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
+    int uploadDivesProgress = DiveAgent::instance().uploadDivesProgress();
+    if (1 <= uploadDivesProgress && uploadDivesProgress <= 100) {
+	  m_uploadProgressGauge->SetValue(uploadDivesProgress);
+	  std::stringstream s;
+	  s << m_uploadProgressGauge->GetValue() << " %";
+	  m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
+    }
 
     if (DiveAgent::instance().isDivesXmlReady() && _wait_dive_xml)
     {

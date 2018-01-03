@@ -84,6 +84,7 @@ void MainFrame::InitUploadDivesPanel()
 }
 void MainFrame::loadUploadDivesPanel()
 {
+  refreshLoggedInMenuButton();
   m_upload_dive->Show();
   m_login_panel->Hide();
   m_upload_dive->Layout();
@@ -109,7 +110,7 @@ void MainFrame::InitLoginPanel()
   // showSetAccount();
   try
   {
-    if (DiveAgent::instance().restore_login())
+    if (DiveAgent::instance().restore_login() && !DiveAgent::instance().getLoggedInUser().empty() && !DiveAgent::instance().isLoginExpired())
     {
       Logger::append("User already logged in");
 
@@ -243,13 +244,13 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
 void MainFrame::showAccountInfo()
 {
   Logger::append("Load user info");
-  m_login->SetLabel(wxString::FromUTF8((std::string("Logged in as: ") + DiveAgent::instance().getLogedUser()).c_str()));
-  if (!DiveAgent::instance().getLogedUserPicture().empty())
+  m_login->SetLabel(wxString::FromUTF8((std::string("Logged in as: ") + DiveAgent::instance().getLoggedInUser()).c_str()));
+  if (!DiveAgent::instance().getLoggedInUserPicture().empty())
   {
     // ToDo: implement load directly from std::vector<char*>
     wxString tmp_file = wxFileName::CreateTempFileName("DiveboardAgent");
     std::ofstream ofs(tmp_file.utf8_str().data(), std::ios::out | std::ios::binary);
-    ofs.write(&DiveAgent::instance().getLogedUserPicture()[0], DiveAgent::instance().getLogedUserPicture().size());
+    ofs.write(&DiveAgent::instance().getLoggedInUserPicture()[0], DiveAgent::instance().getLoggedInUserPicture().size());
     ofs.close();
     wxImage img(tmp_file.utf8_str().data());
     if (!img.IsOk())
@@ -331,9 +332,9 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
 {
     Logger::append("Start uploading dives");
 
-  // check is loged in and not expired
-  if (DiveAgent::instance().getLogedUser().empty() ||
-      (!DiveAgent::instance().getLogedUser().empty() && DiveAgent::instance().isLoginExpired()))
+  // check if the user is logged in and the login is not expired
+  if (DiveAgent::instance().getLoggedInUser().empty() ||
+      (!DiveAgent::instance().getLoggedInUser().empty() && DiveAgent::instance().isLoginExpired()))
   {
     Logger::append("User is not logged in or login is expired");
 

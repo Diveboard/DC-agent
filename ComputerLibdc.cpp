@@ -847,7 +847,13 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       // Download the dives.
       LOGINFO("Downloading the dives.");
 
-      rc = libdc_p.device_foreach (device, G_dive_cb, this);
+      //required for slow-startup connections like bt ...
+      int retries = 5;
+      do {
+        retries--;
+        rc = libdc_p.device_foreach (device, G_dive_cb, this);
+      } while (rc != DC_STATUS_SUCCESS && retries);
+
       if (rc != DC_STATUS_SUCCESS) {
         LOGDEBUG("Error downloading the dives.");
         libdc_p.buffer_free (fingerprint);
