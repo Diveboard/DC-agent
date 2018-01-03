@@ -23,14 +23,15 @@ APPDIVEBOARD=$BINDIR/DiveboardAgent
 
 PKGNAME=diveboard-agent-$VERSION-$ARCH.deb
 
-INSTALLED_SIZE=`du -bs $LIBDIVE $APPDIVEBOARD | awk 'BEGIN {s=0} {s+=\$1} END {print s}'`
+INSTALLED_BYTES=`du -bsc $LIBDIVE $APPDIVEBOARD |tail -n 1 |cut -f 1`
+INSTALLED_SIZE=`expr $INSTALLED_BYTES / 1024`
 
 CONTROL="Package:diveboard-agent
 Version: $VERSION
 Section: web
 Priority: optional
 Architecture: $ARCHITECTURE
-Depends: libc6 (>= 2.11), libssl1.0.0, libconfig++9, libcurl3, libwebkitgtk-1.0-0
+Depends: libc6 (>= 2.11), libssl1.0.0, libcurl3, libwebkitgtk-1.0-0
 Replaces: diveboard (<= 1.1.1)
 Maintainer: Diveboard <support@diveboard.com>
 Installed-Size: $INSTALLED_SIZE
