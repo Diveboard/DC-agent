@@ -1,6 +1,6 @@
 CURRENTPATH=`pwd`
 arch_flags=""
-LIBDIVECOMPUTER="libdivecomputer-0.5.0"
+LIBDIVECOMPUTER="libdivecomputer-0.6.0"
 if [ -e "${CURRENTPATH}/${LIBDIVECOMPUTER}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBDIVECOMPUTER}"
 fi
