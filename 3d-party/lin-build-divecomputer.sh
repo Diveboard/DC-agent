@@ -5,7 +5,7 @@ if [ -e "${CURRENTPATH}/${LIBDIVECOMPUTER}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBDIVECOMPUTER}"
 fi
 tar -zxf ${LIBDIVECOMPUTER}.tar.gz
-#git clone git://git.libdivecomputer.org/libdivecomputer.git
+#git clone https://github.com/libdivecomputer/libdivecomputer.git
 mkdir -p "${CURRENTPATH}/${LIBDIVECOMPUTER}/build-32" 
 cd "${CURRENTPATH}/${LIBDIVECOMPUTER}/build-32"
 autoreconf .. --install
