@@ -90,7 +90,7 @@ make
 4) build package
 cd <project root>/
 
-cp pgp/ ~/.gnupg -r
+cp pgp/* ~/.gnupg/
 gpg --export -a 'Diveboard Tech' > RPM-GPG-KEY-diveboard
 sudo rpm --import RPM-GPG-KEY-diveboard
 echo "%_signature gpg
