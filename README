@@ -77,7 +77,7 @@ cd <project root>/3d-party
 //IF WENT FASTER COMPILING
 export MAKEFLAGS=-j(number of process(optionnal))
 
-./lin-build-all
+./lin-build-all.sh
 
 3) build Diveboard agent
 
