@@ -5,6 +5,7 @@
 #include <wx/timer.h>
 #include "ComputerFactory.h"
 #include "AboutDialog.h"
+#include <boost/thread/thread.hpp>
 
 class MainFrame : public MainDialogBase
 {
@@ -19,7 +20,7 @@ public:
   void onClose( wxCloseEvent& event );
   void setProgressDialog(UploadDivesProgressDialog* d) { _progress_dialog = d; }
   void InitLoginPanel();
-  ComputerFactory& getComputerFactory() {return _f;}
+  static ComputerFactory& getComputerFactory() {return _f;}
 private:
   // Panel Login
   void loadUploadDivesPanel();
@@ -41,6 +42,11 @@ private:
   wxTimer*                   _timer;
   unsigned                   _timer_counter;
   UploadDivesProgressDialog* _progress_dialog;
-  ComputerFactory&           _f;
+  static ComputerFactory&    _f;
+
+protected:
+  static bool scanBT;
+  boost::thread _th;
+  static void workingThread();
 };
 #endif//__MAIN_FRAME_HPP__

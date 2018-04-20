@@ -4,6 +4,8 @@
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/buffer.h>
+#include <libdivecomputer/serial.h>
+#include <libdivecomputer/bluetooth.h>
 
 #ifdef WIN32
 #define typeof decltype
@@ -56,9 +58,22 @@ typedef struct libdivecomputer_t{
 	typeof(&dc_parser_new) parser_new;
 	typeof(&dc_parser_samples_foreach) parser_samples_foreach;
 	typeof(&dc_parser_set_data) parser_set_data;
+	typeof(&dc_iostream_close) iostream_close;
+	typeof(&dc_serial_open) serial_open;
+	typeof(&dc_bluetooth_open) bluetooth_open;
+	typeof(&dc_bluetooth_iterator_new) bluetooth_iterator_new;
+	typeof(&dc_bluetooth_device_get_address) bluetooth_device_get_address;
+	typeof(&dc_bluetooth_device_get_name) bluetooth_device_get_name;
+	typeof(&dc_bluetooth_device_free) bluetooth_device_free;
+	typeof(&dc_bluetooth_addr2str) bluetooth_addr2str;
+	typeof(&dc_bluetooth_str2addr) bluetooth_str2addr;
 } libdivecomputer_t;
 
 //For DLL loading
+typedef struct {
+  std::string address;
+  std::string name;
+} BluetoothDevice;
 
 class ComputerLibdc : public Computer
 {
@@ -77,8 +92,10 @@ protected:
 	dc_buffer_t *fingerprint;
 	std::string *out;
 	dc_device_t *device;
+	dc_iostream_t *iostream;
 
 	static std::vector<ComputerSupport> *support_list;
+	static std::vector<BluetoothDevice> *btdevice_list;
 
 public:
 	int dive_cb (const unsigned char *data, unsigned int size, const unsigned char *fingerprint, unsigned int fsize);
@@ -89,6 +106,7 @@ public:
 	virtual ComputerStatus get_status(); // thread save
 	virtual void cancel(); // thread save
   static std::vector<ComputerSupport> *support();
+  static std::vector<BluetoothDevice> *btscan(bool rescan);
 };
 
 

@@ -265,7 +265,7 @@ void ComputerFactory::listPorts(std::string &a)
 
 #if defined(__MACH__) || defined(__linux__)
 
-void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendlyNames)
+void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendlyNames, bool scanBT = true, bool reScanBT = false)
 {
 	int r;
 	DIR *dp;
@@ -273,6 +273,17 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 
 	friendlyNames.empty();
 	files.empty();
+
+	if (scanBT || reScanBT) {
+		std::vector<BluetoothDevice> *btdevice_list = ComputerLibdc::btscan(reScanBT);
+		if (btdevice_list) {
+			std::vector<BluetoothDevice>::iterator it1;
+			for ( it1=btdevice_list->begin() ; it1 < btdevice_list->end(); it1++ ){
+				files.push_back(it1->address);
+				friendlyNames.push_back(it1->name);
+			}
+		}
+	}
 
 	if((dp = opendir("/dev")) == NULL)
 		throw DBException(str(boost::format("Error (%1%) while opening /dev") % errno));
@@ -349,7 +360,7 @@ std::string ComputerFactory::detectConnectedDevice(const std::string &computerTy
 	return("");
 }
 
-std::map <std::string, std::string> ComputerFactory::allPorts()
+std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT = true, bool reScanBT = false)
 {
 	std::vector<std::string> fileNames;
 	std::vector<std::string> friendlyNames;
@@ -361,7 +372,7 @@ std::map <std::string, std::string> ComputerFactory::allPorts()
 	LOGINFO("Using SetupAPI");
 	UsingSetupAPI1(fileNames, friendlyNames);
 #elif defined(__MACH__) || defined(__linux__)
-	ListTTY(fileNames, friendlyNames);
+	ListTTY(fileNames, friendlyNames, scanBT, reScanBT);
 #else
 #error "Platform not supported"
 #endif

@@ -157,10 +157,7 @@ namespace {
       d.Parse<0>(_resp_body.c_str());
       printf("test2\n");
       std::string version = d["version"].GetString();
-      if (VERSION == version)
-	return "";
-      else
-	return d["url"].GetString();
+      return (VERSION == version) ? "" : d["url"].GetString();
     };
 
 
