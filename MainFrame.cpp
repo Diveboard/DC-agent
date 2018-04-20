@@ -137,7 +137,7 @@ void MainFrame::InitLoginPanel()
 MainFrame::~MainFrame()
 {
   scanBT = false;
-  _th.join();
+  /* no need to wait for the bt thread // _th.join(); */
   delete &_f;
 }
 
