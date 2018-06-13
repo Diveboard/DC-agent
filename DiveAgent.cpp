@@ -157,10 +157,7 @@ namespace {
       d.Parse<0>(_resp_body.c_str());
       printf("test2\n");
       std::string version = d["version"].GetString();
-      if (VERSION == version)
-	return "";
-      else
-	return d["url"].GetString();
+      return (VERSION == version) ? "" : d["url"].GetString();
     };
 
 
@@ -556,7 +553,7 @@ void DiveAgent::writeProfile(const std::string& key, const std::string& value)
   {
     libconfig::Setting& root = conf.getRoot();
     if ( root.exists(key) )
-      root[key] = value;
+      root[key.c_str()] = value;
     else
       root.add(key, libconfig::Setting::TypeString) = value;
     conf.writeFile(configFile().c_str());

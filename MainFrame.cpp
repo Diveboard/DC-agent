@@ -40,7 +40,10 @@ namespace
   }
 };
 
-MainFrame::MainFrame() : MainDialogBase(0), _f( * new ComputerFactory())
+ComputerFactory& MainFrame::_f( * new ComputerFactory());
+bool MainFrame::scanBT = true;
+
+MainFrame::MainFrame() : MainDialogBase(0)
 {
   InitLoginPanel();
 }
@@ -57,7 +60,7 @@ void MainFrame::InitUploadDivesPanel()
   m_selectPortManualCheck->SetValue(DiveAgent::readProfile("select_port_manual") == "1");
   m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
   GetSizer()->Fit(this);
-  std::map <std::string, std::string> ports = _f.allPorts();
+  std::map <std::string, std::string> ports = _f.allPorts(false, false);
   m_selectPortChoice->Clear();
   for (auto it=ports.begin(); it!= ports.end(); ++it)
   {
@@ -81,7 +84,10 @@ void MainFrame::InitUploadDivesPanel()
   // update select Model combo
   wxCommandEvent e;
   selectMakeChoiceOnChoice(e);
+
+  _th = boost::thread(&workingThread);
 }
+
 void MainFrame::loadUploadDivesPanel()
 {
   refreshLoggedInMenuButton();
@@ -130,6 +136,8 @@ void MainFrame::InitLoginPanel()
 
 MainFrame::~MainFrame()
 {
+  scanBT = false;
+  /* no need to wait for the bt thread // _th.join(); */
   delete &_f;
 }
 
@@ -212,7 +220,7 @@ void MainFrame::FBconnectButtonOnButtonClick( wxCommandEvent& event )
     {
       if ( !DiveAgent::instance().login_fb(id, token) )
       {
-	Logger::append((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
+        Logger::append((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
         wxString msg = wxString::FromUTF8((std::string("Login errors: ") + DiveAgent::instance().getErrors()).c_str());
         wxMessageDialog* dlg = new wxMessageDialog(this, msg, wxString::FromUTF8(DiveAgent::AppName().c_str()));
         dlg->ShowModal();
@@ -276,25 +284,32 @@ void MainFrame::showAccountInfo()
 
 void MainFrame::onTimer( wxTimerEvent& event)
 {
+  if (DiveAgent::instance().isUploadDivesRuning()) return;
+
   //wxLogError("onTimerMainFrame");
   std::string port_selected = getItemId(m_selectPortChoice, m_selectPortChoice->GetCurrentSelection());
   if (++_timer_counter >= timer_mx_count)
   {
     _timer_counter = 0;
     // update port choice control
-    std::map <std::string, std::string> ports = _f.allPorts();
+    std::map <std::string, std::string> ports = _f.allPorts(true);
     m_selectPortChoice->Clear();
+    int selection = 0;
     for (auto it=ports.begin(); it!= ports.end(); ++it)
     {
       // it->first device, it->second device name
       m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                                  new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
+      if (it->first.compare(0, 5, "/dev/") != 0) {
+        selection = m_selectPortChoice->GetCount()-1;
+        port_selected = it->first;
+      }
     }
     if (ports.size() == 0)
       m_selectPortChoice->Append(wxString::FromUTF8(""), new wxStringClientData(wxString::FromUTF8("")));
 
     // make some default port selection
-    m_selectPortChoice->SetSelection(0);
+    m_selectPortChoice->SetSelection(selection);
     // try to restore previos port selection
     for (int i=0; i < m_selectPortChoice->GetCount(); ++i)
     { // find port in port combo
@@ -397,6 +412,9 @@ void MainFrame::uploadDivesButtonOnButtonClick( wxCommandEvent& event)
     GetSizer()->Fit(this);
   }
 
+  scanBT = false;
+  _th.join();
+
   // save selection
   DiveAgent::writeProfile("dive_computer_port", m_selectPortChoice->GetStringSelection().utf8_str().data());
   DiveAgent::writeProfile("dive_computer_make", m_selectMakeChoice->GetStringSelection().utf8_str().data());
@@ -417,4 +435,22 @@ void MainFrame::onClose( wxCloseEvent& event )
 {
   this->Hide();
 }
+
+void MainFrame::workingThread()
+{
+  try
+  {
+    while(scanBT) {
+      _f.allPorts(true, true); //rescan for bt devices
+      usleep(100 * 1000); //wait 100 ms
+    }
+  }
+  catch( boost::thread_interrupted& )
+  {
+  }
+  catch (std::exception& e)
+  {
+    reportError(e.what());
+  }
+};
 

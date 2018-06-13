@@ -43,10 +43,10 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
   {
     int uploadDivesProgress = DiveAgent::instance().uploadDivesProgress();
     if (1 <= uploadDivesProgress && uploadDivesProgress <= 100) {
-	  m_uploadProgressGauge->SetValue(uploadDivesProgress);
-	  std::stringstream s;
-	  s << m_uploadProgressGauge->GetValue() << " %";
-	  m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
+      m_uploadProgressGauge->SetValue(uploadDivesProgress);
+      std::stringstream s;
+      s << m_uploadProgressGauge->GetValue() << " %";
+      m_uploadProgressStatic->SetLabel(wxString::FromUTF8(s.str().c_str()));
     }
 
     if (DiveAgent::instance().isDivesXmlReady() && _wait_dive_xml)
@@ -61,7 +61,7 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       if (!error.empty())
       {
         wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploading dives: ") + error).c_str()));
-	Logger::append((std::string("There was errors while uploading dives: ") + error).c_str());
+        Logger::append((std::string("There was errors while uploading dives: ") + error).c_str());
       }
       disableMonitoring();
       if (error.empty())
@@ -74,9 +74,9 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
       }
       else
       {
-	setIsLoginEnable(true);
-	mainFrame->Show();
-	setCurrentDialog(mainFrame);
+        setIsLoginEnable(true);
+        mainFrame->Show();
+        setCurrentDialog(mainFrame);
         Hide();
       }
     }
@@ -101,9 +101,14 @@ void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
 {
   std::string url = DiveAgent::instance().completionURL();
   if (!url.empty())
-    {
-      wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
-    }
+  {
+    wxLaunchDefaultBrowser(wxString::FromUTF8(url.c_str()));
+    // if something's wrong with the user's browser then
+    // let's give the user a chance to copy the string
+    // from stdout
+    printf(std::string(url+std::string("\n")).c_str());
+    Logger::append((std::string("Finalize on Diveboard: ") + url).c_str());
+  }
   setIsLoginEnable(true);
   setCurrentDialog(mainFrame);
   Hide();

@@ -41,7 +41,7 @@ static GtkWidget* addMenuEntry (GtkWidget *menu, const char *label, GCallback ca
 namespace {
   UploadDivesProgressDialog*  uploadDivesProgressDialog=0;
   AboutDilog*                 aboutDialog=0;
-  MainFrame*		              mainFrame=0;
+  MainFrame*                  mainFrame=0;
   wxSingleInstanceChecker*    m_checker=0;
 
   void createDialogs()
@@ -325,6 +325,8 @@ bool DiveAgentApp::OnInit()
 }
 void DiveAgentApp::onTimer( wxTimerEvent& event)
 {
+    if (DiveAgent::instance().isUploadDivesRuning()) return;
+
     //wxLogError("onTimerDiveAgentApp");
      bool port_detected;
     try

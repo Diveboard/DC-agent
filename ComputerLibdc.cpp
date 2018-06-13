@@ -37,7 +37,7 @@ HRESULT RegGetString(HKEY hKey, LPCTSTR szValueName, LPTSTR * lpszResult) {
   // Upon successful return the string should be freed using free()
   // eg. RegGetString(hKey, TEXT("my value"), &szString);
 
-  DWORD dwType=0, dwDataSize=0, dwBufSize=0;
+  DWORD dwType=0, dwDataSize=0, dwBufsize=0;
   LONG lResult;
 
   // Incase we fail set the return string to null...
@@ -79,13 +79,13 @@ HRESULT RegGetString(HKEY hKey, LPCTSTR szValueName, LPTSTR * lpszResult) {
 
 static void logger_proxy(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *message, void *userdata)
 {
-	const char *short_file  = file;
+  const char *short_file  = file;
 
-	for (const char *curs = file; *curs != 0 && curs-file < 1000; curs++)
-		if ((*curs == '/' || *curs == '\\' ) && *(curs+1) != 0)
-			short_file = curs+1;
+  for (const char *curs = file; *curs != 0 && curs-file < 1000; curs++)
+    if ((*curs == '/' || *curs == '\\' ) && *(curs+1) != 0)
+      short_file = curs+1;
 
-	Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
+  Logger::appendL((unsigned int)line, short_file, "LDC", "In %s: %s", function, message);
 }
 
 
@@ -138,12 +138,12 @@ LIBTYPE openDLLLibrary()
   std::string library_name = std::string(LIBDIVE_SO) + "/libdivecomputer.so";
   libdc = dlopen(library_name.c_str(),RTLD_LAZY);
   if (!libdc)
-    {
-      std::string library_name = DiveAgent::exeFolder() + "/libdivecomputer.so";
-      libdc = dlopen(library_name.c_str(),RTLD_LAZY);
-      if (!libdc)
-	DBthrowError("Impossible to load library : %s", dlerror());
-    }
+  {
+    std::string library_name = DiveAgent::exeFolder() + "/libdivecomputer.so";
+    libdc = dlopen(library_name.c_str(),RTLD_LAZY);
+    if (!libdc)
+      DBthrowError("Impossible to load library : %s", dlerror());
+  }
   return libdc;
 
 
@@ -186,7 +186,7 @@ void *getDLLFunction(LIBTYPE libdc, const char *function)
   return(ptr);
 }
 
-void fillDLLPointers(LIBTYPE libdc, libdivecomputer_t *libdc_p)
+static void fillDLLPointers(LIBTYPE libdc, libdivecomputer_t *libdc_p)
 {
   libdc_p->buffer_append = reinterpret_cast<typeof(&dc_buffer_append)>(getDLLFunction(libdc, "dc_buffer_append"));
   libdc_p->buffer_free = reinterpret_cast<typeof(&dc_buffer_free)>(getDLLFunction(libdc, "dc_buffer_free"));
@@ -217,6 +217,15 @@ void fillDLLPointers(LIBTYPE libdc, libdivecomputer_t *libdc_p)
   libdc_p->parser_new = reinterpret_cast<typeof(&dc_parser_new)>(getDLLFunction(libdc, "dc_parser_new"));
   libdc_p->parser_samples_foreach = reinterpret_cast<typeof(&dc_parser_samples_foreach)>(getDLLFunction(libdc, "dc_parser_samples_foreach"));
   libdc_p->parser_set_data = reinterpret_cast<typeof(&dc_parser_set_data)>(getDLLFunction(libdc, "dc_parser_set_data"));
+  libdc_p->iostream_close = reinterpret_cast<typeof(&dc_iostream_close)>(getDLLFunction(libdc, "dc_iostream_close"));
+  libdc_p->serial_open = reinterpret_cast<typeof(&dc_serial_open)>(getDLLFunction(libdc, "dc_serial_open"));
+  libdc_p->bluetooth_open = reinterpret_cast<typeof(&dc_bluetooth_open)>(getDLLFunction(libdc, "dc_bluetooth_open"));
+  libdc_p->bluetooth_iterator_new = reinterpret_cast<typeof(&dc_bluetooth_iterator_new)>(getDLLFunction(libdc, "dc_bluetooth_iterator_new"));
+  libdc_p->bluetooth_device_get_address = reinterpret_cast<typeof(&dc_bluetooth_device_get_address)>(getDLLFunction(libdc, "dc_bluetooth_device_get_address"));
+  libdc_p->bluetooth_device_get_name = reinterpret_cast<typeof(&dc_bluetooth_device_get_name)>(getDLLFunction(libdc, "dc_bluetooth_device_get_name"));
+  libdc_p->bluetooth_device_free = reinterpret_cast<typeof(&dc_bluetooth_device_free)>(getDLLFunction(libdc, "dc_bluetooth_device_free"));
+  libdc_p->bluetooth_addr2str = reinterpret_cast<typeof(&dc_bluetooth_addr2str)>(getDLLFunction(libdc, "dc_bluetooth_addr2str"));
+  libdc_p->bluetooth_str2addr = reinterpret_cast<typeof(&dc_bluetooth_str2addr)>(getDLLFunction(libdc, "dc_bluetooth_str2addr"));
 }
 
 
@@ -400,6 +409,10 @@ void sample_cb (dc_sample_type_t type, dc_sample_value_t value, void *userdata)
     case DC_SAMPLE_DECO:
       LOGDEBUG("Parsing element of type DC_SAMPLE_DECO");
       data->sampleXML += str(boost::format("<deco time=\"%u\" depth=\"%.2f\">%s</deco>") % value.deco.time % value.deco.depth % decostop[value.deco.type]);
+      break;
+    case DC_SAMPLE_GASMIX:
+      LOGDEBUG("Parsing element of type DC_SAMPLE_GASMIX");
+      data->sampleXML += str(boost::format("<gasmix>%u</gasmix>") % value.gasmix);
       break;
     default:
       LOGWARNING("Received an element of unknown type '%d'", type);
@@ -754,9 +767,32 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       libdc_p.descriptor_get_vendor (descriptor),
       libdc_p.descriptor_get_product (descriptor),
       devname.empty() ? devname.c_str() : "null");
-    rc = libdc_p.device_open (&device, context, descriptor, devname.c_str());
+
+		if (devname.compare(0, 5, "/dev/") == 0) {
+		  rc = libdc_p.serial_open (&iostream, context, devname.c_str());
+		  if (rc != DC_STATUS_SUCCESS) {
+		    LOGWARNING ("Error opening I/O stream.");
+		    DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
+		  }
+		}
+		else {
+		  dc_bluetooth_address_t address = 0;
+		  address = libdc_p.bluetooth_str2addr(devname.c_str());
+		  if (address == 0) {
+		    LOGWARNING ("Invalid device address.");
+		    DBthrowError(std::string("Invalid device address:") + devname.c_str());
+		  }
+		  rc = libdc_p.bluetooth_open (&iostream, context, address, 0);
+		  if (rc != DC_STATUS_SUCCESS) {
+		    LOGWARNING ("Error opening I/O stream.");
+		    DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
+		  }
+		}
+    
+    rc = libdc_p.device_open (&device, context, descriptor, iostream);
     if (rc != DC_STATUS_SUCCESS) {
       LOGWARNING ("Error opening device.");
+      libdc_p.iostream_close (iostream);
       DBthrowError(std::string("Error opening device - Error code : ") + errmsg(rc));
     }
 
@@ -770,6 +806,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
     if (rc != DC_STATUS_SUCCESS) {
       LOGDEBUG("Error registering the event handler.");
       libdc_p.device_close (device);
+      libdc_p.iostream_close (iostream);
       DBthrowError("Error registering the event handler ");
     }
 
@@ -779,6 +816,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
     if (rc != DC_STATUS_SUCCESS) {
       LOGINFO("Error registering the cancellation handler.");
       libdc_p.device_close (device);
+      libdc_p.iostream_close (iostream);
       DBthrowError("Error registering the cancellation handler ");
     }
 
@@ -789,6 +827,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       if (rc != DEVICE_STATUS_SUCCESS) {
         LOGINFO("Error registering the fingerprint data.");
         device_close (device);
+        libdc_p.iostream_close (iostream);
         return rc;
       }
     }
@@ -807,6 +846,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
         LOGINFO ("Error downloading the memory dump");
         libdc_p.buffer_free (buffer);
         libdc_p.device_close (device);
+        libdc_p.iostream_close (iostream);
         DBthrowError("Error downloading the memory dump");
       }
 
@@ -858,6 +898,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
         LOGDEBUG("Error downloading the dives.");
         libdc_p.buffer_free (fingerprint);
         libdc_p.device_close (device);
+        libdc_p.iostream_close (iostream);
         DBthrowError(std::string("Error opening device - Error code : ") + errmsg(rc));
       }
 
@@ -877,6 +918,9 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
     rc = libdc_p.device_close (device);
     if (rc != DC_STATUS_SUCCESS)
       LOGWARNING("Error closing the device. %s", errmsg(rc));
+    rc = libdc_p.iostream_close (iostream);
+    if (rc != DC_STATUS_SUCCESS)
+      LOGWARNING("Error closing the I/O stream. %s", errmsg(rc));
 }
 
 
@@ -970,17 +1014,17 @@ ComputerLibdc::ComputerLibdc(std::string type, std::string file)
 
   LOGDEBUG("Setting up logger for libdivecomputer");
   if (Logger::logLevel.compare("DEBUG") == 0)
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_DEBUG);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_DEBUG);
   else if (Logger::logLevel.compare("INFO") == 0)
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_INFO);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_INFO);
   else if (Logger::logLevel.compare("WARNING") == 0)
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_WARNING);
   else if (Logger::logLevel.compare("ERROR") == 0)
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_ERROR);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_ERROR);
   else if (Logger::logLevel.compare("CRITICAL") == 0)
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_ERROR);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_ERROR);
   else
-	libdc_p.context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+    libdc_p.context_set_loglevel(context, DC_LOGLEVEL_WARNING);
   libdc_p.context_set_logfunc(context, logger_proxy, NULL);
 
 
@@ -1141,5 +1185,69 @@ std::vector<ComputerSupport> *ComputerLibdc::support()
 }
 
 
+std::vector<BluetoothDevice> *ComputerLibdc::btdevice_list = NULL;
 
+static std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
+{
+  if (!rescan)
+    return(btdevice_list);
+
+  dc_status_t rc = DC_STATUS_SUCCESS;
+  LIBTYPE libdc;
+  libdivecomputer_t libdc_p;
+
+  LOGDEBUG("Opening LibDiveComputer");
+  libdc = openDLLLibrary();
+  fillDLLPointers(libdc, &libdc_p);
+
+  std::vector<BluetoothDevice> *btdevice_list_tmp = new std::vector<BluetoothDevice>;
+
+	dc_context_t *context;
+  rc = libdc_p.context_new (&context);
+  if (rc != DC_STATUS_SUCCESS) {
+    DBthrowError(std::string("Error allocating context : ") + errmsg(rc));
+  }
+
+  dc_iterator_t *iterator = NULL;
+  rc = libdc_p.bluetooth_iterator_new (&iterator, context, NULL);
+  if (rc != DC_STATUS_SUCCESS) {
+    DBthrowError("Error creating the device descriptor iterator.");
+  }
+
+  dc_bluetooth_device_t *device = NULL;
+  dc_bluetooth_address_t address = 0;
+  char buffer[DC_BLUETOOTH_SIZE];
+  while ((rc = libdc_p.iterator_next (iterator, &device)) == DC_STATUS_SUCCESS) {
+    address = libdc_p.bluetooth_device_get_address(device);
+    libdc_p.bluetooth_addr2str(address, buffer, sizeof(buffer));
+
+    BluetoothDevice btd;
+    const char *name   = libdc_p.bluetooth_device_get_name(device);
+
+    btd.address = std::string(buffer);
+    btd.name    = std::string(name);
+
+		//printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
+    btdevice_list_tmp->push_back(btd);
+
+    libdc_p.bluetooth_device_free(device);
+  }
+
+  if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_DONE) {
+    libdc_p.iterator_free (iterator);
+    DBthrowError ("Error iterating the device descriptors.");
+  }
+
+  libdc_p.iterator_free (iterator);
+  libdc_p.context_free (context);
+
+  LOGDEBUG("Closing LibDiveComputer");
+  closeDLLLibrary(libdc);
+
+	if (btdevice_list) delete(btdevice_list);
+	btdevice_list = btdevice_list_tmp;
+	btdevice_list_tmp = NULL;
+
+  return(btdevice_list);
+}
 
