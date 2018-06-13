@@ -63,7 +63,7 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 HOW TO BUILD ON LINUX
 
 1) install package
-apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool
+apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool libjpeg-dev libtiff-dev
 
 //ONLY ON UBUNTU WITH UNITY
 //FOR USER ALSO
