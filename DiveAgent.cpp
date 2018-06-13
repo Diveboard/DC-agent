@@ -553,7 +553,7 @@ void DiveAgent::writeProfile(const std::string& key, const std::string& value)
   {
     libconfig::Setting& root = conf.getRoot();
     if ( root.exists(key) )
-      root[key] = value;
+      root[key.c_str()] = value;
     else
       root.add(key, libconfig::Setting::TypeString) = value;
     conf.writeFile(configFile().c_str());

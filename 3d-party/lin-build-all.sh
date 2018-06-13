@@ -1,8 +1,6 @@
 #!/bin/sh
 echo "BUILD BOOST"
 ./lin-build-boost.sh
-echo "BUILD LIBCONFIG"
-./lin-build-libconfig.sh
 echo "BUILD LIBICONV"
 ./lin-build-libiconv.sh
 echo "BUILD RAPIDJSON"

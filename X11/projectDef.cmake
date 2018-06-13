@@ -19,6 +19,7 @@ set (SOURCES
     ${PLATFORM}
     )
     
+set(CMAKE_SKIP_RPATH TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fpermissive")
 #add_x11_plugin(${PROJNAME} SOURCES)
 
@@ -63,6 +64,11 @@ find_library(LIBDIVECOMPUTER divecomputer)
 find_library(LIBCONFIG config++)
 find_library(LIBICONV iconv)
 find_library(LIBCURL curl)
+
+find_package(ZLIB REQUIRED)
+find_package(JPEG REQUIRED)
+find_package(PNG REQUIRED)
+find_package(TIFF REQUIRED)
 
 # change the following to e.g. appindicatorX if you want to
 # build a binary without appindicator functionality on ubuntu
@@ -133,6 +139,10 @@ target_link_libraries(${PROJNAME}
     ${LIBCONFIG}
     curl
     ${LIBAPPINDICATOR}
+    ${ZLIB_LIBRARIES}
+    ${LIBJPEG_LIBRARIES}
+    ${LIBPNG_LIBRARIES}
+    ${TIFF_LIBRARIES}
     )
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
