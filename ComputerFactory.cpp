@@ -360,7 +360,7 @@ std::string ComputerFactory::detectConnectedDevice(const std::string &computerTy
 	return("");
 }
 
-std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT = true, bool reScanBT = false)
+std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT /*= true*/, bool reScanBT /*= false*/)
 {
 	std::vector<std::string> fileNames;
 	std::vector<std::string> friendlyNames;

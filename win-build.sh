@@ -8,7 +8,7 @@ cd ${CURRENTPATH}
 echo "BUILD CMAKE"
 mkdir build
 cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=./3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows
+cmake -DCMAKE_TOOLCHAIN_FILE=../3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
 echo "BUILD PROJECT"
 make
 cd ..
