@@ -37,7 +37,7 @@ HRESULT RegGetString(HKEY hKey, LPCTSTR szValueName, LPTSTR * lpszResult) {
   // Upon successful return the string should be freed using free()
   // eg. RegGetString(hKey, TEXT("my value"), &szString);
 
-  DWORD dwType=0, dwDataSize=0, dwBufsize=0;
+  DWORD dwType=0, dwDataSize=0, dwBufSize=0;
   LONG lResult;
 
   // Incase we fail set the return string to null...
