@@ -176,6 +176,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
     {
       //Did we find a serial port for this device
       BOOL bAdded = false;
+      int nPort = 0;
 
       LOGDEBUG("Getting informations for device %d", nIndex);
 
@@ -202,8 +203,8 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
                  isdigit(szPortName[3]))
             {
               //Work out the port number
-              int nPort = _ttoi(&(szPortName[3]));
-			  ports.push_back(str(boost::format("\\\\.\\COM%1%") % nPort));
+              nPort = _ttoi(&(szPortName[3]));
+              ports.push_back(str(boost::format("\\\\.\\COM%1%") % nPort));
               bAdded = true;
             }
           }
@@ -220,17 +221,18 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
         szFriendlyName[0] = _T('\0');
         DWORD dwSize = sizeof(szFriendlyName);
         DWORD dwType = 0;
+        std::string friendlyName = std::string("");
         if (lpfnSETUPDIGETDEVICEREGISTRYPROPERTY(hDevInfoSet, &devInfo, SPDRP_DEVICEDESC, &dwType, szFriendlyName, dwSize, &dwSize) && (dwType == REG_SZ))
         {
 			//todo fix unicode support....
-          friendlyNames.push_back(std::string((char *)szFriendlyName));
+          friendlyName = std::string((char *)szFriendlyName);
         }
-        else
-        {
-			//todo fix unicode support....
-          friendlyNames.push_back("");
+        if (friendlyName.find("COM") == std::string::npos) {
+        	friendlyName += str(boost::format(" (COM%1%)") % nPort);
         }
-		LOGDEBUG("Port is friendly-named : '%s'", friendlyNames[friendlyNames.size()-1].c_str());
+        friendlyNames.push_back(friendlyName);
+        LOGDEBUG("Port is friendly-named : '%s'", friendlyNames[friendlyNames.size()-1].c_str());
+        LOGDEBUG("Port is friendly-named : '%s'", friendlyNames[friendlyNames.size()-1].c_str());
       }
     }
 
