@@ -768,7 +768,7 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       libdc_p.descriptor_get_product (descriptor),
       devname.empty() ? devname.c_str() : "null");
 
-		if (devname.compare(0, 5, "/dev/") == 0) {
+		if (devname.compare(0, 5, "/dev/") == 0 || devname.compare(0, 7, "\\\\.\\COM") == 0) {
 		  rc = libdc_p.serial_open (&iostream, context, devname.c_str());
 		  if (rc != DC_STATUS_SUCCESS) {
 		    LOGWARNING ("Error opening I/O stream.");

@@ -295,12 +295,13 @@ void MainFrame::onTimer( wxTimerEvent& event)
     std::map <std::string, std::string> ports = _f.allPorts(true);
     m_selectPortChoice->Clear();
     int selection = 0;
+    //auto-select newly detected "native" bluetooth devices
     for (auto it=ports.begin(); it!= ports.end(); ++it)
     {
       // it->first device, it->second device name
       m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
                                  new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
-      if (it->first.compare(0, 5, "/dev/") != 0) {
+      if (it->first.compare(0, 5, "/dev/") != 0 && it->first.compare(0, 7, "\\\\.\\COM") != 0) {
         selection = m_selectPortChoice->GetCount()-1;
         port_selected = it->first;
       }
