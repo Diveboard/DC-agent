@@ -137,6 +137,9 @@ add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND
 ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libwinpthread-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libwinpthread-1.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libusb-1.0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libusb-1.0.dll")
+
+add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libstdc++-6.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 

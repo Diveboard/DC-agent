@@ -1187,7 +1187,7 @@ std::vector<ComputerSupport> *ComputerLibdc::support()
 
 std::vector<BluetoothDevice> *ComputerLibdc::btdevice_list = NULL;
 
-static std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
+std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
 {
   if (!rescan)
     return(btdevice_list);

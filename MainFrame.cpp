@@ -442,7 +442,7 @@ void MainFrame::workingThread()
   {
     while(scanBT) {
       _f.allPorts(true, true); //rescan for bt devices
-      usleep(100 * 1000); //wait 100 ms
+      boost::this_thread::sleep(boost::posix_time::milliseconds(100));
     }
   }
   catch( boost::thread_interrupted& )
