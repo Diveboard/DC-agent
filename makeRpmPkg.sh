@@ -65,7 +65,7 @@ www.diveboard.com
 EOF
 
 mkdir -p ~/rpmbuild/SOURCES
-cp $DIR/build/packages/diveboard-*.tgz ~/rpmbuild/SOURCES/diveboard.tgz
+cp $DIR/build/packages/diveboard-agent-$VERSION-$ARCH.tgz ~/rpmbuild/SOURCES/diveboard.tgz
 
 rpmbuild --clean "$SPECFILE"
 
@@ -74,6 +74,6 @@ rpmbuild -bc --short-circuit "$SPECFILE"
 rpmbuild -bi --short-circuit "$SPECFILE"
 rpmbuild -ba --short-circuit "$SPECFILE" --sign
 
-cp ~/rpmbuild/RPMS/*/diveboard-agent-$VERSION*.rpm $DIR/build/packages
+cp ~/rpmbuild/RPMS/*/diveboard-agent-$VERSION*$ARCH.rpm $DIR/build/packages
 
 rm -f "$SPECFILE"
