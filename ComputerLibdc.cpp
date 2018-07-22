@@ -230,7 +230,7 @@ static void fillDLLPointers(LIBTYPE libdc, libdivecomputer_t *libdc_p)
 
 
 struct sample_cb_data {
-  std::string sampleXML;
+  std::ostringstream sampleXML;
   unsigned int duration;
   double max_depth;
   double min_temp;
@@ -353,39 +353,39 @@ void sample_cb (dc_sample_type_t type, dc_sample_value_t value, void *userdata)
       LOGDEBUG("Parsing element of type DC_SAMPLE_TIME");
       nsamples++;
       if (data->duration < value.time) data->duration = value.time;
-      data->sampleXML += str(boost::format("<t>%02u</t>") % value.time);
+      data->sampleXML << str(boost::format("<t>%02u</t>") % value.time);
       break;
     case DC_SAMPLE_DEPTH:
       LOGDEBUG("Parsing element of type DC_SAMPLE_DEPTH");
-      data->sampleXML += str(boost::format("<d>%.2f</d>") % value.depth);
+      data->sampleXML << str(boost::format("<d>%.2f</d>") % value.depth);
       if (data->max_depth < value.depth) data->max_depth = value.depth;
       break;
     case DC_SAMPLE_PRESSURE:
       LOGDEBUG("Parsing element of type DC_SAMPLE_PRESSURE");
       //todo
-      data->sampleXML += str(boost::format("<pressure tank=\"%u\">%.2f</pressure>") %  value.pressure.tank % value.pressure.value);
+      data->sampleXML << str(boost::format("<pressure tank=\"%u\">%.2f</pressure>") %  value.pressure.tank % value.pressure.value);
       break;
     case DC_SAMPLE_TEMPERATURE:
       LOGDEBUG("Parsing element of type DC_SAMPLE_TEMPERATURE");
       if (data->min_temp < value.temperature) data->min_temp = value.temperature;
-      data->sampleXML += str(boost::format("<temperature>%.2f</temperature>") % value.temperature);
+      data->sampleXML << str(boost::format("<temperature>%.2f</temperature>") % value.temperature);
       break;
     case DC_SAMPLE_EVENT:
       LOGDEBUG("Parsing element of type DC_SAMPLE_EVENT");
-      data->sampleXML += str(boost::format("<ALARM type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</ALARM>")
+      data->sampleXML << str(boost::format("<ALARM type=\"%u\" time=\"%u\" flags=\"%u\" value=\"%u\">%s</ALARM>")
         % value.event.type % value.event.time % value.event.flags % value.event.value % events[value.event.type]);
       break;
     case DC_SAMPLE_RBT:
       LOGDEBUG("Parsing element of type DC_SAMPLE_RBT");
-      data->sampleXML += str(boost::format("<rbt>%u</rbt>") % value.rbt);
+      data->sampleXML << str(boost::format("<rbt>%u</rbt>") % value.rbt);
       break;
     case DC_SAMPLE_HEARTBEAT:
       LOGDEBUG("Parsing element of type DC_SAMPLE_HEARTBEAT");
-      data->sampleXML += str(boost::format("<heartbeat>%u</heartbeat>") % value.heartbeat);
+      data->sampleXML << str(boost::format("<heartbeat>%u</heartbeat>") % value.heartbeat);
       break;
     case DC_SAMPLE_BEARING:
       LOGDEBUG("Parsing element of type DC_SAMPLE_BEARING");
-      data->sampleXML += str(boost::format("<bearing>%u</bearing>") % value.bearing);
+      data->sampleXML << str(boost::format("<bearing>%u</bearing>") % value.bearing);
       break;
     case DC_SAMPLE_VENDOR:
       LOGDEBUG("Parsing element of type DC_SAMPLE_VENDOR");
@@ -396,23 +396,23 @@ void sample_cb (dc_sample_type_t type, dc_sample_value_t value, void *userdata)
       break;
     case DC_SAMPLE_SETPOINT:
       LOGDEBUG("Parsing element of type DC_SAMPLE_SETPOINT");
-      data->sampleXML += str(boost::format("<setpoint>%.2f</setpoint>") % value.setpoint);
+      data->sampleXML << str(boost::format("<setpoint>%.2f</setpoint>") % value.setpoint);
       break;
     case DC_SAMPLE_PPO2:
       LOGDEBUG("Parsing element of type DC_SAMPLE_PPO2");
-      data->sampleXML += str(boost::format("<ppo2>%.2f</ppo2>") % value.ppo2);
+      data->sampleXML << str(boost::format("<ppo2>%.2f</ppo2>") % value.ppo2);
       break;
     case DC_SAMPLE_CNS:
       LOGDEBUG("Parsing element of type DC_SAMPLE_CNS");
-      data->sampleXML += str(boost::format("<cns>%.2f</cns>") % value.cns);
+      data->sampleXML << str(boost::format("<cns>%.2f</cns>") % value.cns);
       break;
     case DC_SAMPLE_DECO:
       LOGDEBUG("Parsing element of type DC_SAMPLE_DECO");
-      data->sampleXML += str(boost::format("<deco time=\"%u\" depth=\"%.2f\">%s</deco>") % value.deco.time % value.deco.depth % decostop[value.deco.type]);
+      data->sampleXML << str(boost::format("<deco time=\"%u\" depth=\"%.2f\">%s</deco>") % value.deco.time % value.deco.depth % decostop[value.deco.type]);
       break;
     case DC_SAMPLE_GASMIX:
       LOGDEBUG("Parsing element of type DC_SAMPLE_GASMIX");
-      data->sampleXML += str(boost::format("<gasmix>%u</gasmix>") % value.gasmix);
+      data->sampleXML << str(boost::format("<gasmix>%u</gasmix>") % value.gasmix);
       break;
     default:
       LOGWARNING("Received an element of unknown type '%d'", type);
@@ -536,7 +536,9 @@ dc_status_t ComputerLibdc::doparse (const unsigned char data[], unsigned int siz
     //LDCPARSERSAMPLESFOREACH* parser_samples_foreach = reinterpret_cast<LDCPARSERSAMPLESFOREACH*>(GetProcAddress(libdc, "parser_samples_foreach"));
 
     struct sample_cb_data cbd;
-    cbd.sampleXML = "";
+    cbd.sampleXML.str("");
+    cbd.sampleXML.clear();
+
     cbd.duration = 0;
     cbd.max_depth = 0;
     cbd.min_temp = MAX_TEMP;
@@ -553,7 +555,7 @@ dc_status_t ComputerLibdc::doparse (const unsigned char data[], unsigned int siz
     if (cbd.min_temp < MAX_TEMP) *out += str(boost::format("<TEMPERATURE>%.2f</TEMPERATURE>") % cbd.min_temp);
 
     *out += "<SAMPLES>";
-    *out += cbd.sampleXML;
+    *out += cbd.sampleXML.str();
     *out += "</SAMPLES>";
 
   } catch(std::exception &e) {
