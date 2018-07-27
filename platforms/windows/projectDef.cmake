@@ -56,8 +56,8 @@ link_directories(${BOOST_LIBRARYDIR})
 
 message("Using boost at: ${Boost_INCLUDE_DIRS}")
 
-# find_library(LIBDIVECOMPUTER divecomputer ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
-# find_library(LIBCONFIG config++ ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
+# find_library(LIBDIVECOMPUTER divecomputer ${3rd_party_ROOT}/lib/ NO_DEFAULT_PATH)
+# find_library(LIBCONFIG config++ ${3rd_party_ROOT}/lib/ NO_DEFAULT_PATH)
 set(CMAKE_PREFIX_PATH "${3rd_party_ROOT}")
 # set(Curl_DIR "${3rd_party_ROOT}")
 set(Curl_INCLUDE_DIR "${3rd_party_ROOT}/include/curl")

@@ -99,7 +99,7 @@ SectionEnd
 
 Section -Additional
 SetOutPath "$TEMP"
-File "../../3d-party/windows-build/vcredist_x86.exe"
+File "../../3rd-party/windows-build/vcredist_x86.exe"
 ReadRegStr $1 HKLM "SOFTWARE\Microsoft\VisualStudio\10.0\VC\VCRedist\x86" "Installed"
 StrCmp $1 1 installed
 ;not installed, so run the installer
