@@ -7,11 +7,7 @@ Boost and wxwidgets take quite a lot of time.
 
   cd ..../diveboard-agent
   cd 3d-party
-  ./mac-build-divecomputer.sh
-  ./mac-build-libconfig.sh
-  ./mac-build-rapidjson.sh
-  ./mac-build-boost.sh
-  ./mac-build-wxwidgets.sh
+  ./mac-build-all.sh
 
 
 2/ Create build directory and build using Makefile
@@ -32,79 +28,88 @@ Mac : The binaries are in build/bin
 
 4/ Package the result
 ---------------------
-./makeMacPkg.sh
+  ./makeMacPkg.sh
+
+
 
 ---------------------
 HOW TO BUILD ON LINUX FOR WINDOWS
 1) Preparations:
-   apt-get install mingw-w64 binutils-mingw-w64 cmake nsis
-   Remplacer le fichier FindwxWidgets.cmake qui se trouve dans /usr/share/cmake-2.8/Modules/ par celui qui se trouve dans 3d-party/windows-build/
+
+  sudo apt-get install mingw-w64 binutils-mingw-w64 cmake nsis
+  //ONLY FOR OLD VERSIONS OF CMAKE:
+  // replace the file FindwxWidgets.cmake in folder /usr/share/cmake-2.8/Modules/ by the one in 3d-party/windows-build/
+
 
 2 Building libraries:
-  cd <project root>/3d-party.
-  //IF WENT FASTER COMPILING
-  export MAKEFLAGS=-j(number of process(optionnal))
-  run build-win-all.sh scripts one by one. 
 
-3 Generating makefiles:
+  cd <project root>/3d-party
+  //IF YOU WANT FASTER COMPILING: export MAKEFLAGS=-j(number of process(optional)), e.g.:
+  export MAKEFLAGS=-j8
+  ./win-build-all.sh
+
+
+3 Create build directory and build using Makefile
+
   cd <project root>
   mkdir build
   cd build 
-  cmake -DCMAKE_TOOLCHAIN_FILE=../3d-party/windows-build/Toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
-
-4 Building.
+  cmake -DCMAKE_TOOLCHAIN_FILE=../3d-party/windows-build/toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
   make
 
-5 Building setup.
+
+4 Building setup.
   cd ..
   makensis Win/Diveboard.nsi
+
 
 
 HOW TO BUILD ON LINUX
 
 1) install package
-apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool libjpeg-dev libtiff-dev libconfig++-dev
 
-//ONLY ON UBUNTU WITH UNITY
-//FOR USER ALSO
-sudo apt-add-repository ppa:gurqn/systray-trusty
-sudo apt-get update
-sudo apt-get upgrade
+  sudo apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool libjpeg-dev libtiff-dev libconfig++-dev
+
+  //ONLY ON UBUNTU WITH UNITY
+  sudo apt-add-repository ppa:gurqn/systray-trusty
+  sudo apt-get update
+  sudo apt-get upgrade
 
 
-2) build 3d-party
-cd <project root>/3d-party
-//IF WENT FASTER COMPILING
-export MAKEFLAGS=-j(number of process(optionnal))
+2) build libraries
 
-./lin-build-all.sh
+  cd <project root>/3d-party
+  //IF YOU WANT FASTER COMPILING: export MAKEFLAGS=-j(number of process(optional)), e.g.:
+  export MAKEFLAGS=-j8
+  ./lin-build-all.sh
+
 
 3) build Diveboard agent
 
-cd <project root>/
-mkdir build
-cd <project root>/build
-cmake ..
-make
+  cd <project root>/
+  mkdir build
+  cd <project root>/build
+  cmake ..
+  make
+
 
 4) build package
-cd <project root>/
 
-cp pgp/* ~/.gnupg/
-gpg --export -a 'Diveboard Tech' > RPM-GPG-KEY-diveboard
-sudo rpm --import RPM-GPG-KEY-diveboard
-echo "%_signature gpg
-%_gpg_name  Diveboard Tech" > ~/.rpmmacros
+  cd <project root>/
+  cp pgp/* ~/.gnupg/
+  gpg --export -a 'Diveboard Tech' > RPM-GPG-KEY-diveboard
+  sudo rpm --import RPM-GPG-KEY-diveboard
+  echo "%_signature gpg
+  %_gpg_name  Diveboard Tech" > ~/.rpmmacros
+  ./makeLinuxPkg.sh
 
-./makeLinuxPkg.sh
-
-//SIGNED ON REPREPRO SO THIS IS JUST TO FORCE SIGNING
-//WARNING: this needs to be adapted to the actual name of debian file
-fakeroot dpkg-sig -k "Diveboard Tech" --sign builder build/packages/diveboard-agent-1.0.0-i386.deb 
-
+  //SIGNED ON REPREPRO SO THIS IS JUST TO FORCE SIGNING
+  //WARNING: this needs to be adapted to the actual name of debian file
+  fakeroot dpkg-sig -k "Diveboard Tech" --sign builder build/packages/diveboard-agent-1.0.0-i386.deb 
 
 
-HOW TO PUSH ON SERVEUR
+
+HOW TO PUSH ON SERVER
 
 - connect on diveboard server and upload all the package
 - Get a terminal on the server
@@ -120,6 +125,9 @@ HOW TO PUSH ON SERVEUR
     - reprepro includedeb stable "PATH TO DEB FILE/DiveboardAgent.deb"
     - Signing of deb file is during the reprepro add so the command ask you for the gnupg key password.
 
+
+
 HOW TO UPDATE THE SERVER
   - Change the version number in the method "versions" line 1487 of the api_controller.rb
   - You need to make this change for each platform.
+

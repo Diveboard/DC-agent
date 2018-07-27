@@ -1,8 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #include <string>
-#include "../DiveAgent.h"
 #include <vector>
+
+#include "../../source/DiveAgent.h"
 
 std::string DiveAgent::homeFolder()
 {

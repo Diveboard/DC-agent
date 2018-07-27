@@ -10,7 +10,7 @@
 !define VERSION "00.00.00.00"
 !define COPYRIGHT "Diveboard  © 2014"
 !define DESCRIPTION "Application"
-!define INSTALLER_NAME "../build/bin/setup.exe"
+!define INSTALLER_NAME "../../build/bin/setup.exe"
 !define MAIN_APP_EXE "DiveboardAgent.exe"
 !define INSTALL_TYPE "SetShellVarContext current"
 !define REG_ROOT "HKCU"
@@ -81,25 +81,25 @@ Section -MainProgram
 ${INSTALL_TYPE}
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"
-File "../build/bin/DiveboardAgent.exe"
-File "../build/bin/libconfig++-9.dll"
-File "../build/bin/libconfig-9.dll"
-File "../build/bin/libcurl-4.dll"
-File "../build/bin/libdivecomputer-0.dll"
-File "../build/bin/libgcc_s_sjlj-1.dll"
-File "../build/bin/libssl.dll"
-File "../build/bin/libstdc++-6.dll"
-File "../build/bin/libwinpthread-1.dll"
-File "../build/bin/libusb-1.0.dll"
-File "../build/bin/libeay32.dll"
-File "../build/bin/ssleay32.dll"
+File "../../build/bin/DiveboardAgent.exe"
+File "../../build/bin/libconfig++-9.dll"
+File "../../build/bin/libconfig-9.dll"
+File "../../build/bin/libcurl-4.dll"
+File "../../build/bin/libdivecomputer-0.dll"
+File "../../build/bin/libgcc_s_sjlj-1.dll"
+File "../../build/bin/libssl.dll"
+File "../../build/bin/libstdc++-6.dll"
+File "../../build/bin/libwinpthread-1.dll"
+File "../../build/bin/libusb-1.0.dll"
+File "../../build/bin/libeay32.dll"
+File "../../build/bin/ssleay32.dll"
 SectionEnd
 
 ######################################################################
 
 Section -Additional
 SetOutPath "$TEMP"
-File "../3d-party/windows-build/vcredist_x86.exe"
+File "../../3d-party/windows-build/vcredist_x86.exe"
 ReadRegStr $1 HKLM "SOFTWARE\Microsoft\VisualStudio\10.0\VC\VCRedist\x86" "Installed"
 StrCmp $1 1 installed
 ;not installed, so run the installer

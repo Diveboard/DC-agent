@@ -8,12 +8,12 @@ set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -arch i386")
 set(CMAKE_OJB_C_FLAGS "${CMAKE_OBJ_C_FLAGS} -arch i386")
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libstdc++")
 
-# remember that the current source dir is the project root; this file is in Mac/
+# remember that the current source dir is the project root
 file (GLOB PLATFORM RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    Mac/[^.]*.cpp
-    Mac/[^.]*.mm
-    Mac/[^.]*.h
-    Mac/[^.]*.cmake
+    platforms/${FB_PLATFORM_NAME}/[^.]*.cpp
+    platforms/${FB_PLATFORM_NAME}/[^.]*.mm
+    platforms/${FB_PLATFORM_NAME}/[^.]*.h
+    platforms/${FB_PLATFORM_NAME}/[^.]*.cmake
     )
 
 # use this to add preprocessor definitions

@@ -1,12 +1,13 @@
-#include "../stdafx.h"
 #include <string>
-#include "../DiveAgent.h"
 #include <vector>
-#include "../Logger.h"
 #include <userenv.h>
 #include <wincrypt.h>
 #include <sstream>
 #include <iomanip>
+
+#include "../../source/stdafx.h"
+#include "../../source/DiveAgent.h"
+#include "../../source/Logger.h"
 
 namespace
 {

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/NSRunningApplication.h>
 
-#include "../DiveAgentApp.h"
+#include "../../source/DiveAgentApp.h"
 #include "LaunchAtLoginController.h"
 
 void DiveAgentApp::SureProcessToForeground()

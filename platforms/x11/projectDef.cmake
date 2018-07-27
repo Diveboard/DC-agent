@@ -1,11 +1,11 @@
 # X11 template platform definition CMake file
 # Included from ../CMakeLists.txt
 
-# remember that the current source dir is the project root; this file is in ${PLATFORM_NAME}/
+# remember that the current source dir is the project root
 file (GLOB PLATFORM RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    X11/[^.]*.cpp
-    X11/[^.]*.h
-    X11/[^.]*.cmake
+    platforms/${FB_PLATFORM_NAME}/[^.]*.cpp
+    platforms/${FB_PLATFORM_NAME}/[^.]*.h
+    platforms/${FB_PLATFORM_NAME}/[^.]*.cmake
     )
 
 SOURCE_GROUP(Lin FILES ${PLATFORM})
@@ -31,7 +31,7 @@ set(wxWidgets_ROOT_DIR "${3d_party_ROOT}/wxWidgets-3.0/")
 set(wxWidgets_LIB_DIR "${3d_party_ROOT}/wxWidgets-3.0/lib")
 
 #install the .desktop file
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/${FB_PLATFORM_NAME}/${PROJNAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/platforms/${FB_PLATFORM_NAME}/${PROJNAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 message("Will install .desktop file in ${CMAKE_INSTALL_PREFIX}/share/applications")
 
 #install the icon
