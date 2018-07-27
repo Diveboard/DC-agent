@@ -1,5 +1,5 @@
-# Mac template platform definition CMake file
-# Included from ../CMakeLists.txt
+# MacOS platform definition CMake file
+# Included from ../../CMakeLists.txt
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch i386 -mmacosx-version-min=10.6")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch i386 -stdlib=libstdc++ -mmacosx-version-min=10.6")
@@ -10,10 +10,10 @@ set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libstdc++")
 
 # remember that the current source dir is the project root
 file (GLOB PLATFORM RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    platforms/${FB_PLATFORM_NAME}/[^.]*.cpp
-    platforms/${FB_PLATFORM_NAME}/[^.]*.mm
-    platforms/${FB_PLATFORM_NAME}/[^.]*.h
-    platforms/${FB_PLATFORM_NAME}/[^.]*.cmake
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.mm
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.h
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.cmake
     )
 
 # use this to add preprocessor definitions
@@ -57,7 +57,7 @@ include_directories("${3d_paryt_ROOT}/include")
 
 find_library( SECURITY_FRAMEWORK Security)
 
-set( MACOSX_BUNDLE_ICON_FILE icon_ellow.icns )
+set( MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_LIST_DIR}/icon_ellow.icns )
 set_source_files_properties( ${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
 set( MACOSX_BUNDLE_BUNDLE_NAME "DiveboardAgent" )

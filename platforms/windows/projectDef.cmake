@@ -1,11 +1,11 @@
-# Mac template platform definition CMake file
-# Included from ../CMakeLists.txt
+# Windows platform definition CMake file
+# Included from ../../CMakeLists.txt
 
 # remember that the current source dir is the project root
 file (GLOB PLATFORM RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    platforms/${FB_PLATFORM_NAME}/[^.]*.cpp
-    platforms/${FB_PLATFORM_NAME}/[^.]*.h
-    platforms/${FB_PLATFORM_NAME}/[^.]*.cmake
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.h
+    ${CMAKE_CURRENT_LIST_DIR}/[^.]*.cmake
     )
 
 # use this to add preprocessor definitions
@@ -90,7 +90,7 @@ endforeach()
 
 # This sets up the exe icon for windows under mingw.
 set(RES_FILES "")
-set(RES_FILES "platforms/${FB_PLATFORM_NAME}/client.rc")
+set(RES_FILES "${CMAKE_CURRENT_LIST_DIR}/client.rc")
 set(CMAKE_RC_COMPILER_INIT windres)
 ENABLE_LANGUAGE(RC)
 SET(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
