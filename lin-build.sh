@@ -1,8 +1,8 @@
 #!/bin/sh
 CURRENTPATH=`pwd`
 set -e
-cd "3d-party/"
-echo "BUILD 3D-PARTY"
+cd "3rd-party/"
+echo "BUILD 3RD-PARTY"
 ./lin-build-all.sh
 cd ${CURRENTPATH}
 echo "BUILD CMAKE"

@@ -23,26 +23,26 @@ set (SOURCES
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(3d_party_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
-#/home/ligol/Desktop/Diveboard/diveboard-agent/3d-party/lib-32/wxWidgets-3.0/bin/wx-config
-set(wxWidgets_CONFIG_EXECUTABLE "${3d_party_ROOT}/wxWidgets-3.0/bin/wx-config")
+set(3rd_party_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/lib-32")
+#/home/ligol/Desktop/Diveboard/diveboard-agent/3rd-party/lib-32/wxWidgets-3.0/bin/wx-config
+set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.0/bin/wx-config")
 
 
-set(wxWidgets_ROOT_DIR "${3d_party_ROOT}/wxWidgets-3.0/")
-set(wxWidgets_LIB_DIR "${3d_party_ROOT}/wxWidgets-3.0/lib")
+set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.0/")
+set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.0/lib")
 
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
-set(BOOST_ROOT "${3d_party_ROOT}")
+set(BOOST_ROOT "${3rd_party_ROOT}")
 
-# set(Boost_INCLUDE_DIRS "${3d_party_ROOT}/include/")
-# set(Boost_LIBRARY_DIRS "${3d_party_ROOT}/lib/")
-# set(Boost_INCLUDE_DIR "${3d_party_ROOT}/include/")
-# set(Boost_LIBRARY_DIR "${3d_party_ROOT}/lib/")
+# set(Boost_INCLUDE_DIRS "${3rd_party_ROOT}/include/")
+# set(Boost_LIBRARY_DIRS "${3rd_party_ROOT}/lib/")
+# set(Boost_INCLUDE_DIR "${3rd_party_ROOT}/include/")
+# set(Boost_LIBRARY_DIR "${3rd_party_ROOT}/lib/")
 
-set(BOOST_INCLUDEDIR "${3d_party_ROOT}/include/")
-set(BOOST_LIBRARYDIR "${3d_party_ROOT}/lib/")
+set(BOOST_INCLUDEDIR "${3rd_party_ROOT}/include/")
+set(BOOST_LIBRARYDIR "${3rd_party_ROOT}/lib/")
 #message("Using boost at: ${Boost_INCLUDE_DIRS}")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
@@ -58,10 +58,10 @@ message("Using boost at: ${Boost_INCLUDE_DIRS}")
 
 # find_library(LIBDIVECOMPUTER divecomputer ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
 # find_library(LIBCONFIG config++ ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
-set(CMAKE_PREFIX_PATH "${3d_party_ROOT}")
-# set(Curl_DIR "${3d_party_ROOT}")
-set(Curl_INCLUDE_DIR "${3d_party_ROOT}/include/curl")
-# set(Curl_LIBRARY_DIRS "${3d_party_ROOT}/lib")
+set(CMAKE_PREFIX_PATH "${3rd_party_ROOT}")
+# set(Curl_DIR "${3rd_party_ROOT}")
+set(Curl_INCLUDE_DIR "${3rd_party_ROOT}/include/curl")
+# set(Curl_LIBRARY_DIRS "${3rd_party_ROOT}/lib")
 
 # #find_package( Curl REQUIRED)
 include_directories(${Curl_INCLUDE_DIR})
@@ -71,7 +71,7 @@ find_library(LIBCONFIG config++)
 find_library(LIBICONV iconv)
 find_library(LIBCURL curl)
 
-include_directories("${3d_party_ROOT}/include")
+include_directories("${3rd_party_ROOT}/include")
 
 message("fixing include directoryies")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
@@ -110,40 +110,40 @@ target_link_libraries(${PROJNAME}
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libconfig-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig-9.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig-9.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libconfig++-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig++-9.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig++-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig++-9.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libdivecomputer-0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer-0.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libdivecomputer-0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer-0.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libcurl-4.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libcurl-4.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libcurl-4.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libcurl-4.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
 ${CMAKE_COMMAND} -E rename "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll")
 
 # add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-# ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
+# ${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libgcc_s_sjlj-1.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libgcc_s_sjlj-1.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libwinpthread-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libwinpthread-1.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libwinpthread-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libwinpthread-1.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libusb-1.0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libusb-1.0.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libusb-1.0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libusb-1.0.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libstdc++-6.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libstdc++-6.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/libeay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libeay32.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libeay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libeay32.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/bin/ssleay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/ssleay32.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/ssleay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/ssleay32.dll")

@@ -35,14 +35,14 @@ link_directories(${Curl_LIBRARY_DIRS})
 
 find_library(LIBICONV iconv)
 
-set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3d-party/wxWidgets-3.0-trunk/build-32")
+set(wxWidgets_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/wxWidgets-3.0-trunk/build-32")
 set(wxWidgets_CONFIG_EXECUTABLE "${wxWidgets_ROOT}/wx-config")
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
-set(3d_paryt_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
+set(3rd_party_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/lib-32")
 
-set(BOOST_ROOT ${3d_paryt_ROOT})
+set(BOOST_ROOT ${3rd_party_ROOT})
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package( Boost COMPONENTS thread system REQUIRED)
@@ -50,10 +50,10 @@ include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 message("Using boost at: ${Boost_INCLUDE_DIRS}")
 
-find_library(LIBDIVECOMPUTER divecomputer ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
-find_library(LIBCONFIG config++ ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
-find_library(LIBIRDA irda ${3d_paryt_ROOT}/lib/ NO_DEFAULT_PATH)
-include_directories("${3d_paryt_ROOT}/include")
+find_library(LIBDIVECOMPUTER divecomputer ${3rd_party_ROOT}/lib/ NO_DEFAULT_PATH)
+find_library(LIBCONFIG config++ ${3rd_party_ROOT}/lib/ NO_DEFAULT_PATH)
+find_library(LIBIRDA irda ${3rd_party_ROOT}/lib/ NO_DEFAULT_PATH)
+include_directories("${3rd_party_ROOT}/include")
 
 find_library( SECURITY_FRAMEWORK Security)
 
@@ -77,11 +77,11 @@ target_link_libraries(${PROJNAME}
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
 

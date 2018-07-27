@@ -23,12 +23,12 @@ set(CMAKE_SKIP_RPATH TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fpermissive")
 #add_x11_plugin(${PROJNAME} SOURCES)
 
-#set(3d_party_ROOT "./3d-party/lib-32")
-set(3d_party_ROOT "${CMAKE_SOURCE_DIR}/3d-party/lib-32")
-set(wxWidgets_CONFIG_EXECUTABLE "${3d_party_ROOT}/wxWidgets-3.0/bin/wx-config")
+#set(3rd_party_ROOT "./3rd-party/lib-32")
+set(3rd_party_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/lib-32")
+set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.0/bin/wx-config")
 
-set(wxWidgets_ROOT_DIR "${3d_party_ROOT}/wxWidgets-3.0/")
-set(wxWidgets_LIB_DIR "${3d_party_ROOT}/wxWidgets-3.0/lib")
+set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.0/")
+set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.0/lib")
 
 #install the .desktop file
 INSTALL(FILES ${CMAKE_CURRENT_LIST_DIR}/${PROJNAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
@@ -42,11 +42,11 @@ message("Will install icon file in ${CMAKE_INSTALL_PREFIX}/share/pixmaps")
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
-set(BOOST_ROOT "${3d_party_ROOT}")
-set(BOOST_INCLUDEDIRS "${3d_party_ROOT}/include/")
-set(BOOST_LIBRARYDIRS "${3d_party_ROOT}/lib/")
-set(BOOST_INCLUDEDIR "${3d_party_ROOT}/include/")
-set(BOOST_LIBRARYDIR "${3d_party_ROOT}/lib/")
+set(BOOST_ROOT "${3rd_party_ROOT}")
+set(BOOST_INCLUDEDIRS "${3rd_party_ROOT}/include/")
+set(BOOST_LIBRARYDIRS "${3rd_party_ROOT}/lib/")
+set(BOOST_INCLUDEDIR "${3rd_party_ROOT}/include/")
+set(BOOST_LIBRARYDIR "${3rd_party_ROOT}/lib/")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package( Boost COMPONENTS thread system REQUIRED) 
@@ -56,8 +56,8 @@ link_directories(${BOOST_LIBRARYDIR})
 
 message("Using boost at: ${Boost_INCLUDE_DIRS}")
 
-set(CMAKE_PREFIX_PATH "${3d_party_ROOT}")
-set(Curl_INCLUDE_DIR "${3d_party_ROOT}/include/curl")
+set(CMAKE_PREFIX_PATH "${3rd_party_ROOT}")
+set(Curl_INCLUDE_DIR "${3rd_party_ROOT}/include/curl")
 
 include_directories(${Curl_INCLUDE_DIR})
 find_library(LIBDIVECOMPUTER divecomputer)
@@ -105,7 +105,7 @@ ELSE()
 ENDIF()
 
 
-include_directories("${3d_party_ROOT}/include")
+include_directories("${3rd_party_ROOT}/include")
 
 message("FIXING include directoryies")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
@@ -146,4 +146,4 @@ target_link_libraries(${PROJNAME}
     )
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3d-party/lib-32/lib/libdivecomputer.so" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer.so")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.so" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer.so")

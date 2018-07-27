@@ -6,7 +6,7 @@ HOW TO COMPILE THE AGENT
 Boost and wxwidgets take quite a lot of time.
 
   cd ..../diveboard-agent
-  cd 3d-party
+  cd 3rd-party
   ./mac-build-all.sh
 
 
@@ -38,12 +38,12 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 
   sudo apt-get install mingw-w64 binutils-mingw-w64 cmake nsis
   //ONLY FOR OLD VERSIONS OF CMAKE:
-  // replace the file FindwxWidgets.cmake in folder /usr/share/cmake-2.8/Modules/ by the one in 3d-party/windows-build/
+  //replace the file FindwxWidgets.cmake in folder /usr/share/cmake-2.8/Modules/ by the one in 3rd-party/windows-build/
 
 
 2 Building libraries:
 
-  cd <project root>/3d-party
+  cd <project root>/3rd-party
   //IF YOU WANT FASTER COMPILING: export MAKEFLAGS=-j(number of process(optional)), e.g.:
   export MAKEFLAGS=-j8
   ./win-build-all.sh
@@ -54,7 +54,7 @@ HOW TO BUILD ON LINUX FOR WINDOWS
   cd <project root>
   mkdir build
   cd build 
-  cmake -DCMAKE_TOOLCHAIN_FILE=../3d-party/windows-build/toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
+  cmake -DCMAKE_TOOLCHAIN_FILE=../3rd-party/windows-build/toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
   make
 
 
@@ -78,7 +78,7 @@ HOW TO BUILD ON LINUX
 
 2) build libraries
 
-  cd <project root>/3d-party
+  cd <project root>/3rd-party
   //IF YOU WANT FASTER COMPILING: export MAKEFLAGS=-j(number of process(optional)), e.g.:
   export MAKEFLAGS=-j8
   ./lin-build-all.sh
