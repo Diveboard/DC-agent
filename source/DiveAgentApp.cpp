@@ -276,7 +276,7 @@ bool DiveAgentApp::OnInit()
   if ( !wxTaskBarIcon::IsAvailable() )
   {
     wxMessageBox(
-            "There appears to be no system tray support in your current environment. This sample may not behave as expected.",
+            "There appears to be no system tray support in your current environment. This program may not behave as expected.",
             "Warning",
             wxOK | wxICON_EXCLAMATION
         );
