@@ -13,5 +13,5 @@ echo "BUILD PROJECT"
 make
 cd ..
 echo "BUILD SETUP"
-makeLinuxPkg.sh
+./makeLinuxPkg.sh
 echo "Done"
