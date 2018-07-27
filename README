@@ -60,7 +60,7 @@ HOW TO BUILD ON LINUX FOR WINDOWS
 
 4 Building setup.
   cd ..
-  makensis Win/Diveboard.nsi
+  makensis platforms/windows/diveboard.nsi
 
 
 

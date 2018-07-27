@@ -13,5 +13,5 @@ echo "BUILD PROJECT"
 make
 cd ..
 echo "BUILD SETUP"
-makensis platforms/windows/Diveboard.nsi
+makensis platforms/windows/diveboard.nsi
 echo "Done"
