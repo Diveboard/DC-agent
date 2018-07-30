@@ -9,8 +9,6 @@ fi
 tar zxf ${OPENSSL}.tar.gz
 cd "${CURRENTPATH}/${OPENSSL}"
 ./Configure mingw shared --cross-compile-prefix=i686-w64-mingw32- -mwindows --prefix="${CURRENTPATH}/lib-32"
-make -k
-make -k
 make
 make install
 cd ${CURRENTPATH}
