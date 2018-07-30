@@ -1,0 +1,18 @@
+diff --git a/lib/iconv.c b/lib/iconv.c
+index 5a1a325..31853a7 100644
+--- a/lib/iconv.c
++++ b/lib/iconv.c
+@@ -178,8 +178,12 @@ static const struct alias sysdep_aliases[] = {
+ };
+ #ifdef __GNUC__
+ __inline
++#else
++#ifdef __cplusplus
++inline
++#endif
+ #endif
+-const struct alias *
++static const struct alias *
+ aliases2_lookup (register const char *str)
+ {
+   const struct alias * ptr;
