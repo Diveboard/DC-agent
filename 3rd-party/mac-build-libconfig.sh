@@ -2,7 +2,7 @@
 CURRENTPATH=`pwd`
 arch_flags="-arch i386"
 set -e
-LIBCONFIG="libconfig-1.4.9"
+LIBCONFIG="libconfig-1.5"
 if [ -e "${CURRENTPATH}/${LIBCONFIG}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBCONFIG}"
 fi

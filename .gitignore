@@ -11,4 +11,5 @@ build
 3rd-party/libiconv-1.14
 3rd-party/rapidjson
 3rd-party/libconfig-1.4.9
+3rd-party/libconfig-1.5
 3rd-party/openssl-1.0.1h
