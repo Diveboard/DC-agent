@@ -23,7 +23,7 @@ std::string DiveAgent::homeFolder()
   DWORD sz = MAX_PATH - 1;
   std::string res;
   if (GetUserProfileDirectory(h_token, buffer, &sz))
-    res = ws2s(buffer) + std::string("\\");
+    res = buffer + std::string("\\");
   CloseHandle(h_token);
   CloseHandle(h_proccess);
   return res;
@@ -34,7 +34,7 @@ std::string DiveAgent::exeFolder()
   TCHAR buffer[MAX_PATH];
   if (GetModuleFileName(NULL, buffer, MAX_PATH))
   {
-    std::string exe_name = ws2s(buffer);
+    std::string exe_name = buffer;
     size_t i = exe_name.size() - 1;
     while (i != 0 && exe_name[i]!='\\' ) i--;
     return exe_name.substr(0, i);
@@ -76,7 +76,7 @@ std::string DiveAgent::readSecureProfile(const std::string& key)
     }
     DATA_BLOB DataIn = {data.size(),(BYTE*)&data[0]};
     DATA_BLOB DataOut;
-    TCHAR* Description = 0;
+    WCHAR* Description = 0;
     if (CryptUnprotectData(&DataIn, &Description, 0, 0, 0,  0,  &DataOut))
     {
       std::string res = std::string((char *)DataOut.pbData, DataOut.cbData);
