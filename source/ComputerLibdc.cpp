@@ -770,26 +770,26 @@ void ComputerLibdc::dowork (std ::string *diveXML, std::string *dumpData)
       libdc_p.descriptor_get_product (descriptor),
       devname.empty() ? devname.c_str() : "null");
 
-		if (devname.compare(0, 5, "/dev/") == 0 || devname.compare(0, 7, "\\\\.\\COM") == 0) {
-		  rc = libdc_p.serial_open (&iostream, context, devname.c_str());
-		  if (rc != DC_STATUS_SUCCESS) {
-		    LOGWARNING ("Error opening I/O stream.");
-		    DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
-		  }
-		}
-		else {
-		  dc_bluetooth_address_t address = 0;
-		  address = libdc_p.bluetooth_str2addr(devname.c_str());
-		  if (address == 0) {
-		    LOGWARNING ("Invalid device address.");
-		    DBthrowError(std::string("Invalid device address:") + devname.c_str());
-		  }
-		  rc = libdc_p.bluetooth_open (&iostream, context, address, 0);
-		  if (rc != DC_STATUS_SUCCESS) {
-		    LOGWARNING ("Error opening I/O stream.");
-		    DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
-		  }
-		}
+    if (devname.compare(0, 5, "/dev/") == 0 || devname.compare(0, 7, "\\\\.\\COM") == 0) {
+      rc = libdc_p.serial_open (&iostream, context, devname.c_str());
+      if (rc != DC_STATUS_SUCCESS) {
+        LOGWARNING ("Error opening I/O stream.");
+        DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
+      }
+    }
+    else {
+      dc_bluetooth_address_t address = 0;
+      address = libdc_p.bluetooth_str2addr(devname.c_str());
+      if (address == 0) {
+        LOGWARNING ("Invalid device address.");
+        DBthrowError(std::string("Invalid device address:") + devname.c_str());
+      }
+      rc = libdc_p.bluetooth_open (&iostream, context, address, 0);
+      if (rc != DC_STATUS_SUCCESS) {
+        LOGWARNING ("Error opening I/O stream.");
+        DBthrowError(std::string("Error opening I/O stream - Error code : ") + errmsg(rc));
+      }
+    }
     
     rc = libdc_p.device_open (&device, context, descriptor, iostream);
     if (rc != DC_STATUS_SUCCESS) {
@@ -1204,7 +1204,7 @@ std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
 
   std::vector<BluetoothDevice> *btdevice_list_tmp = new std::vector<BluetoothDevice>;
 
-	dc_context_t *context;
+  dc_context_t *context;
   rc = libdc_p.context_new (&context);
   if (rc != DC_STATUS_SUCCESS) {
     DBthrowError(std::string("Error allocating context : ") + errmsg(rc));
@@ -1213,43 +1213,43 @@ std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
   dc_iterator_t *iterator = NULL;
   rc = libdc_p.bluetooth_iterator_new (&iterator, context, NULL);
   if (rc != DC_STATUS_SUCCESS) {
-    DBthrowError("Error creating the device descriptor iterator.");
+    //don't throw here - might be there's just no bt available on the machine
+    LOGWARNING("Error creating the device descriptor iterator.");
   }
+  else {
+    dc_bluetooth_device_t *device = NULL;
+    dc_bluetooth_address_t address = 0;
+    char buffer[DC_BLUETOOTH_SIZE];
+    while ((rc = libdc_p.iterator_next (iterator, &device)) == DC_STATUS_SUCCESS) {
+      address = libdc_p.bluetooth_device_get_address(device);
+      libdc_p.bluetooth_addr2str(address, buffer, sizeof(buffer));
 
-  dc_bluetooth_device_t *device = NULL;
-  dc_bluetooth_address_t address = 0;
-  char buffer[DC_BLUETOOTH_SIZE];
-  while ((rc = libdc_p.iterator_next (iterator, &device)) == DC_STATUS_SUCCESS) {
-    address = libdc_p.bluetooth_device_get_address(device);
-    libdc_p.bluetooth_addr2str(address, buffer, sizeof(buffer));
+      BluetoothDevice btd;
+      const char *name   = libdc_p.bluetooth_device_get_name(device);
 
-    BluetoothDevice btd;
-    const char *name   = libdc_p.bluetooth_device_get_name(device);
+      btd.address = std::string(buffer);
+      btd.name    = std::string(name);
 
-    btd.address = std::string(buffer);
-    btd.name    = std::string(name);
+      //printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
+      btdevice_list_tmp->push_back(btd);
 
-		//printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
-    btdevice_list_tmp->push_back(btd);
+      libdc_p.bluetooth_device_free(device);
+    }
 
-    libdc_p.bluetooth_device_free(device);
+    if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_DONE) {
+      libdc_p.iterator_free (iterator);
+      DBthrowError ("Error iterating the device descriptors.");
+    }
   }
-
-  if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_DONE) {
-    libdc_p.iterator_free (iterator);
-    DBthrowError ("Error iterating the device descriptors.");
-  }
-
   libdc_p.iterator_free (iterator);
   libdc_p.context_free (context);
 
   LOGDEBUG("Closing LibDiveComputer");
   closeDLLLibrary(libdc);
 
-	if (btdevice_list) delete(btdevice_list);
-	btdevice_list = btdevice_list_tmp;
-	btdevice_list_tmp = NULL;
+  if (btdevice_list) delete(btdevice_list);
+  btdevice_list = btdevice_list_tmp;
+  btdevice_list_tmp = NULL;
 
-  return(btdevice_list);
 }
 
