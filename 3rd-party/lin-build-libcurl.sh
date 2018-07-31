@@ -10,6 +10,7 @@ tar zxf ${LIBCURL}.tar.gz
 cd "${CURRENTPATH}/${LIBCURL}"
 
 ./configure --prefix="${CURRENTPATH}/lib-32" --disable-static --with-ssl="${CURRENTPATH}/lib-32"
+patch lib/ssh.c ../curl-7.20.0.patch
 make
 make install
 cd ${CURRENTPATH}
