@@ -7,7 +7,7 @@ build
 3rd-party/lib-32
 3rd-party/boost_1_55_0
 3rd-party/boost_1_57_0
-3rd-party/curl-7.20.0
+3rd-party/curl-7.47.0
 3rd-party/libiconv-1.14
 3rd-party/rapidjson
 3rd-party/libconfig-1.4.9
