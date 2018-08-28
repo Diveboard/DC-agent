@@ -19,8 +19,6 @@
 
 #define MAX_TEMP 99999
 
-#include <boost/thread/thread.hpp>
-
 #include "DiveAgent.h"
 #include "Global.h"
 
