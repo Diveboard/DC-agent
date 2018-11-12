@@ -4,11 +4,12 @@ arch_flags="-arch i386"
 mkdir -p ${CURRENTPATH}/lib-32/lib/
 
 LIBDIVECOMPUTER="libdivecomputer-0.6.0"
+LIBDIVECOMPUTER="libdivecomputer"
 if [ -e "${CURRENTPATH}/${LIBDIVECOMPUTER}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBDIVECOMPUTER}"
 fi
-tar zxf ${LIBDIVECOMPUTER}.tar.gz
-#git clone https://github.com/libdivecomputer/libdivecomputer.git
+#tar zxf ${LIBDIVECOMPUTER}.tar.gz
+git clone https://github.com/libdivecomputer/libdivecomputer.git
 
 # Compiling IRDA
 cd "${CURRENTPATH}/irda_mac"
