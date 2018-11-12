@@ -96,6 +96,7 @@ protected:
 
 	static std::vector<ComputerSupport> *support_list;
 	static std::vector<BluetoothDevice> *btdevice_list;
+	static void btdevice_list_add(BluetoothDevice btd);
 
 public:
 	int dive_cb (const unsigned char *data, unsigned int size, const unsigned char *fingerprint, unsigned int fsize);

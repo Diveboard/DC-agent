@@ -16,7 +16,7 @@ public:
 	Computer *createComputer(const std::string &type, const std::string &filename);
 	std::string detectConnectedDevice(const std::string &computerType);
 	bool isComputerPluggedin();
-	std::map <std::string, std::string> allPorts(bool scanBT = true, bool reScanBT = false);
+	std::map <std::string, std::string> allPorts(bool scanBT = false);
 	std::map<std::string, std::vector<ComputerSupport> > supported;
 protected:
 	void listPorts(std::string &);

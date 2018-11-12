@@ -60,7 +60,7 @@ void MainFrame::InitUploadDivesPanel()
   m_selectPortManualCheck->SetValue(DiveAgent::readProfile("select_port_manual") == "1");
   m_selectPortPanel->Show(m_selectPortManualCheck->GetValue());
   GetSizer()->Fit(this);
-  std::map <std::string, std::string> ports = _f.allPorts(false, false);
+  std::map <std::string, std::string> ports = _f.allPorts();
   m_selectPortChoice->Clear();
   for (auto it=ports.begin(); it!= ports.end(); ++it)
   {
@@ -292,7 +292,7 @@ void MainFrame::onTimer( wxTimerEvent& event)
   {
     _timer_counter = 0;
     // update port choice control
-    std::map <std::string, std::string> ports = _f.allPorts(true);
+    std::map <std::string, std::string> ports = _f.allPorts();
     m_selectPortChoice->Clear();
     int selection = 0;
     //auto-select newly detected "native" bluetooth devices
@@ -442,7 +442,9 @@ void MainFrame::workingThread()
   try
   {
     while(scanBT) {
-      _f.allPorts(true, true); //rescan for bt devices
+    	if (!DiveAgent::instance().isUploadDivesRuning()) {
+      	_f.allPorts(true); //(re-)scan for bt devices
+      }
       boost::this_thread::sleep(boost::posix_time::milliseconds(100));
     }
   }

@@ -267,7 +267,7 @@ void ComputerFactory::listPorts(std::string &a)
 
 #if defined(__MACH__) || defined(__linux__)
 
-void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendlyNames, bool scanBT = true, bool reScanBT = false)
+void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendlyNames, bool scanBT = false)
 {
 	int r;
 	DIR *dp;
@@ -276,16 +276,19 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 	friendlyNames.empty();
 	files.empty();
 
-	if (scanBT || reScanBT) {
-		std::vector<BluetoothDevice> *btdevice_list = ComputerLibdc::btscan(reScanBT);
-		if (btdevice_list) {
-			std::vector<BluetoothDevice>::iterator it1;
-			for ( it1=btdevice_list->begin() ; it1 < btdevice_list->end(); it1++ ){
-				files.push_back(it1->address);
-				friendlyNames.push_back(it1->name);
-			}
+	std::vector<BluetoothDevice> *btdevice_list = ComputerLibdc::btscan(scanBT);
+	if (btdevice_list) {
+		std::vector<BluetoothDevice>::iterator it1;
+		for ( it1=btdevice_list->begin() ; it1 < btdevice_list->end(); it1++ ){
+			files.push_back(it1->address);
+			friendlyNames.push_back(it1->name);
 		}
 	}
+
+	/* TODO: may avoid searching by storing last bt-device to INI-File...
+	files.push_back("00:80:25:4A:E5:17");
+	friendlyNames.push_back("OSTC4-XYZ");
+	//*/
 
 	if((dp = opendir("/dev")) == NULL)
 		throw DBException(str(boost::format("Error (%1%) while opening /dev") % errno));
@@ -362,7 +365,7 @@ std::string ComputerFactory::detectConnectedDevice(const std::string &computerTy
 	return("");
 }
 
-std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT /*= true*/, bool reScanBT /*= false*/)
+std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT /*= false*/)
 {
 	std::vector<std::string> fileNames;
 	std::vector<std::string> friendlyNames;
@@ -374,7 +377,7 @@ std::map <std::string, std::string> ComputerFactory::allPorts(bool scanBT /*= tr
 	LOGINFO("Using SetupAPI");
 	UsingSetupAPI1(fileNames, friendlyNames);
 #elif defined(__MACH__) || defined(__linux__)
-	ListTTY(fileNames, friendlyNames, scanBT, reScanBT);
+	ListTTY(fileNames, friendlyNames, scanBT);
 #else
 #error "Platform not supported"
 #endif
