@@ -1,15 +1,11 @@
 build
 3rd-party/wxWidgets-3.0-trunk
 3rd-party/libdivecomputer
-3rd-party/libdivecomputer-0.4.2
-3rd-party/libdivecomputer-0.5.0
 3rd-party/libdivecomputer-0.6.0
 3rd-party/lib-32
-3rd-party/boost_1_55_0
 3rd-party/boost_1_57_0
-3rd-party/curl-7.20.0
+3rd-party/curl-7.47.0
 3rd-party/libiconv-1.14
 3rd-party/rapidjson
-3rd-party/libconfig-1.4.9
 3rd-party/libconfig-1.5
 3rd-party/openssl-1.0.1h

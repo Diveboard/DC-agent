@@ -104,8 +104,8 @@ public:
 	virtual ~ComputerLibdc(void);
 	int _get_all_dives(std::string &xml);
 	int _dump(std::string &data);
-	virtual ComputerStatus get_status(); // thread save
-	virtual void cancel(); // thread save
+	virtual ComputerStatus get_status(); // thread safe
+	virtual void cancel(); // thread safe
   static std::vector<ComputerSupport> *support();
   static std::vector<BluetoothDevice> *btscan(bool rescan);
 };

@@ -137,7 +137,7 @@ target_link_libraries(${PROJNAME}
     ${Boost_LIBRARIES}
     ${LIBICONV}
     ${LIBCONFIG}
-    curl
+    ${LIBCURL}
     ${LIBAPPINDICATOR}
     ${ZLIB_LIBRARIES}
     ${LIBJPEG_LIBRARIES}

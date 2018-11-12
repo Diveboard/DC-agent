@@ -19,8 +19,6 @@
 
 #define MAX_TEMP 99999
 
-#include <boost/thread/thread.hpp>
-
 #include "DiveAgent.h"
 #include "Global.h"
 
@@ -1232,36 +1230,37 @@ std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
   dc_iterator_t *iterator = NULL;
   rc = libdc_p.bluetooth_iterator_new (&iterator, context, NULL);
   if (rc != DC_STATUS_SUCCESS) {
-    DBthrowError("Error creating the device descriptor iterator.");
+    //don't throw here - might be there's just no BT available on the machine
+    LOGWARNING("Error creating a BT iterator.");
   }
+  else {
+    printf("Searching for BT devices ...\n");
+    LOGDEBUG("Searching for BT devices ...\n");
 
-  printf("Searching for BT devices ...\n");
-  LOGDEBUG("Searching for BT devices ...\n");
+    dc_bluetooth_device_t *device = NULL;
+    dc_bluetooth_address_t address = 0;
+    char buffer[DC_BLUETOOTH_SIZE];
+    while ((rc = libdc_p.iterator_next (iterator, &device)) == DC_STATUS_SUCCESS) {
+      address = libdc_p.bluetooth_device_get_address(device);
+      libdc_p.bluetooth_addr2str(address, buffer, sizeof(buffer));
 
-  dc_bluetooth_device_t *device = NULL;
-  dc_bluetooth_address_t address = 0;
-  char buffer[DC_BLUETOOTH_SIZE];
-  while ((rc = libdc_p.iterator_next (iterator, &device)) == DC_STATUS_SUCCESS) {
-    address = libdc_p.bluetooth_device_get_address(device);
-    libdc_p.bluetooth_addr2str(address, buffer, sizeof(buffer));
+      const char *name   = libdc_p.bluetooth_device_get_name(device);
 
-    const char *name   = libdc_p.bluetooth_device_get_name(device);
+      BluetoothDevice btd;
+      btd.address = std::string(buffer);
+      btd.name    = std::string(name);
+      printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
+      LOGDEBUG("Found %s at %s", btd.name.c_str(), btd.address.c_str());
+      btdevice_list_add(btd);
 
-    BluetoothDevice btd;
-    btd.address = std::string(buffer);
-    btd.name    = std::string(name);
-    printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
-    LOGDEBUG("Found %s at %s", btd.name.c_str(), btd.address.c_str());
-    btdevice_list_add(btd);
+      libdc_p.bluetooth_device_free(device);
+    }
 
-    libdc_p.bluetooth_device_free(device);
+    if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_DONE) {
+      libdc_p.iterator_free (iterator);
+      DBthrowError ("Error iterating the device descriptors.");
+    }
   }
-
-  if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_DONE) {
-    libdc_p.iterator_free (iterator);
-    DBthrowError ("Error iterating the device descriptors.");
-  }
-
   libdc_p.iterator_free (iterator);
   libdc_p.context_free (context);
 

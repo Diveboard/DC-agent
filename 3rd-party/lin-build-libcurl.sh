@@ -2,7 +2,7 @@
 CURRENTPATH=`pwd`
 arch_flags=""
 set -e
-LIBCURL="curl-7.20.0"
+LIBCURL="curl-7.47.0"
 if [ -e "${CURRENTPATH}/${LIBCURL}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBCURL}"
 fi

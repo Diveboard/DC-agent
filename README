@@ -28,7 +28,7 @@ Mac : The binaries are in build/bin
 
 4/ Package the result
 ---------------------
-  ./makeMacPkg.sh
+  sudo ./makeMacPkg.sh
 
 
 
