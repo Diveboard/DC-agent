@@ -3,7 +3,7 @@ CURRENTPATH=`pwd`
 set -e
 cd "3rd-party/"
 echo "BUILD 3RD-PARTY"
-#./mac-build-all.sh
+./mac-build-all.sh
 cd ${CURRENTPATH}
 echo "BUILD CMAKE"
 mkdir build

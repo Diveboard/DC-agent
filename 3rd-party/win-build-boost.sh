@@ -2,11 +2,11 @@
 CURRENTPATH=`pwd`
 arch_flags=""
 set -e
-LIBBOOST="boost_1_57_0"
+LIBBOOST="boost_1_68_0"
 if [ -e "${CURRENTPATH}/${LIBBOOST}" ]; then
 	rm -rf "${CURRENTPATH}/${LIBBOOST}"
 fi
-tar zxf ${LIBBOOST}.tar.gz --exclude doc/html
+tar xjf ${LIBBOOST}.tar.bz2 --exclude doc/html
 
 cd "${CURRENTPATH}/${LIBBOOST}"
 ./bootstrap.sh
