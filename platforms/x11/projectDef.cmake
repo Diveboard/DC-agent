@@ -25,10 +25,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fpermissive")
 
 #set(3rd_party_ROOT "./3rd-party/lib-32")
 set(3rd_party_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/lib-32")
-set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.0/bin/wx-config")
+set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.1/bin/wx-config")
 
-set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.0/")
-set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.0/lib")
+set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.1/")
+set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.1/lib")
 
 #install the .desktop file
 INSTALL(FILES ${CMAKE_CURRENT_LIST_DIR}/${PROJNAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
