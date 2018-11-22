@@ -24,12 +24,11 @@ set (SOURCES
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(3rd_party_ROOT "${CMAKE_SOURCE_DIR}/3rd-party/lib-32")
-#/home/ligol/Desktop/Diveboard/diveboard-agent/3rd-party/lib-32/wxWidgets-3.0/bin/wx-config
-set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.0/bin/wx-config")
+set(wxWidgets_CONFIG_EXECUTABLE "${3rd_party_ROOT}/wxWidgets-3.1/bin/wx-config")
 
 
-set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.0/")
-set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.0/lib")
+set(wxWidgets_ROOT_DIR "${3rd_party_ROOT}/wxWidgets-3.1/")
+set(wxWidgets_LIB_DIR "${3rd_party_ROOT}/wxWidgets-3.1/lib" CACHE PATH "wxWidgets_LIB_DIR ")
 
 find_package(wxWidgets COMPONENTS core base gl adv html xml xrc aui webview REQUIRED)
 include("${wxWidgets_USE_FILE}")
