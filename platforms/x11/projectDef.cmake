@@ -146,4 +146,4 @@ target_link_libraries(${PROJNAME}
     )
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.so" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer.so")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.so" "${CMAKE_CURRENT_BINARY_DIR}/bin/libdivecomputer.so")
