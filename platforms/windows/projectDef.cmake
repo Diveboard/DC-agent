@@ -109,40 +109,40 @@ target_link_libraries(${PROJNAME}
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig-9.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libconfig-9.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig++-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libconfig++-9.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libconfig++-9.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libconfig++-9.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libdivecomputer-0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libdivecomputer-0.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libdivecomputer-0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libdivecomputer-0.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libcurl-4.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libcurl-4.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libcurl-4.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libcurl-4.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/libssl.dll.a")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E rename "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libssl.dll")
+${CMAKE_COMMAND} -E rename "${CMAKE_CURRENT_BINARY_DIR}/bin/libssl.dll.a" "${CMAKE_CURRENT_BINARY_DIR}/bin/libssl.dll")
 
 # add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-# ${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/openssl.exe")
+# ${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/openssl.exe" "${CMAKE_CURRENT_BINARY_DIR}/bin/openssl.exe")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libgcc_s_sjlj-1.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libgcc_s_sjlj-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libgcc_s_sjlj-1.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libwinpthread-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libwinpthread-1.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libwinpthread-1.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libwinpthread-1.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libusb-1.0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libusb-1.0.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libusb-1.0.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libusb-1.0.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libstdc++-6.dll")
+${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/3rd-party/windows-build/libstdc++-6.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libstdc++-6.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libeay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/libeay32.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/libeay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/libeay32.dll")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/ssleay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/ssleay32.dll")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/bin/ssleay32.dll" "${CMAKE_CURRENT_BINARY_DIR}/bin/ssleay32.dll")
