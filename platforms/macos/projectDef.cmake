@@ -1,8 +1,8 @@
 # MacOS platform definition CMake file
 # Included from ../../CMakeLists.txt
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch i386 -mmacosx-version-min=10.6")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch i386 -stdlib=libstdc++ -mmacosx-version-min=10.6")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch i386 -mmacosx-version-min=10.13")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch i386 -stdlib=libstdc++ -mmacosx-version-min=10.13")
 set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -arch i386")
 set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -arch i386")
 set(CMAKE_OJB_C_FLAGS "${CMAKE_OBJ_C_FLAGS} -arch i386")
@@ -77,11 +77,11 @@ target_link_libraries(${PROJNAME}
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
 
