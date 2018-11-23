@@ -21,8 +21,10 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
-	<key>CFBundleGetInfoString</key>
-	<string>${MACOSX_BUNDLE_INFO_STRING}</string>
+	<key>CFBundleIconName</key>
+	<string>${MACOSX_BUNDLE_ICON_FILE}</string>
+	<key>CFBundlePrimaryIcon</key>
+	<string>${MACOSX_BUNDLE_ICON_FILE}</string>
 	<key>CFBundleIconFile</key>
 	<string>${MACOSX_BUNDLE_ICON_FILE}</string>
 	<key>CFBundleIdentifier</key>
