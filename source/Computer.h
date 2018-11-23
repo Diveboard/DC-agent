@@ -48,7 +48,6 @@ typedef struct {
 
 class Computer
 {
-	HANDLE mutex;
 protected:
   virtual int _get_all_dives(std::string &xml) {return(-1);};
   virtual int _dump(std::string &data) {return(-1);};

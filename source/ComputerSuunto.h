@@ -22,7 +22,6 @@ class ComputerSuunto : public Computer
 {
 private:
 	Device *device;
-	bool isConnected;
 	unsigned char generate_crc(unsigned char *buffer,int len) ;
 	void send_command(unsigned char *commbuffer,int len) ;
 	void read(int start,char *retbuffer,int len) ;

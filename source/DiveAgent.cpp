@@ -37,6 +37,7 @@ namespace {
       _curl(0),
       _req_header(0),
       _req_form(0),
+      _req_form_last(0),
       _follow_location(1),
       _curl_error_description(CURL_ERROR_SIZE + 1)
     {

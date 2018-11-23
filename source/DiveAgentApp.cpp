@@ -252,6 +252,7 @@ DiveAgentApp::DiveAgentApp()
   //  RedirectIOToConsole();
   m_taskBarIcon = 0;
   m_dockIcon = 0;
+  _timer = 0;
 }
 
 DiveAgentApp::~DiveAgentApp()

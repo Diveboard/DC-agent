@@ -9,7 +9,6 @@ class ComputerMares : public Computer
 {
 protected:
 	Device *device;
-	bool isConnected;
 	unsigned char generate_crc(unsigned char *buffer,int len) ;
 	bool send_command(unsigned char *commbuffer,int len) ;
 	int read(int start,unsigned char *retbuffer,int len) ;

@@ -983,6 +983,12 @@ int ComputerLibdc::_dump(std::string &data)
 
 ComputerLibdc::ComputerLibdc(std::string type, std::string file)
 {
+  fingerprint = NULL;
+  number = 0;
+  out = NULL;
+  device = NULL;
+  iostream = NULL;
+
   LOGINFO("Creating ComputerLibdc");
   dc_status_t rc;
 
