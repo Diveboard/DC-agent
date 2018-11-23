@@ -106,7 +106,7 @@ void UploadDivesProgressDialog::doneButtonOnButtonClick( wxCommandEvent& event )
     // if something's wrong with the user's browser then
     // let's give the user a chance to copy the string
     // from stdout
-    printf(std::string(url+std::string("\n")).c_str());
+    printf("%s\n",url.c_str());
     Logger::append((std::string("Finalize on Diveboard: ") + url).c_str());
   }
   setIsLoginEnable(true);

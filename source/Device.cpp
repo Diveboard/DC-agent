@@ -92,5 +92,6 @@ void ComDevice::close()
 	} catch (std::exception &e) {
 		LOGWARNING("Error caught while closing the COM port : %s", e.what());
 	}
-		hCom = NULL;
+
+	hCom = 0;
 }

@@ -82,7 +82,7 @@ static void suunto_load_devices_liststore(GtkListStore *suunto_device_list_store
 DeviceSuunto::DeviceSuunto(std::string name)
 {
 	filename = name;
-	hCom = NULL;
+	hCom = 0;
 	open();
 }
 
