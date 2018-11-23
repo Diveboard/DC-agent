@@ -91,6 +91,7 @@ DeviceSuunto::~DeviceSuunto()
 	close();
 }
 
+#undef SecureZeroMemory
 #define SecureZeroMemory(p,s) RtlFillMemory((p),(s),0);
 int DeviceSuunto::open()
 {

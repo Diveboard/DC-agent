@@ -1,7 +1,7 @@
 #include "DiveAgent.h"
+#include <curl/curl.h>
 #include "ComputerFactory.h"
 #include "Logger.h"
-#include <curl/curl.h>
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
