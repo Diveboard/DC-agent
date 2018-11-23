@@ -44,3 +44,14 @@ echo "Build DEB package"
 ./makeDebPkg.sh
 echo "Build RPM package"
 ./makeRpmPkg.sh
+
+echo "You may now sign the DEB Package using the following command:"
+DIR=$(dirname $(readlink -f $0))
+VERSION=`cat "$DIR/VERSION"`
+if [ `arch` == 'x86_64' ]; then
+ARCH=x86_64
+else
+ARCH=i386
+fi
+echo "fakeroot dpkg-sig -k \"Diveboard Tech\" --sign builder build/packages/diveboard-agent-$VERSION-$ARCH.deb"
+
