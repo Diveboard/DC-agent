@@ -74,6 +74,7 @@ rpmbuild -bc --short-circuit "$SPECFILE"
 rpmbuild -bi --short-circuit "$SPECFILE"
 rpmbuild -ba --short-circuit "$SPECFILE" --sign
 
+mkdir -p $DIR/build/packages
 cp ~/rpmbuild/RPMS/*/diveboard-agent-$VERSION*$ARCH.rpm $DIR/build/packages
 
 rm -f "$SPECFILE"
