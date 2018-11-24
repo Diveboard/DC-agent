@@ -1,4 +1,5 @@
 build
+RPM-GPG-KEY-diveboard
 3rd-party/boost_1_68_0
 3rd-party/curl-7.47.0
 3rd-party/irda_mac/libirda.dylib

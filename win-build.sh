@@ -3,12 +3,12 @@ CURRENTPATH=`pwd`
 set -e
 cd "3rd-party/"
 echo "BUILD 3RD-PARTY"
-./win-build-all.sh
+# ./win-build-all.sh
 cd ${CURRENTPATH}
 echo "BUILD CMAKE"
 mkdir build
 cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=../3rd-party/windows-build/toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../3rd-party/windows-build/toolchain-mingw32.cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_BUILD_TYPE=Debug ..
 echo "BUILD PROJECT"
 make
 cd ..

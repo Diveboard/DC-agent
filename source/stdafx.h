@@ -2,7 +2,9 @@
 #define __STDAFX_H__
 
 #if defined(WIN32) || defined(__MINGW32__)
+#if !defined(WINVER)
 #define WINVER 0x0502
+#endif
 #define _UNICODE
 #define UNICODE
 #include <windows.h>

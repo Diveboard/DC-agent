@@ -983,6 +983,12 @@ int ComputerLibdc::_dump(std::string &data)
 
 ComputerLibdc::ComputerLibdc(std::string type, std::string file)
 {
+  fingerprint = NULL;
+  number = 0;
+  out = NULL;
+  device = NULL;
+  iostream = NULL;
+
   LOGINFO("Creating ComputerLibdc");
   dc_status_t rc;
 
@@ -1248,7 +1254,11 @@ std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
 
       BluetoothDevice btd;
       btd.address = std::string(buffer);
-      btd.name    = std::string(name);
+      if (name==NULL || strlen(name)==0) {
+        btd.name    = std::string("BT-Device ") + std::string(buffer);
+      } else {
+        btd.name    = std::string(name);
+      }
       printf("Found %s at %s\n", btd.name.c_str(), btd.address.c_str());
       LOGDEBUG("Found %s at %s", btd.name.c_str(), btd.address.c_str());
       btdevice_list_add(btd);

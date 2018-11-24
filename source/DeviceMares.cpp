@@ -31,7 +31,7 @@ DeviceMares::DeviceMares(std::string name)
 {
 	LOGDEBUG("Creating DeviceMares on %s", name.c_str());
 	filename = name;
-	hCom = NULL;
+	hCom = 0;
 	open();
 }
 
@@ -40,6 +40,7 @@ DeviceMares::~DeviceMares()
 	close();
 }
 
+#undef SecureZeroMemory
 #define SecureZeroMemory(p,s) RtlFillMemory((p),(s),0);
 
 int DeviceMares::open()

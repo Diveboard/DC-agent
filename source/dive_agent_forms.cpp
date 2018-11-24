@@ -37,7 +37,7 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	
 	m_statusStatic = new wxStaticText( m_panel6, wxID_ANY, wxT("Status:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_statusStatic->Wrap( -1 );
-	m_statusSizer->Add( m_statusStatic, 1, wxALIGN_BOTTOM|wxLEFT|wxEXPAND, 10 );
+	m_statusSizer->Add( m_statusStatic, 1, wxLEFT|wxEXPAND, 10 );
 	
 	
 	bSizer32->Add( m_statusSizer, 4, wxEXPAND, 5 );
@@ -50,7 +50,7 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	
 	m_uploadProgressStatic = new wxStaticText( m_panel6, wxID_ANY, wxT("100%"), wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	m_uploadProgressStatic->Wrap( -1 );
-	m_gaugeSizer->Add( m_uploadProgressStatic, 1, wxALIGN_RIGHT|wxALL, 5 );
+	m_gaugeSizer->Add( m_uploadProgressStatic, 1, wxALL, 5 );
 	
 	
 	bSizer32->Add( m_gaugeSizer, 1, wxEXPAND, 5 );
@@ -74,7 +74,7 @@ UploadDivesProgressDialogBase::UploadDivesProgressDialogBase( wxWindow* parent, 
 	m_buttonsSizer->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	m_doneButton = new wxButton( m_panel6, wxID_ANY, wxT("Finalize on Diveboard"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_buttonsSizer->Add( m_doneButton, 0, wxALIGN_RIGHT|wxALL, 5 );
+	m_buttonsSizer->Add( m_doneButton, 0, wxALL, 5 );
 	
 	
 	bSizer32->Add( m_buttonsSizer, 1, wxEXPAND, 5 );
@@ -124,7 +124,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_aboutStatic = new wxStaticText( m_panel8, wxID_ANY, wxT("DiveboardAgent"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_aboutStatic->Wrap( -1 );
-	m_aboutStatic->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	m_aboutStatic->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
 	
 	bSizer36->Add( m_aboutStatic, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
@@ -197,11 +197,11 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	
 	m_emailStatic = new wxStaticText( m_login_panel, wxID_ANY, wxT("E-Mail:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_emailStatic->Wrap( -1 );
-	m_EmailSizer->Add( m_emailStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	m_EmailSizer->Add( m_emailStatic, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_emailText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_emailText->SetMaxLength( 0 ); 
-	m_emailText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_emailText->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
 	
 	m_EmailSizer->Add( m_emailText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -213,11 +213,11 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	
 	m_paswordStatic = new wxStaticText( m_login_panel, wxID_ANY, wxT("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_paswordStatic->Wrap( -1 );
-	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5 );
+	m_passwordSizer->Add( m_paswordStatic, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_passwordText = new wxTextCtrl( m_login_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_PROCESS_ENTER );
 	m_passwordText->SetMaxLength( 0 ); 
-	m_passwordText->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_passwordText->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
 	
 	m_passwordSizer->Add( m_passwordText, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -228,7 +228,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	m_loginButtonSizer = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_loginButton = new wxButton( m_login_panel, wxID_ANY, wxT("Login"), wxDefaultPosition, wxSize( -1,40 ), 0 );
-	m_loginButtonSizer->Add( m_loginButton, 1, wxALIGN_LEFT|wxALIGN_RIGHT|wxALL, 5 );
+	m_loginButtonSizer->Add( m_loginButton, 1, wxALIGN_LEFT|wxALL, 5 );
 	
 	m_FBconnectButton = new wxBitmapButton( m_login_panel, wxID_ANY, FBloginbutton_png_to_wx_bitmap(), wxDefaultPosition, wxSize( -1,40 ), wxBU_AUTODRAW );
 	m_loginButtonSizer->Add( m_FBconnectButton, 1, wxALL, 5 );
@@ -288,10 +288,10 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	wxArrayString m_selectMakeChoiceChoices;
 	m_selectMakeChoice = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectMakeChoiceChoices, 0 );
 	m_selectMakeChoice->SetSelection( 0 );
-	m_selectMakeSizer->Add( m_selectMakeChoice, 1, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	m_selectMakeSizer->Add( m_selectMakeChoice, 1, wxALL|wxEXPAND, 5 );
 	
 	
-	bUploadSizer->Add( m_selectMakeSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
+	bUploadSizer->Add( m_selectMakeSizer, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* m_selectModelSizer;
 	m_selectModelSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -304,7 +304,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	wxArrayString m_selectModelChoiceChoices;
 	m_selectModelChoice = new wxChoice( m_upload_dive, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectModelChoiceChoices, 0 );
 	m_selectModelChoice->SetSelection( 0 );
-	m_selectModelSizer->Add( m_selectModelChoice, 1, wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	m_selectModelSizer->Add( m_selectModelChoice, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	bUploadSizer->Add( m_selectModelSizer, 0, wxEXPAND, 5 );
@@ -321,7 +321,7 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	m_selectPortSizer->SetMinSize( wxSize( -1,35 ) ); 
 	m_selectPortStatic = new wxStaticText( m_selectPortPanel, wxID_ANY, wxT("Select port:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_selectPortStatic->Wrap( -1 );
-	m_selectPortSizer->Add( m_selectPortStatic, 0, wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_selectPortSizer->Add( m_selectPortStatic, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxArrayString m_selectPortChoiceChoices;
 	m_selectPortChoice = new wxChoice( m_selectPortPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_selectPortChoiceChoices, 0 );
@@ -420,7 +420,7 @@ LogDialogBase::LogDialogBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_staticText12 = new wxStaticText( m_panel6, wxID_ANY, wxT("Send Log"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText12->Wrap( -1 );
-	m_staticText12->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
+	m_staticText12->SetFont( wxFont( 20, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
 	
 	bSizer25->Add( m_staticText12, 0, wxALL, 5 );
 	

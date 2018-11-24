@@ -112,8 +112,8 @@ typedef BOOL (__stdcall SETUPDIGETDEVICEREGISTRYPROPERTY)(HDEVINFO, PSP_DEVINFO_
 void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& friendlyNames)
 {
   //Make sure we clear out any elements which may already be in the array(s)
-	ports.empty();
-  friendlyNames.empty();
+	ports.clear();
+  friendlyNames.clear();
 
   //Get the various function pointers we require from setupapi.dll
   HINSTANCE hSetupAPI = LoadLibrary(_T("SETUPAPI.DLL"));
@@ -255,7 +255,7 @@ void ComputerFactory::listPorts(std::string &a)
 	std::vector<std::string> friendlyNames;
 	unsigned int i;
 
-	a.empty();
+	a.clear();
 	UsingSetupAPI1(ports, friendlyNames);
 
 	for (i=0; i< ports.size();i++)
@@ -273,8 +273,8 @@ void ListTTY(std::vector<std::string>& files, std::vector<std::string>& friendly
 	DIR *dp;
 	struct dirent *dirp;
 
-	friendlyNames.empty();
-	files.empty();
+	friendlyNames.clear();
+	files.clear();
 
 	std::vector<BluetoothDevice> *btdevice_list = ComputerLibdc::btscan(scanBT);
 	if (btdevice_list) {

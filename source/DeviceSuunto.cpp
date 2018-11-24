@@ -82,7 +82,7 @@ static void suunto_load_devices_liststore(GtkListStore *suunto_device_list_store
 DeviceSuunto::DeviceSuunto(std::string name)
 {
 	filename = name;
-	hCom = NULL;
+	hCom = 0;
 	open();
 }
 
@@ -91,6 +91,7 @@ DeviceSuunto::~DeviceSuunto()
 	close();
 }
 
+#undef SecureZeroMemory
 #define SecureZeroMemory(p,s) RtlFillMemory((p),(s),0);
 int DeviceSuunto::open()
 {

@@ -1,4 +1,15 @@
 #!/bin/bash
+
+USER=$(whoami)
+if [ "root" != "$USER" ]; then
+	echo "remember to call"
+	echo "sudo $0"
+	exit 1
+fi
+
+# make sure the image isn't mounted
+hdiutil detach /Volumes/DiveboardAgent
+
 DIR="."
 BUILDDIR="$PLUGINDIR/Contents/MacOS"
 OUTDIR="$DIR/build/bin"

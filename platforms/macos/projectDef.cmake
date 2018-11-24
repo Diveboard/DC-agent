@@ -1,8 +1,8 @@
 # MacOS platform definition CMake file
 # Included from ../../CMakeLists.txt
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch i386 -mmacosx-version-min=10.6")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch i386 -stdlib=libstdc++ -mmacosx-version-min=10.6")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch i386 -mmacosx-version-min=10.13")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch i386 -stdlib=libstdc++ -mmacosx-version-min=10.13")
 set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -arch i386")
 set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -arch i386")
 set(CMAKE_OJB_C_FLAGS "${CMAKE_OBJ_C_FLAGS} -arch i386")
@@ -57,12 +57,19 @@ include_directories("${3rd_party_ROOT}/include")
 
 find_library( SECURITY_FRAMEWORK Security)
 
-set( MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_LIST_DIR}/icon_ellow.icns )
-set_source_files_properties( ${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+set( MACOSX_BUNDLE_BUNDLE_NAME "DiveboardAgent" )
+set( MACOSX_BUNDLE_EXECUTABLE_NAME "DiveboardAgent" )
+set( MACOSX_BUNDLE_GUI_IDENTIFIER "com.diveboard.diveboardagent" )
+set( MACOSX_BUNDLE_SHORT_VERSION_STRING "1.2.0" )
+set( MACOSX_BUNDLE_LONG_VERSION_STRING "20181102" )
+set( MACOSX_BUNDLE_COPYRIGHT "Copyright © 2014 Diveboard SARL or its subsidiaries" )
+set( MACOSX_BUNDLE_ICON_FILE "icon_ellow.icns" )
+set( APP_ICON_FILE ${CMAKE_CURRENT_LIST_DIR}/${MACOSX_BUNDLE_ICON_FILE} )
+set_source_files_properties( ${APP_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
 set( MACOSX_BUNDLE_BUNDLE_NAME "DiveboardAgent" )
 
-add_executable(${PROJNAME} MACOSX_BUNDLE ${MACOSX_BUNDLE_ICON_FILE} ${SOURCES})
+add_executable(${PROJNAME} MACOSX_BUNDLE ${APP_ICON_FILE} ${SOURCES})
 CONFIGURE_FILE("${CMAKE_CURRENT_LIST_DIR}/MacOSXBundleInfo.plist.in" "${CMAKE_CURRENT_BINARY_DIR}/${PROJNAME}.plist")
 SET_TARGET_PROPERTIES(${PROJNAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/${PROJNAME}.plist")
 
@@ -77,11 +84,11 @@ target_link_libraries(${PROJNAME}
     )
     
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libdivecomputer.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libdivecomputer.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libirda.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libirda.dylib")
 
 add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIGURATION>/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
+${CMAKE_COMMAND} -E copy "${3rd_party_ROOT}/lib/libconfig++.dylib" "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJNAME}.app/Contents/MacOS/libconfig++.dylib")
 

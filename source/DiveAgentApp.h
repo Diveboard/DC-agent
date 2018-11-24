@@ -16,6 +16,7 @@ public:
   wxMenu *m_menu;
   DiveAgentTaskBarIcon(DiveAgentApp *app, wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE): wxTaskBarIcon(iconType) {
   	m_app = app;
+  	m_menu = NULL;
   }
   
   void OnLeftButtonDClick(wxTaskBarIconEvent&);
@@ -66,7 +67,6 @@ protected:
   };
   void onTimer( wxTimerEvent& event);
   wxTimer*                   _timer;
-  unsigned                   _timer_counter;
   bool			     _alreadyDetected = false;
 
   void InitStartOnLogin();
