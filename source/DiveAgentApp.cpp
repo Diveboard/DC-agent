@@ -276,11 +276,13 @@ bool DiveAgentApp::OnInit()
     return false;
   if ( !wxTaskBarIcon::IsAvailable() )
   {
+#ifndef INDICATOR_ENABLED
     wxMessageBox(
             "There appears to be no system tray support in your current environment. This program may not behave as expected.",
             "Warning",
             wxOK | wxICON_EXCLAMATION
         );
+#endif
   }
 
   m_taskBarIcon = new DiveAgentTaskBarIcon(this);
