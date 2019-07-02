@@ -1,6 +1,6 @@
 #!/bin/sh
 CURRENTPATH=`pwd`
-arch_flags=""
+arch_flags="-DWX_WEB_EXTENSIONS_DIRECTORY='\"${CURRENTPATH}/lib-32/wxWidgets-3.1/lib/wx/3.1.2/web-extensions\"'"
 set -e
 WXWIDGETS="wxWidgets-3.1.2"
 if [ -e "${CURRENTPATH}/${WXWIDGETS}" ]; then
