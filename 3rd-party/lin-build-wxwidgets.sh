@@ -2,7 +2,7 @@
 CURRENTPATH=`pwd`
 arch_flags=""
 set -e
-WXWIDGETS="wxWidgets-3.1.1"
+WXWIDGETS="wxWidgets-3.1.2"
 if [ -e "${CURRENTPATH}/${WXWIDGETS}" ]; then
 	rm -rf "${CURRENTPATH}/${WXWIDGETS}"
 fi
