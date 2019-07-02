@@ -68,13 +68,10 @@ HOW TO BUILD ON LINUX
 
 1) install package
 
-  sudo apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkitgtk-dev cmake imagemagick rpm dpkg-sig autoconf libtool libjpeg-dev libtiff-dev libconfig++-dev
+  sudo apt-get install dpkg-sig imagemagick rpm mesa-common-dev freeglut3-dev libwebkit2gtk-4.0-dev cmake imagemagick rpm dpkg-sig autoconf libtool libjpeg-dev libtiff-dev libconfig++-dev
 
-  //ONLY ON UBUNTU WITH UNITY
-  sudo apt-add-repository ppa:gurqn/systray-trusty
-  sudo apt-get update
-  sudo apt-get upgrade
-
+  //ONLY ON UBUNTU
+  sudo apt-get install libappindicator3-dev
 
 2) build libraries
 
