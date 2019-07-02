@@ -31,7 +31,7 @@ Version: $VERSION
 Section: web
 Priority: optional
 Architecture: $ARCHITECTURE
-Depends: libc6 (>= 2.11), libconfig9, libcurl3|libcurl4, libjpeg8, libpng12-0, libssl1.0.0, libtiff5, libwebkitgtk-1.0-0, zlib1g (>= 1.1.4)
+Depends: libc6 (>= 2.11), libconfig9, libcurl3|libcurl4, libjpeg8, libpng12-0|libpng16-16, libssl1.1, libtiff5, libwebkit2gtk-4.0-37, zlib1g (>= 1.1.4)
 Replaces: diveboard (<= 1.1.1)
 Maintainer: Diveboard <support@diveboard.com>
 Installed-Size: $INSTALLED_SIZE
