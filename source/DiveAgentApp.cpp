@@ -138,6 +138,10 @@ static void doSendLog(DiveAgentApp *app) {
 
   d->Show();
   std::cout << Logger::toString() << std::endl;
+#ifdef WIN32
+	//can be made visible using some DebugView application
+	OutputDebugStringA(Logger::toString().c_str());
+#endif
 }
 
 static void doUpdate(DiveAgentApp *app) {
