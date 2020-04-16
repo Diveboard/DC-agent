@@ -464,7 +464,7 @@ LogDialogBase::LogDialogBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer28->Add( m_staticText15, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_message = new wxTextCtrl( m_panel6, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-	bSizer28->Add( m_message, 3, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	bSizer28->Add( m_message, 3, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	bSizer24->Add( bSizer28, 1, wxEXPAND, 5 );
