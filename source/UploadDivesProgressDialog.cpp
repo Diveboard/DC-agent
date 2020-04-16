@@ -15,7 +15,7 @@ UploadDivesProgressDialog::UploadDivesProgressDialog():
   _timer = new wxTimer(this, timer_id);
   Connect(_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(UploadDivesProgressDialog::onTimer), NULL, this );
   _timer->Start(timer_timeout);
-};
+}
 
 void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event )
 {
@@ -25,17 +25,17 @@ void UploadDivesProgressDialog::actionButtonOnButtonClick( wxCommandEvent& event
   setIsLoginEnable(true);
   mainFrame->Show();
   disableMonitoring();
-};
+}
 void UploadDivesProgressDialog::hideProgressGauge()
 {
   m_uploadProgressGauge->Hide();
   m_uploadProgressStatic->Hide();
-};
+}
 void UploadDivesProgressDialog::showProgressGauge()
 {
   m_uploadProgressGauge->Show();
   m_uploadProgressStatic->Show();
-};
+}
 
 void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
 {
@@ -57,31 +57,31 @@ void UploadDivesProgressDialog::onTimer( wxTimerEvent& event)
     }
     if (!DiveAgent::instance().isUploadDivesRuning())
     {
+      disableMonitoring();
+
       std::string error = DiveAgent::instance().getErrors();
       if (!error.empty())
       {
-        wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was errors while uploading dives: ") + error).c_str()));
-        Logger::append((std::string("There was errors while uploading dives: ") + error).c_str());
-      }
-      disableMonitoring();
-      if (error.empty())
-      {
-        m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the button below.\n"));
-        m_doneButton->Show();
-        m_actionButton->Hide();
-        hideProgressGauge();
-        GetSizer()->Fit(this);
-      }
-      else
-      {
+        wxMessageOutputMessageBox().Output(wxString::FromUTF8((std::string("There was an error while uploading dives: ") + error).c_str()));
+        Logger::append((std::string("There was an error while uploading dives: ") + error).c_str());
+
         setIsLoginEnable(true);
         mainFrame->Show();
         setCurrentDialog(mainFrame);
         Hide();
       }
+      else
+      {
+        m_statusStatic->SetLabel(wxString::FromUTF8("Your dive computer data have been successfully sent to Diveboard.\nTo complete the process you must now click on the button below.\n"));
+
+        m_doneButton->Show();
+        m_actionButton->Hide();
+        hideProgressGauge();
+        GetSizer()->Fit(this);
+      }
     }
   }
-};
+}
 
 void UploadDivesProgressDialog::enableMonitoring()
 {
