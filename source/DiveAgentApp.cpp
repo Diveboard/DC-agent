@@ -133,11 +133,15 @@ static void doLogInOut(DiveAgentApp *app) {
   }
 }
 
-static void doLog(DiveAgentApp *app) {
+static void doSendLog(DiveAgentApp *app) {
   LogDialog *d = new LogDialog();
 
   d->Show();
   std::cout << Logger::toString() << std::endl;
+#ifdef WIN32
+	//can be made visible using some DebugView application
+	OutputDebugStringA(Logger::toString().c_str());
+#endif
 }
 
 static void doUpdate(DiveAgentApp *app) {
@@ -167,7 +171,7 @@ static void doUpdate(DiveAgentApp *app) {
 static void IndicatorOnUploadMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doUploadDives(app); }
 static void IndicatorOnAboutMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doAbout(app); }
 static void IndicatorOnLogoutMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doLogInOut(app); }
-static void IndicatorOnSendLogMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doLog(app); }
+static void IndicatorOnSendLogMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doSendLog(app); }
 static void IndicatorOnUpdateMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { doUpdate(app); }
 static void IndicatorOnExitMenuItemSelected (GtkWidget *widget, DiveAgentApp *app) { wxExit(); }
 #endif
@@ -177,12 +181,12 @@ static void IndicatorOnExitMenuItemSelected (GtkWidget *widget, DiveAgentApp *ap
 // ----------------------------------------------------------------------------
 
 BEGIN_EVENT_TABLE(DiveAgentTaskBarIcon, wxTaskBarIcon)
-EVT_MENU(PU_UPLOAD_DIVES,    DiveAgentTaskBarIcon::OnMenuUploadDives)
-EVT_MENU(PU_ABOUT,    DiveAgentTaskBarIcon::OnMenuAbout)
-EVT_MENU(PU_LOGOUT,    DiveAgentTaskBarIcon::OnMenuLogout)
-EVT_MENU(PU_LOG,    DiveAgentTaskBarIcon::OnMenuLog)
-EVT_MENU(PU_UPDATE,    DiveAgentTaskBarIcon::OnMenuUpdate)
-EVT_MENU(PU_EXIT,    DiveAgentTaskBarIcon::OnMenuExit)
+EVT_MENU(PU_UPLOAD_DIVES, DiveAgentTaskBarIcon::OnMenuUploadDives)
+EVT_MENU(PU_ABOUT,        DiveAgentTaskBarIcon::OnMenuAbout)
+EVT_MENU(PU_LOGOUT,       DiveAgentTaskBarIcon::OnMenuLogout)
+EVT_MENU(PU_SENDLOG,      DiveAgentTaskBarIcon::OnMenuSendLog)
+EVT_MENU(PU_UPDATE,       DiveAgentTaskBarIcon::OnMenuUpdate)
+EVT_MENU(PU_EXIT,         DiveAgentTaskBarIcon::OnMenuExit)
 EVT_TASKBAR_LEFT_DOWN  (DiveAgentTaskBarIcon::OnLeftButtonDClick)
 END_EVENT_TABLE()
 
@@ -198,9 +202,9 @@ void DiveAgentTaskBarIcon::OnMenuExit(wxCommandEvent& )
 {
   wxExit();
 }
-void DiveAgentTaskBarIcon::OnMenuLog(wxCommandEvent& )
+void DiveAgentTaskBarIcon::OnMenuSendLog(wxCommandEvent& )
 {
-  doLog(m_app);
+  doSendLog(m_app);
 }
 void DiveAgentTaskBarIcon::OnMenuUpdate(wxCommandEvent& )
 {
@@ -223,10 +227,10 @@ wxMenu *DiveAgentTaskBarIcon::CreatePopupMenu()
       m_menu->Append(PU_LOGOUT,    wxT("Logout"));
     else
       m_menu->Append(PU_LOGOUT,    wxT("Login"));
-    m_menu->Append(PU_ABOUT,    wxT("About"));
-    m_menu->Append(PU_LOG,    wxT("Send Log"));
-    m_menu->Append(PU_UPDATE,    wxT("Check for update"));
-    m_menu->Append(PU_EXIT,    wxT("Exit"));
+    m_menu->Append(PU_ABOUT,       wxT("About"));
+    m_menu->Append(PU_SENDLOG,     wxT("Send Log"));
+    m_menu->Append(PU_UPDATE,      wxT("Check for update"));
+    m_menu->Append(PU_EXIT,        wxT("Exit"));
   }
   m_menu->Enable(PU_LOGOUT, isLoginEnable);
   return m_menu;
@@ -276,11 +280,13 @@ bool DiveAgentApp::OnInit()
     return false;
   if ( !wxTaskBarIcon::IsAvailable() )
   {
+#ifndef INDICATOR_ENABLED
     wxMessageBox(
             "There appears to be no system tray support in your current environment. This program may not behave as expected.",
             "Warning",
             wxOK | wxICON_EXCLAMATION
         );
+#endif
   }
 
   m_taskBarIcon = new DiveAgentTaskBarIcon(this);

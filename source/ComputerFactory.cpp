@@ -178,7 +178,7 @@ void UsingSetupAPI1(std::vector<std::string>& ports, std::vector<std::string>& f
       BOOL bAdded = false;
       int nPort = 0;
 
-      LOGDEBUG("Getting informations for device %d", nIndex);
+      //THOR avoid spamming the log LOGDEBUG("Getting informations for device %d", nIndex);
 
       //Get the registry key which stores the ports settings
       HKEY hDeviceKey = lpfnLPSETUPDIOPENDEVREGKEY(hDevInfoSet, &devInfo, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_QUERY_VALUE);

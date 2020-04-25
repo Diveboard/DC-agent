@@ -1237,7 +1237,7 @@ std::vector<BluetoothDevice> *ComputerLibdc::btscan(bool rescan)
   rc = libdc_p.bluetooth_iterator_new (&iterator, context, NULL);
   if (rc != DC_STATUS_SUCCESS) {
     //don't throw here - might be there's just no BT available on the machine
-    LOGWARNING("Error creating a BT iterator.");
+    LOGWARNING("Error %i creating a BT iterator.", rc);
   }
   else {
     printf("Searching for BT devices ...\n");

@@ -65,11 +65,11 @@ void MainFrame::InitUploadDivesPanel()
   for (auto it=ports.begin(); it!= ports.end(); ++it)
   {
     // it->first device, it->second device name
-    m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
-                              new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
+    m_selectPortChoice->Append(it->second.c_str(),
+                               new wxStringClientData(it->first.c_str()));
   }
   if (ports.size() == 0)
-    m_selectPortChoice->Append(wxString::FromUTF8(""), new wxStringClientData(wxString::FromUTF8("")));
+    m_selectPortChoice->Append("", new wxStringClientData(""));
   m_selectMakeChoice->Clear();
   for (auto it=_f.supported.begin(); it!=_f.supported.end();++it)
   {
@@ -295,19 +295,25 @@ void MainFrame::onTimer( wxTimerEvent& event)
     std::map <std::string, std::string> ports = _f.allPorts();
     m_selectPortChoice->Clear();
     int selection = 0;
+
     //auto-select newly detected "native" bluetooth devices
     for (auto it=ports.begin(); it!= ports.end(); ++it)
     {
       // it->first device, it->second device name
-      m_selectPortChoice->Append(wxString::FromUTF8(it->second.c_str()),
-                                 new wxStringClientData(wxString::FromUTF8(it->first.c_str())));
-      if (it->first.compare(0, 5, "/dev/") != 0 && it->first.compare(0, 7, "\\\\.\\COM") != 0) {
-        selection = m_selectPortChoice->GetCount()-1;
-        port_selected = it->first;
+      m_selectPortChoice->Append(it->second.c_str(),
+                                 new wxStringClientData(it->first.c_str()));
+      if (port_selected.compare(0, 5, "/dev/") != 0 && port_selected.compare(0, 7, "\\\\.\\COM") != 0) {
+        //only auto-change to a bt-device *once*
+      }
+      else {
+        if (it->first.compare(0, 5, "/dev/") != 0 && it->first.compare(0, 7, "\\\\.\\COM") != 0) {
+          selection = m_selectPortChoice->GetCount()-1;
+          port_selected = it->first;
+        }
       }
     }
     if (ports.size() == 0)
-      m_selectPortChoice->Append(wxString::FromUTF8(""), new wxStringClientData(wxString::FromUTF8("")));
+      m_selectPortChoice->Append("", new wxStringClientData(""));
 
     // make some default port selection
     m_selectPortChoice->SetSelection(selection);
