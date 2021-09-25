@@ -109,7 +109,7 @@ ENDIF()
 
 include_directories("${3rd_party_ROOT}/include")
 
-message("FIXING include directoryies")
+message("FIXING include directories")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
 # make replace twice because of cmake bug

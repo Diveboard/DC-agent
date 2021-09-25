@@ -72,7 +72,8 @@ rpmbuild --clean "$SPECFILE"
 rpmbuild -bp "$SPECFILE"
 rpmbuild -bc --short-circuit "$SPECFILE"
 rpmbuild -bi --short-circuit "$SPECFILE"
-rpmbuild -ba --short-circuit "$SPECFILE" --sign
+rpmbuild -ba --short-circuit "$SPECFILE"
+echo rpmbuild --sign is no longer supported, use rpmsign instead
 
 mkdir -p $DIR/build/packages
 cp ~/rpmbuild/RPMS/*/diveboard-agent-$VERSION*$ARCH.rpm $DIR/build/packages
