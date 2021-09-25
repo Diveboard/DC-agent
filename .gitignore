@@ -1,6 +1,6 @@
 build
 RPM-GPG-KEY-diveboard
-3rd-party/boost_1_68_0
+3rd-party/boost_1_77_0
 3rd-party/curl-7.47.0
 3rd-party/irda_mac/libirda.dylib
 3rd-party/lib-32
@@ -10,4 +10,4 @@ RPM-GPG-KEY-diveboard
 3rd-party/libiconv-1.14
 3rd-party/openssl-1.0.1h
 3rd-party/rapidjson
-3rd-party/wxWidgets-3.1.1
+3rd-party/wxWidgets-3.1.2

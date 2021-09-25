@@ -90,6 +90,8 @@ ELSE()
 	include_directories(${Cairo_INCLUDE_DIR})
 	set(Cairo_INCLUDE_DIR "/usr/include/cairo")
 	include_directories(${Cairo_INCLUDE_DIR})
+	set(Harfbuzz_INCLUDE_DIR "/usr/include/harfbuzz")
+	include_directories(${Harfbuzz_INCLUDE_DIR})
 	set(Pango_INCLUDE_DIR "/usr/include/pango-1.0")
 	include_directories(${Pango_INCLUDE_DIR})
 	set(Gdkconfig_INCLUDE_DIR "/usr/lib/x86_64-linux-gnu/gtk-3.0/include")
@@ -107,7 +109,7 @@ ENDIF()
 
 include_directories("${3rd_party_ROOT}/include")
 
-message("FIXING include directoryies")
+message("FIXING include directories")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
 # make replace twice because of cmake bug
